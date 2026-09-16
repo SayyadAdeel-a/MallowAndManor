@@ -28,7 +28,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
   }
 
   const handleWhatsAppOrder = () => {
-    const rawNumber = import.meta.env.VITE_WHATSAPP_NUMBER || "923444778119";
+    const rawNumber = import.meta.env.VITE_WHATSAPP_NUMBER || "923233334492";
     const cleanNumber = rawNumber.replace(/\D/g, "");
     const message = `Hello Honeybee Lane,
 

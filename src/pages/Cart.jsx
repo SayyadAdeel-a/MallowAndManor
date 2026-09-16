@@ -26,7 +26,7 @@ I will share my delivery location in the next message.
 Please let me know the available payment methods and delivery charges.
 
 Thank you.`;
-    window.open(`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, "_blank");
+    window.open(`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER || "923233334492"}?text=${encodeURIComponent(message)}`, "_blank");
   };
 
   if (cart.length === 0) {
