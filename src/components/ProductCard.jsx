@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const tagColors = {
-  sale: { bg: "#7f1d1d", text: "#ffffff" },
-  new: { bg: "#0A0A0A", text: "#C9A84C" },
-  bestseller: { bg: "#C9A84C", text: "#0A0A0A" },
-  hot: { bg: "#991b1b", text: "#ffffff" },
+  sale: { bg: "#C08AA5", text: "#ffffff" },
+  new: { bg: "#6E4E5C", text: "#F7F3EE" },
+  bestseller: { bg: "#D9BEA6", text: "#6E4E5C" },
+  hot: { bg: "#EFC3D4", text: "#6E4E5C" },
 };
 
 function getTag(product) {

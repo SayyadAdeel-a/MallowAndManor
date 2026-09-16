@@ -20,7 +20,7 @@ export default async function handler(req, res) {
   }
 
   const timestamp = Math.round(Date.now() / 1000);
-  const folder = 'mallowandmanor';
+  const folder = 'honeybeelane';
   const params = { timestamp, folder };
   const signature = cloudinary.utils.api_sign_request(params, apiSecret);
 

@@ -28,9 +28,9 @@ export default function AdminLogin() {
     <div className="min-h-screen flex items-center justify-center bg-brand-cream px-6">
       <div className="w-full max-w-sm">
         <div className="text-center mb-10">
-          <img src="/GULWARENA.png" alt="Gulwarena" className="h-12 w-auto mx-auto mb-4" />
+          <img src="/logo.png" alt="Honeybee Lane" className="h-12 w-auto mx-auto mb-4" />
           <h1 className="text-xl font-bold tracking-wider uppercase mb-2">Admin</h1>
-          <p className="text-sm text-gray-400">Gulwarena</p>
+          <p className="text-sm text-gray-400">Honeybee Lane</p>
         </div>
 
         {error && (
@@ -47,7 +47,7 @@ export default function AdminLogin() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-brand-gold transition-colors"
-              placeholder="admin@gulwarena.com"
+              placeholder="admin@honeybeelane.com"
               required
             />
           </div>

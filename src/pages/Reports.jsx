@@ -93,7 +93,7 @@ export default function Reports() {
       ['Product', 'Views', 'Cart Adds', 'Rate %'],
       ...topProducts.map(p => [p.productName || p.id.slice(-6), p.views, p.cartAdds, p.views > 0 ? ((p.cartAdds / p.views) * 100).toFixed(1) : '0.0']),
     ];
-    downloadCSV(`mallow-report-${days}d-${new Date().toISOString().split('T')[0]}.csv`, rows);
+    downloadCSV(`honeybee-report-${days}d-${new Date().toISOString().split('T')[0]}.csv`, rows);
   };
 
   const handleExportDaily = () => {
@@ -106,7 +106,7 @@ export default function Reports() {
         return [d, day.pageViews || 0, day.productViews || 0, day.addToCart || 0, day.checkouts || 0, total];
       }),
     ];
-    downloadCSV(`mallow-daily-${days}d-${new Date().toISOString().split('T')[0]}.csv`, rows);
+    downloadCSV(`honeybee-daily-${days}d-${new Date().toISOString().split('T')[0]}.csv`, rows);
   };
 
   return (

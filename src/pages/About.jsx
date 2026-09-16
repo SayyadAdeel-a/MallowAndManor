@@ -7,9 +7,9 @@ export default function About() {
         <div className="absolute inset-0 bg-black/50" />
         <div className="relative z-10 text-center px-6">
           <span className="text-xs font-medium tracking-[0.3em] uppercase text-brand-cream/60 mb-4 block">Our Story</span>
-          <h1 className="text-4xl md:text-5xl font-bold text-brand-cream mb-4">Gulwarena by M</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-brand-cream mb-4">Honeybee Lane</h1>
           <p className="text-brand-cream/70 text-sm max-w-lg mx-auto">
-            Born from a simple desire to make luxury accessible, personal, and profoundly simple.
+            Born from a simple desire to make quality beauty accessible, personal, and effortless.
           </p>
         </div>
       </div>
@@ -19,11 +19,11 @@ export default function About() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <div>
             <span className="text-xs font-medium tracking-[0.3em] uppercase text-gray-400 mb-4 block">Who We Are</span>
-            <h2 className="text-3xl font-bold tracking-tight mb-6">Defining Luxury for a New Generation</h2>
+            <h2 className="text-3xl font-bold tracking-tight mb-6">Modern Essentials for a New Generation</h2>
             <div className="space-y-4 text-gray-500 text-sm leading-relaxed">
               <p>
-                In a world of mass production, we stand for the unique. Gulwarena by M is not just
-                an e-commerce platform — it's a curated gallery of excellence.
+                In a world of mass production, we stand for the unique. Honeybee Lane is not just
+                an e-commerce platform — it's a carefully curated collection of quality essentials.
               </p>
               <p>
                 Starting from a small boutique in 2024, our vision was to bridge the gap between

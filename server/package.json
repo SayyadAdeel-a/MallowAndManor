@@ -1,5 +1,5 @@
 {
-  "name": "mallowandmanor-api",
+  "name": "honeybeelane-api",
   "type": "module",
   "scripts": {
     "dev": "node --watch index.js",

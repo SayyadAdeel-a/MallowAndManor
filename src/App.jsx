@@ -45,16 +45,19 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Clear any stale/error cache from localStorage
+        // Clear any stale/error cache from localStorage (incl. legacy mallow keys)
         try {
-          const oldCatCache = JSON.parse(localStorage.getItem('mallow_categories_cache'));
-          const oldProdCache = JSON.parse(localStorage.getItem('mallow_products_cache'));
-          if (oldCatCache && !Array.isArray(oldCatCache.data)) localStorage.removeItem('mallow_categories_cache');
-          if (oldProdCache && !Array.isArray(oldProdCache.data)) localStorage.removeItem('mallow_products_cache');
+          const oldCatCache = JSON.parse(localStorage.getItem('honeybee_categories_cache'));
+          const oldProdCache = JSON.parse(localStorage.getItem('honeybee_products_cache'));
+          if (oldCatCache && !Array.isArray(oldCatCache.data)) localStorage.removeItem('honeybee_categories_cache');
+          if (oldProdCache && !Array.isArray(oldProdCache.data)) localStorage.removeItem('honeybee_products_cache');
+          // one-time cleanup of old brand keys
+          localStorage.removeItem('mallow_categories_cache');
+          localStorage.removeItem('mallow_products_cache');
         } catch { /* ignore parse errors */ }
 
-        const cachedProducts = localStorage.getItem('mallow_products_cache');
-        const cachedCategories = localStorage.getItem('mallow_categories_cache');
+        const cachedProducts = localStorage.getItem('honeybee_products_cache');
+        const cachedCategories = localStorage.getItem('honeybee_categories_cache');
 
         if (cachedProducts && cachedCategories) {
           const prodCache = JSON.parse(cachedProducts);
@@ -77,7 +80,7 @@ function App() {
 
         const validCategories = Array.isArray(categoriesData) ? categoriesData : [];
         setCategories(validCategories);
-        localStorage.setItem('mallow_categories_cache', JSON.stringify({
+        localStorage.setItem('honeybee_categories_cache', JSON.stringify({
           data: validCategories,
           timestamp: Date.now()
         }));
@@ -96,7 +99,7 @@ function App() {
         setProducts(mappedProducts);
         setProductStats(typeof stats === 'object' && !Array.isArray(stats) ? stats : {});
 
-        localStorage.setItem('mallow_products_cache', JSON.stringify({
+        localStorage.setItem('honeybee_products_cache', JSON.stringify({
           data: mappedProducts,
           timestamp: Date.now()
         }));

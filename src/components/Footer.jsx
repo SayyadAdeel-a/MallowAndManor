@@ -7,16 +7,16 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <Link to="/" className="mb-4 block">
-              <img src="/GULWARENA.png" alt="Gulwarena" className="h-10 w-auto" />
+            <Link to="/" className="mb-4 block w-fit">
+              <img src="/logo.png" alt="Honeybee Lane" className="h-12 w-auto" />
             </Link>
             <p className="text-brand-cream/50 text-sm leading-relaxed max-w-sm mb-6">
-              Redefining elegance for the modern soul. Curated bangles, abayas,
-              and accessories designed to celebrate your unique identity.
+              Premium bangles, abayas, nails and accessories,
+              thoughtfully curated for modern living.
             </p>
             <div className="flex gap-4">
               <a
-                href="https://www.instagram.com/mallowandmanor/"
+                href="https://www.instagram.com/honeybeelane/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 border border-brand-cream/20 flex items-center justify-center hover:bg-brand-gold hover:text-brand-dark hover:border-brand-gold transition-all"
@@ -27,7 +27,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="https://www.tiktok.com/@mallowandmanor?lang=en"
+                href="https://www.tiktok.com/@honeybeelane?lang=en"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 border border-brand-cream/20 flex items-center justify-center hover:bg-brand-gold hover:text-brand-dark hover:border-brand-gold transition-all"
@@ -42,7 +42,7 @@ export default function Footer() {
 
           {/* Shop */}
           <div>
-            <h4 className="text-xs font-semibold tracking-widest uppercase mb-6 text-brand-gold">Shop</h4>
+            <h4 className="text-xs font-semibold tracking-widest uppercase mb-6 text-brand-honey">Shop</h4>
             <ul className="space-y-3 text-sm text-brand-cream/60">
               <li><Link to="/products" className="hover:text-brand-cream transition-colors">All Products</Link></li>
               <li><Link to="/products?category=bangles" className="hover:text-brand-cream transition-colors">Bangles</Link></li>
@@ -54,7 +54,7 @@ export default function Footer() {
 
           {/* Company */}
           <div>
-            <h4 className="text-xs font-semibold tracking-widest uppercase mb-6 text-brand-gold">Company</h4>
+            <h4 className="text-xs font-semibold tracking-widest uppercase mb-6 text-brand-honey">Company</h4>
             <ul className="space-y-3 text-sm text-brand-cream/60">
               <li><Link to="/about" className="hover:text-brand-cream transition-colors">Our Story</Link></li>
               <li><Link to="/blog" className="hover:text-brand-cream transition-colors">Journal</Link></li>
@@ -67,7 +67,7 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="border-t border-brand-cream/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-brand-cream/40">
-          <p>&copy; 2026 Gulwarena. All rights reserved.</p>
+          <p>&copy; 2026 Honeybee Lane. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <a
               href="https://syab.tech/mentee"

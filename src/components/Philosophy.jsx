@@ -13,9 +13,8 @@ export default function Philosophy() {
               designed for life.
             </h2>
             <p className="text-gray-500 leading-relaxed mb-4">
-              Gulwarena was born from a simple desire: to make high-end
-              luxury accessible, personal, and profoundly simple for the modern
-              connoisseur.
+              Honeybee Lane was founded on a simple principle: to make quality
+              beauty accessible, personal, and effortless for the modern customer.
             </p>
             <p className="text-gray-500 leading-relaxed mb-8">
               We specialize in artisanal bangles, handcrafted abayas, boutique

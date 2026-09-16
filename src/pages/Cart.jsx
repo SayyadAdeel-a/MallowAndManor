@@ -10,22 +10,22 @@ export default function Cart({ cart, removeFromCart, updateQuantity }) {
     const itemsList = cart
       .map((item, i) => `${i + 1}. ${item.name} (Qty: ${item.quantity || 1}) - Rs.${item.price * item.quantity}`)
       .join("\n");
-    const message = `Hello Gulwarena! 👑
+    const message = `Hello Honeybee Lane,
 
-I am confirming this order. Please send it to me.
+I would like to confirm this order.
 
-📦 *Order Details:*
+*Order Details:*
 ${itemsList}
 
-💰 *Total Amount:* Rs.${total}
+*Total Amount:* Rs.${total}
 
-📍 *Delivery Location:*
+*Delivery Location:*
 I will share my delivery location in the next message.
 
-💳 *Payment:*
+*Payment:*
 Please let me know the available payment methods and delivery charges.
 
-Looking forward to receiving my order!`;
+Thank you.`;
     window.open(`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, "_blank");
   };
 

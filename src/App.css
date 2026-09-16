@@ -44,7 +44,7 @@ html {
 /* Custom hover effects */
 .product-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(45, 80, 22, 0.1);
+  box-shadow: 0 20px 40px rgba(192, 138, 165, 0.25);
 }
 
 /* Line clamp utility for older browsers */
@@ -61,7 +61,7 @@ html {
 .blog-content h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; margin-top: 1.5rem; }
 .blog-content p { margin-bottom: 1rem; line-height: 1.8; }
 .blog-content img { max-width: 100%; height: auto; margin: 1.5rem auto; border-radius: 4px; display: block; }
-.blog-content a { color: #2d5016; text-decoration: underline; }
+.blog-content a { color: #A87E93; text-decoration: underline; }
 .blog-content a:hover { opacity: 0.7; }
 .blog-content ul, .blog-content ol { margin-bottom: 1rem; padding-left: 1.5rem; line-height: 1.8; }
 .blog-content li { margin-bottom: 0.25rem; }

@@ -17,8 +17,8 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://mallowandmanor.vercel.app',
-    'https://mallowandmanor.com',
+    'https://honeybeelane.vercel.app',
+    'https://honeybeelane.com',
   ],
   credentials: true,
 }));

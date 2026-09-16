@@ -163,11 +163,11 @@ export default function AnalyticsDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <div className="bg-brand-cream border border-gray-100 p-6">
             <p className="text-xs text-gray-400 tracking-wider uppercase mb-4">Page Views</p>
-            <LineChart data={timeSeries.pageViews} color="#3b82f6" />
+            <LineChart data={timeSeries.pageViews} color="#C08AA5" />
           </div>
           <div className="bg-brand-cream border border-gray-100 p-6">
             <p className="text-xs text-gray-400 tracking-wider uppercase mb-4">Engagement</p>
-            <LineChart data={timeSeries.productViews} color="#9333ea" />
+            <LineChart data={timeSeries.productViews} color="#D9BEA6" />
           </div>
         </div>
 

@@ -35,7 +35,7 @@ export default function AdminHeader({ userEmail }) {
           </button>
 
           <Link to="/" className="flex items-center gap-2">
-            <img src="/GULWARENA.png" alt="Gulwarena" className="h-6 w-auto" />
+            <img src="/logo.png" alt="Honeybee Lane" className="h-6 w-auto" />
           </Link>
           <h1 className="text-sm font-bold tracking-wider uppercase">Admin</h1>
 
