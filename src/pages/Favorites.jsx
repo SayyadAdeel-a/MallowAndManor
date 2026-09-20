@@ -7,11 +7,11 @@ export default function Favorites({ favorites, addToCart, removeFromFavorites })
   if (favorites.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] text-center px-6">
-        <h1 className="text-2xl font-bold mb-3">Your wishlist is empty</h1>
-        <p className="text-gray-400 text-sm mb-6">Save items you love for later.</p>
+        <h1 className="text-2xl font-bold mb-3 text-brand-black">Your wishlist is empty</h1>
+        <p className="text-gray-500 text-sm mb-6">Save items you love for later.</p>
         <button
           onClick={() => navigate("/products")}
-          className="bg-brand-black text-brand-cream px-8 py-3 text-sm font-semibold tracking-wider uppercase hover:bg-brand-gold transition-colors"
+          className="bg-brand-burgundy text-white px-8 py-3 text-xs font-bold tracking-wider uppercase hover:bg-brand-gold transition-colors shadow-sm"
         >
           Discover Products
         </button>
@@ -23,8 +23,8 @@ export default function Favorites({ favorites, addToCart, removeFromFavorites })
     <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
       <div className="flex justify-between items-end mb-8">
         <div>
-          <h1 className="text-2xl font-bold">Wishlist</h1>
-          <p className="text-sm text-gray-400 mt-1">{favorites.length} {favorites.length === 1 ? "item" : "items"}</p>
+          <h1 className="text-2xl font-bold text-brand-black">Wishlist</h1>
+          <p className="text-sm text-brand-gold font-medium mt-1">{favorites.length} {favorites.length === 1 ? "item" : "items"}</p>
         </div>
       </div>
 
@@ -35,7 +35,7 @@ export default function Favorites({ favorites, addToCart, removeFromFavorites })
               <ProductCard product={product} onAddToCart={() => addToCart(product)} />
               <button
                 onClick={() => removeFromFavorites(product.id)}
-                className="absolute top-2 right-2 w-8 h-8 bg-brand-cream/90 flex items-center justify-center text-gray-400 hover:text-gray-700 transition-colors z-10"
+                className="absolute top-2 right-2 w-8 h-8 rounded-full border border-brand-border bg-brand-cream/90 flex items-center justify-center text-brand-burgundy hover:bg-brand-blush transition-colors z-10 shadow-sm"
                 title="Remove"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

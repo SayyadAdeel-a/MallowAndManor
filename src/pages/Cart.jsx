@@ -32,11 +32,11 @@ Thank you.`;
   if (cart.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] text-center px-6">
-        <h1 className="text-2xl font-bold mb-3">Your cart is empty</h1>
-        <p className="text-gray-400 text-sm mb-6">Discover our curated collection.</p>
+        <h1 className="text-2xl font-bold mb-3 text-brand-black">Your cart is empty</h1>
+        <p className="text-gray-500 text-sm mb-6">Discover our curated collection.</p>
         <button
           onClick={() => navigate("/products")}
-          className="bg-brand-black text-brand-cream px-8 py-3 text-sm font-semibold tracking-wider uppercase hover:bg-brand-gold transition-colors"
+          className="bg-brand-burgundy text-white px-8 py-3 text-xs font-bold tracking-wider uppercase hover:bg-brand-gold transition-colors shadow-sm"
         >
           Browse Products
         </button>
@@ -46,25 +46,25 @@ Thank you.`;
 
   return (
     <div className="max-w-5xl mx-auto px-6 lg:px-8 py-12">
-      <h1 className="text-2xl font-bold mb-8">Shopping Cart ({cart.length})</h1>
+      <h1 className="text-2xl font-bold mb-8 text-brand-black">Shopping Cart ({cart.length})</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Items */}
         <div className="lg:col-span-2 space-y-4">
           {cart.map((item) => (
-            <div key={item.id} className="flex gap-4 py-4 border-b border-gray-100">
-              <div className="w-20 h-20 bg-gray-100 overflow-hidden shrink-0">
+            <div key={item.id} className="flex gap-4 py-4 border-b border-brand-border/60">
+              <div className="w-20 h-20 bg-brand-cream/60 overflow-hidden shrink-0 border border-brand-border/50">
                 <img src={item.mainImage} alt={item.name} className="w-full h-full object-cover" />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex justify-between gap-2">
                   <div>
-                    <h3 className="text-sm font-medium truncate">{item.name}</h3>
-                    <p className="text-xs text-gray-400 capitalize">{item.category}</p>
+                    <h3 className="text-sm font-semibold text-brand-black truncate">{item.name}</h3>
+                    <p className="text-xs text-brand-gold capitalize">{item.category}</p>
                   </div>
                   <button
                     onClick={() => removeFromCart(item.id)}
-                    className="text-gray-300 hover:text-gray-600 transition-colors shrink-0"
+                    className="text-gray-400 hover:text-brand-burgundy transition-colors shrink-0"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
@@ -72,12 +72,12 @@ Thank you.`;
                   </button>
                 </div>
                 <div className="flex justify-between items-center mt-3">
-                  <div className="flex items-center border border-gray-200">
-                    <button onClick={() => updateQuantity(item.id, (item.quantity || 1) - 1)} className="w-8 h-8 flex items-center justify-center text-sm hover:bg-gray-50">-</button>
-                    <span className="w-8 text-center text-sm">{item.quantity || 1}</span>
-                    <button onClick={() => updateQuantity(item.id, (item.quantity || 1) + 1)} className="w-8 h-8 flex items-center justify-center text-sm hover:bg-gray-50">+</button>
+                  <div className="flex items-center border border-brand-border rounded-sm bg-white">
+                    <button onClick={() => updateQuantity(item.id, (item.quantity || 1) - 1)} className="w-8 h-8 flex items-center justify-center text-sm hover:bg-brand-blush/50 text-brand-black">-</button>
+                    <span className="w-8 text-center text-sm font-semibold text-brand-black">{item.quantity || 1}</span>
+                    <button onClick={() => updateQuantity(item.id, (item.quantity || 1) + 1)} className="w-8 h-8 flex items-center justify-center text-sm hover:bg-brand-blush/50 text-brand-black">+</button>
                   </div>
-                  <span className="text-sm font-semibold">Rs. {item.price * (item.quantity || 1)}</span>
+                  <span className="text-sm font-bold text-brand-burgundy">Rs. {(item.price * (item.quantity || 1)).toLocaleString()}</span>
                 </div>
               </div>
             </div>
@@ -85,31 +85,31 @@ Thank you.`;
         </div>
 
         {/* Summary */}
-        <div className="bg-gray-50 p-6 h-fit sticky top-24">
-          <h2 className="text-sm font-semibold tracking-wider uppercase mb-4">Summary</h2>
+        <div className="bg-brand-cream border border-brand-border p-6 h-fit sticky top-24 rounded-lg shadow-sm">
+          <h2 className="text-xs font-bold tracking-wider uppercase text-brand-black mb-4">Summary</h2>
           <div className="space-y-3 mb-6 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-500">Subtotal</span>
-              <span className="font-medium">Rs. {total}</span>
+              <span className="text-gray-600">Subtotal</span>
+              <span className="font-semibold text-brand-black">Rs. {total.toLocaleString()}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-500">Shipping</span>
-              <span className="text-xs text-gray-400">Calculated at WhatsApp</span>
+              <span className="text-gray-600">Shipping</span>
+              <span className="text-xs text-brand-gold font-medium">Calculated at WhatsApp</span>
             </div>
-            <div className="border-t border-gray-200 pt-3">
+            <div className="border-t border-brand-border pt-3">
               <div className="flex justify-between">
-                <span className="font-semibold">Total</span>
-                <span className="text-lg font-bold">Rs. {total}</span>
+                <span className="font-bold text-brand-black">Total</span>
+                <span className="text-lg font-extrabold text-brand-burgundy">Rs. {total.toLocaleString()}</span>
               </div>
             </div>
           </div>
           <button
             onClick={handleCheckout}
-            className="w-full bg-[#25D366] text-brand-cream py-3.5 text-sm font-semibold tracking-wider uppercase hover:bg-[#128C7E] transition-colors"
+            className="w-full bg-[#25D366] text-white py-3.5 text-xs font-bold tracking-wider uppercase hover:bg-[#128C7E] transition-colors shadow-sm"
           >
             Order via WhatsApp
           </button>
-          <p className="text-[10px] text-gray-400 text-center mt-3">Fast response & safe delivery</p>
+          <p className="text-[10px] text-gray-500 text-center mt-3">Fast response & safe delivery</p>
         </div>
       </div>
     </div>

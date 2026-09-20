@@ -167,46 +167,46 @@ export default function AdminDashboard() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-brand-cream">
       <AdminHeader userEmail={user.email} />
 
       <main className="max-w-6xl mx-auto px-6 py-8">
         {/* Actions bar */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight">Products</h2>
-            <p className="text-sm text-gray-400 mt-1">{products.length} total</p>
+            <h2 className="text-2xl font-bold tracking-tight text-brand-black">Products</h2>
+            <p className="text-sm text-gray-500 mt-1">{products.length} total</p>
           </div>
           <button onClick={() => {
             setShowForm(!showForm); setEditingProduct(null);
             setFormData({ name: "", price: "", category: "bangles", description: "", mainImage: "", thumbnails: [] });
             setMainImageFile(null); setThumbnailFiles([]);
           }}
-            className={`px-5 py-2.5 text-xs font-semibold tracking-wider uppercase transition-colors ${showForm ? "bg-gray-100 text-gray-600" : "bg-brand-black text-brand-cream hover:bg-brand-gold"}`}>
+            className={`px-5 py-2.5 text-xs font-semibold tracking-wider uppercase transition-colors shadow-sm ${showForm ? "bg-brand-blush text-brand-burgundy border border-brand-border" : "bg-brand-burgundy text-white hover:bg-brand-gold"}`}>
             {showForm ? "Cancel" : "Add Product"}
           </button>
         </div>
 
         {/* Form */}
         {showForm && (
-          <div className="bg-brand-cream border border-gray-100 p-6 mb-8">
-            <h3 className="text-lg font-semibold mb-5">{editingProduct ? "Edit Product" : "New Product"}</h3>
+          <div className="bg-white border border-brand-border p-6 mb-8 shadow-sm">
+            <h3 className="text-lg font-semibold mb-5 text-brand-black">{editingProduct ? "Edit Product" : "New Product"}</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-medium tracking-wider uppercase text-gray-400 mb-2">Name</label>
+                  <label className="block text-xs font-medium tracking-wider uppercase text-gray-500 mb-2">Name</label>
                   <input type="text" name="name" value={formData.name} onChange={handleInputChange}
-                    className="w-full px-4 py-2.5 border border-gray-200 text-sm focus:outline-none focus:border-brand-gold" required />
+                    className="w-full px-4 py-2.5 border border-brand-border text-sm focus:outline-none focus:border-brand-gold" required />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium tracking-wider uppercase text-gray-400 mb-2">Price (Rs.)</label>
+                  <label className="block text-xs font-medium tracking-wider uppercase text-gray-500 mb-2">Price (Rs.)</label>
                   <input type="number" name="price" value={formData.price} onChange={handleInputChange}
-                    className="w-full px-4 py-2.5 border border-gray-200 text-sm focus:outline-none focus:border-brand-gold" required />
+                    className="w-full px-4 py-2.5 border border-brand-border text-sm focus:outline-none focus:border-brand-gold" required />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium tracking-wider uppercase text-gray-400 mb-2">Category</label>
+                  <label className="block text-xs font-medium tracking-wider uppercase text-gray-500 mb-2">Category</label>
                   <select name="category" value={formData.category} onChange={handleInputChange}
-                    className="w-full px-4 py-2.5 border border-gray-200 text-sm focus:outline-none bg-brand-cream">
+                    className="w-full px-4 py-2.5 border border-brand-border text-sm focus:outline-none bg-white focus:border-brand-gold">
                     <option value="bangles">Bangles</option>
                     <option value="nails">Nails</option>
                     <option value="abayas">Abayas</option>
@@ -214,23 +214,23 @@ export default function AdminDashboard() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium tracking-wider uppercase text-gray-400 mb-2">Main Image</label>
+                  <label className="block text-xs font-medium tracking-wider uppercase text-gray-500 mb-2">Main Image</label>
                   <input type="file" accept="image/*" onChange={handleMainImageChange}
-                    className="w-full px-4 py-2.5 border border-gray-200 text-sm focus:outline-none" />
-                  {formData.mainImage && <img src={formData.mainImage} alt="Preview" className="mt-2 w-20 h-20 object-cover" />}
+                    className="w-full px-4 py-2.5 border border-brand-border text-sm focus:outline-none" />
+                  {formData.mainImage && <img src={formData.mainImage} alt="Preview" className="mt-2 w-20 h-20 object-cover border border-brand-border" />}
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-medium tracking-wider uppercase text-gray-400 mb-2">Additional Images (max 5)</label>
+                <label className="block text-xs font-medium tracking-wider uppercase text-gray-500 mb-2">Additional Images (max 5)</label>
                 <input type="file" accept="image/*" multiple onChange={handleThumbnailChange}
-                  className="w-full px-4 py-2.5 border border-gray-200 text-sm focus:outline-none" />
+                  className="w-full px-4 py-2.5 border border-brand-border text-sm focus:outline-none" />
                 {Array.isArray(formData.thumbnails) && formData.thumbnails.filter(t => typeof t === 'string').length > 0 && (
                   <div className="flex gap-2 mt-2 flex-wrap">
                     {formData.thumbnails.filter(t => typeof t === 'string').map(url => (
                       <div key={url} className="relative">
-                        <img src={url} alt="" className="w-14 h-14 object-cover" />
+                        <img src={url} alt="" className="w-14 h-14 object-cover border border-brand-border" />
                         <button type="button" onClick={() => setFormData(prev => ({ ...prev, thumbnails: prev.thumbnails.filter(t => t !== url) }))}
-                          className="absolute -top-1 -right-1 bg-gray-800 text-brand-cream w-4 h-4 flex items-center justify-center text-[10px]">×</button>
+                          className="absolute -top-1 -right-1 bg-brand-burgundy text-white w-4 h-4 flex items-center justify-center text-[10px] rounded-full">×</button>
                       </div>
                     ))}
                   </div>
@@ -239,21 +239,21 @@ export default function AdminDashboard() {
                   <div className="flex gap-2 mt-2 flex-wrap">
                     {thumbnailFiles.map((thumb, idx) => (
                       <div key={thumb.preview} className="relative">
-                        <img src={thumb.preview} alt="" className="w-14 h-14 object-cover" />
+                        <img src={thumb.preview} alt="" className="w-14 h-14 object-cover border border-brand-border" />
                         <button type="button" onClick={() => removeThumbnail(idx)}
-                          className="absolute -top-1 -right-1 bg-gray-800 text-brand-cream w-4 h-4 flex items-center justify-center text-[10px]">×</button>
+                          className="absolute -top-1 -right-1 bg-brand-burgundy text-white w-4 h-4 flex items-center justify-center text-[10px] rounded-full">×</button>
                       </div>
                     ))}
                   </div>
                 )}
               </div>
               <div>
-                <label className="block text-xs font-medium tracking-wider uppercase text-gray-400 mb-2">Description</label>
+                <label className="block text-xs font-medium tracking-wider uppercase text-gray-500 mb-2">Description</label>
                 <textarea name="description" value={formData.description} onChange={handleInputChange} rows="3"
-                  className="w-full px-4 py-2.5 border border-gray-200 text-sm focus:outline-none focus:border-brand-gold" />
+                  className="w-full px-4 py-2.5 border border-brand-border text-sm focus:outline-none focus:border-brand-gold" />
               </div>
               <button type="submit" disabled={loading || uploading}
-                className="px-6 py-2.5 bg-brand-black text-brand-cream text-xs font-semibold tracking-wider uppercase hover:bg-brand-gold transition-colors disabled:opacity-50">
+                className="px-6 py-2.5 bg-brand-burgundy text-white text-xs font-semibold tracking-wider uppercase hover:bg-brand-gold transition-colors disabled:opacity-50 shadow-sm">
                 {loading ? "Saving..." : uploading ? "Uploading..." : editingProduct ? "Update" : "Create"}
               </button>
             </form>
@@ -264,10 +264,10 @@ export default function AdminDashboard() {
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           <div className="relative flex-1 max-w-sm">
             <input type="text" placeholder="Search products..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-2 bg-brand-cream border border-gray-200 text-sm focus:outline-none" />
+              className="w-full px-4 py-2 bg-white border border-brand-border text-sm focus:outline-none focus:border-brand-gold" />
           </div>
           <select value={categoryFilter} onChange={e => setCategoryFilter(e.target.value)}
-            className="px-4 py-2 bg-brand-cream border border-gray-200 text-sm focus:outline-none">
+            className="px-4 py-2 bg-white border border-brand-border text-sm focus:outline-none focus:border-brand-gold">
             <option value="all">All Categories</option>
             {categories.map(c => <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>)}
           </select>
@@ -276,38 +276,38 @@ export default function AdminDashboard() {
         {/* Products table */}
         {loading ? (
           <div className="text-center py-16">
-            <div className="w-6 h-6 border-2 border-gray-300 border-t-brand-walnut rounded-full animate-spin mx-auto" />
+            <div className="w-6 h-6 border-2 border-gray-300 border-t-brand-gold rounded-full animate-spin mx-auto" />
           </div>
         ) : (
-          <div className="bg-brand-cream border border-gray-100 overflow-hidden">
+          <div className="bg-white border border-brand-border overflow-hidden shadow-sm">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-100">
-                    <th className="text-left p-4 text-xs font-medium tracking-wider uppercase text-gray-400">Product</th>
-                    <th className="text-left p-4 text-xs font-medium tracking-wider uppercase text-gray-400 hidden sm:table-cell">Category</th>
-                    <th className="text-left p-4 text-xs font-medium tracking-wider uppercase text-gray-400">Price</th>
-                    <th className="text-right p-4 text-xs font-medium tracking-wider uppercase text-gray-400">Actions</th>
+                  <tr className="border-b border-brand-border bg-brand-blush/30">
+                    <th className="text-left p-4 text-xs font-semibold tracking-wider uppercase text-brand-black/70">Product</th>
+                    <th className="text-left p-4 text-xs font-semibold tracking-wider uppercase text-brand-black/70 hidden sm:table-cell">Category</th>
+                    <th className="text-left p-4 text-xs font-semibold tracking-wider uppercase text-brand-black/70">Price</th>
+                    <th className="text-right p-4 text-xs font-semibold tracking-wider uppercase text-brand-black/70">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredProducts.map((product) => (
-                    <tr key={product.id} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
+                    <tr key={product.id} className="border-b border-gray-50 hover:bg-brand-blush/20 transition-colors">
                       <td className="p-4">
                         <div className="flex items-center gap-3">
-                          {product.mainImage && <img src={product.mainImage} alt="" className="w-10 h-10 object-cover" />}
-                          <span className="font-medium truncate max-w-[200px]">{product.name}</span>
+                          {product.mainImage && <img src={product.mainImage} alt="" className="w-10 h-10 object-cover border border-brand-border" />}
+                          <span className="font-medium truncate max-w-[200px] text-brand-black">{product.name}</span>
                         </div>
                       </td>
                       <td className="p-4 hidden sm:table-cell">
                         <span className="text-xs text-gray-500 capitalize">{product.category}</span>
                       </td>
-                      <td className="p-4 font-medium">Rs. {product.price.toLocaleString()}</td>
+                      <td className="p-4 font-semibold text-brand-black">Rs. {product.price.toLocaleString()}</td>
                       <td className="p-4 text-right">
                         <a href={`/product/${product.id}`} target="_blank" rel="noopener noreferrer"
-                          className="text-xs text-blue-500 hover:text-blue-700 transition-colors mr-3 font-medium">View</a>
-                        <button onClick={() => handleEdit(product)} className="text-xs text-gray-500 hover:text-brand-dark transition-colors mr-3 font-medium">Edit</button>
-                        <button onClick={() => handleDelete(product.id)} className="text-xs text-gray-400 hover:text-red-600 transition-colors font-medium">Delete</button>
+                          className="text-xs text-brand-gold hover:text-brand-burgundy transition-colors mr-3 font-semibold">View</a>
+                        <button onClick={() => handleEdit(product)} className="text-xs text-brand-black/70 hover:text-brand-gold transition-colors mr-3 font-semibold">Edit</button>
+                        <button onClick={() => handleDelete(product.id)} className="text-xs text-gray-400 hover:text-red-600 transition-colors font-semibold">Delete</button>
                       </td>
                     </tr>
                   ))}

@@ -22,7 +22,7 @@ export default function Blog() {
 
       {loading ? (
         <div className="flex justify-center py-20">
-          <div className="w-6 h-6 border-2 border-gray-300 border-t-brand-walnut rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-brand-border border-t-brand-gold rounded-full animate-spin" />
         </div>
       ) : posts.length === 0 ? (
         <div className="text-center py-20">
@@ -33,20 +33,20 @@ export default function Blog() {
           {posts.map(post => (
             <Link key={post._id} to={`/blog/${post.slug}`} className="group">
               {post.featuredImage && (
-                <div className="aspect-[16/9] overflow-hidden mb-4 bg-gray-100">
+                <div className="aspect-[16/9] overflow-hidden mb-4 bg-brand-cream/60 border border-brand-border/60">
                   <img src={post.featuredImage} alt={post.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
               )}
               <div className="flex gap-2 mb-3">
                 {(post.tags || []).slice(0, 2).map(tag => (
-                  <span key={tag} className="text-[10px] font-medium tracking-wider uppercase text-gray-400">{tag}</span>
+                  <span key={tag} className="text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full bg-brand-blush text-brand-burgundy border border-brand-border/60">{tag}</span>
                 ))}
               </div>
-              <h2 className="text-lg font-semibold mb-2 group-hover:underline">{post.title}</h2>
-              {post.excerpt && <p className="text-sm text-gray-500 line-clamp-2 mb-3">{post.excerpt}</p>}
-              <div className="text-xs text-gray-400">
-                {post.author && <span>{post.author}</span>}
+              <h2 className="text-lg font-bold mb-2 text-brand-black group-hover:text-brand-burgundy transition-colors">{post.title}</h2>
+              {post.excerpt && <p className="text-sm text-gray-600 line-clamp-2 mb-3 leading-relaxed">{post.excerpt}</p>}
+              <div className="text-xs text-brand-gold font-medium">
+                {post.author && <span className="text-brand-black/70">{post.author}</span>}
                 {post.author && " · "}
                 <span>{new Date(post.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
               </div>

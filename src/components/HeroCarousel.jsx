@@ -84,14 +84,14 @@ function ShoeIcon() {
 }
 
 const stickers = [
-  { label: "Bags", Icon: BagIcon, color: "#C08AA5", tilt: "-3deg" },
-  { label: "Cart", Icon: CartIcon, color: "#8A6A7C", tilt: "2deg" },
-  { label: "Bangles", Icon: BangleIcon, color: "#D9BEA6", tilt: "-2deg" },
-  { label: "Rings", Icon: RingIcon, color: "#C08AA5", tilt: "3deg" },
-  { label: "Shopping", Icon: ShoppingIcon, color: "#A87E93", tilt: "2deg" },
-  { label: "Tags", Icon: TagIcon, color: "#D9BEA6", tilt: "-3deg" },
-  { label: "Clothes", Icon: DressIcon, color: "#C08AA5", tilt: "-2deg" },
-  { label: "Shoes", Icon: ShoeIcon, color: "#8A6A7C", tilt: "3deg" },
+  { label: "Bags", Icon: BagIcon, color: "#4A0E17", tilt: "-3deg" },
+  { label: "Cart", Icon: CartIcon, color: "#C59B58", tilt: "2deg" },
+  { label: "Bangles", Icon: BangleIcon, color: "#D8AF6E", tilt: "-2deg" },
+  { label: "Rings", Icon: RingIcon, color: "#4A0E17", tilt: "3deg" },
+  { label: "Shopping", Icon: ShoppingIcon, color: "#D495A0", tilt: "2deg" },
+  { label: "Tags", Icon: TagIcon, color: "#C59B58", tilt: "-3deg" },
+  { label: "Clothes", Icon: DressIcon, color: "#4A0E17", tilt: "-2deg" },
+  { label: "Shoes", Icon: ShoeIcon, color: "#D8AF6E", tilt: "3deg" },
 ];
 
 export default function HeroCarousel() {
@@ -102,15 +102,15 @@ export default function HeroCarousel() {
       className="relative w-full overflow-hidden"
       style={{
         background:
-          "linear-gradient(135deg, #F6E7ED 0%, #F7F3EE 50%, #F1E7D8 100%)",
+          "linear-gradient(135deg, #FAF7F2 0%, #F7ECEE 50%, #F4ECE4 100%)",
       }}
     >
       {/* Honeycomb corners — brand motif from the logo */}
       <svg
         className="absolute top-0 right-0 w-44 md:w-64 pointer-events-none"
         viewBox="0 0 220 170"
-        fill="#EFC3D4"
-        opacity="0.35"
+        fill="#DFC18A"
+        opacity="0.3"
         aria-hidden
       >
         <defs>
@@ -134,8 +134,8 @@ export default function HeroCarousel() {
       <svg
         className="absolute bottom-0 left-0 w-44 md:w-64 pointer-events-none"
         viewBox="0 0 220 170"
-        fill="#EFC3D4"
-        opacity="0.3"
+        fill="#DFC18A"
+        opacity="0.25"
         aria-hidden
       >
         <use href="#hb-hive" x="40" y="140" />
@@ -156,16 +156,16 @@ export default function HeroCarousel() {
           <span
             className="inline-block text-[10px] md:text-xs font-bold tracking-[0.25em] uppercase mb-5 px-4 py-2 rounded-full"
             style={{
-              background: "#F7F3EE",
-              color: "#8A6A7C",
-              border: "1px solid #EFC3D4",
+              background: "#FAF7F2",
+              color: "#4A0E17",
+              border: "1px solid #DFC18A",
             }}
           >
             New Arrivals at Honeybee Lane
           </span>
           <h1
             className="text-4xl md:text-6xl font-bold mb-5 leading-[1.05]"
-            style={{ color: "#6E4E5C" }}
+            style={{ color: "#38070F" }}
           >
             Curated beauty,
             <br />
@@ -173,25 +173,25 @@ export default function HeroCarousel() {
           </h1>
           <p
             className="text-sm md:text-lg mb-8 max-w-md leading-relaxed"
-            style={{ color: "rgba(110,78,92,0.75)" }}
+            style={{ color: "rgba(56,7,15,0.8)" }}
           >
             Premium bangles, abayas, nails and accessories, delivered across Pakistan.
           </p>
           <div className="flex flex-wrap gap-3">
             <button
               onClick={() => navigate("/products")}
-              className="px-8 md:px-10 py-3 md:py-4 text-xs md:text-sm font-bold tracking-wider uppercase rounded-full transition-all duration-300 hover:opacity-85"
-              style={{ background: "#6E4E5C", color: "#F7F3EE" }}
+              className="px-8 md:px-10 py-3 md:py-4 text-xs md:text-sm font-bold tracking-wider uppercase rounded-full transition-all duration-300 hover:bg-brand-gold hover:text-white"
+              style={{ background: "#4A0E17", color: "#FAF7F2" }}
             >
               Shop Now
             </button>
             <button
               onClick={() => navigate("/about")}
-              className="px-8 py-3 md:py-4 text-xs md:text-sm font-bold tracking-wider uppercase rounded-full transition-all duration-300"
+              className="px-8 py-3 md:py-4 text-xs md:text-sm font-bold tracking-wider uppercase rounded-full transition-all duration-300 hover:border-brand-burgundy hover:text-brand-burgundy"
               style={{
                 background: "transparent",
-                color: "#8A6A7C",
-                border: "1.5px solid #EFC3D4",
+                color: "#4A0E17",
+                border: "1.5px solid #C59B58",
               }}
             >
               Our Story
@@ -207,22 +207,22 @@ export default function HeroCarousel() {
               className="relative rounded-xl px-2 pt-5 pb-3 flex flex-col items-center gap-2"
               style={{
                 background: "#FFFFFF",
-                border: "1px solid #EFC3D4",
-                boxShadow: "0 8px 20px rgba(110,78,92,0.10)",
+                border: "1px solid #EBDED5",
+                boxShadow: "0 8px 20px rgba(56,7,15,0.08)",
                 transform: `rotate(${tilt})`,
               }}
             >
               {/* tape strip */}
               <span
                 className="absolute -top-2 left-1/2 -translate-x-1/2 w-10 h-4 rounded-sm"
-                style={{ background: "#F3D5E1", opacity: 0.9 }}
+                style={{ background: "#DFC18A", opacity: 0.8 }}
               />
               <span style={{ color }}>
                 <Icon />
               </span>
               <span
                 className="text-[9px] md:text-[10px] font-bold tracking-[0.15em] uppercase"
-                style={{ color: "#8A6A7C" }}
+                style={{ color: "#38070F" }}
               >
                 {label}
               </span>

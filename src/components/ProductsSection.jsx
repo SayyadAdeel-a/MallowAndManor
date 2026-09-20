@@ -44,10 +44,10 @@ export default function ProductsSection({ onAddToCart, favorites = [], onToggleF
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`px-4 py-2 text-xs font-medium tracking-wider uppercase transition-colors whitespace-nowrap ${
+              className={`px-4 py-2 text-xs font-semibold tracking-wider uppercase transition-colors whitespace-nowrap rounded-sm shadow-sm ${
                 selectedCategory === cat.id
-                  ? "bg-brand-black text-brand-cream"
-                  : "text-gray-500 hover:text-brand-dark"
+                  ? "bg-brand-burgundy text-white"
+                  : "text-brand-black/70 hover:text-brand-burgundy hover:bg-brand-blush bg-white border border-brand-border/60"
               }`}
             >
               {cat.label}
@@ -58,7 +58,7 @@ export default function ProductsSection({ onAddToCart, favorites = [], onToggleF
 
       {loading ? (
         <div className="text-center py-20">
-          <div className="w-6 h-6 border-2 border-gray-300 border-t-brand-dark rounded-full animate-spin mx-auto" />
+          <div className="w-6 h-6 border-2 border-brand-border border-t-brand-gold rounded-full animate-spin mx-auto" />
         </div>
       ) : filteredProducts.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -84,7 +84,7 @@ export default function ProductsSection({ onAddToCart, favorites = [], onToggleF
         <div className="text-center mt-12">
           <a
             href="/products"
-            className="inline-block text-sm font-semibold tracking-wider uppercase border-b-2 border-brand-black pb-1 hover:text-brand-gold hover:border-brand-gold transition-colors"
+            className="inline-block text-sm font-semibold tracking-wider uppercase border-b-2 border-brand-burgundy pb-1 hover:text-brand-gold hover:border-brand-gold transition-colors"
           >
             View All Products
           </a>

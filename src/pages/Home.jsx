@@ -49,7 +49,7 @@ export default function Home({ products, categories, handleAddToCart, productSta
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="relative overflow-hidden rounded-sm min-h-[400px] flex items-center"
-            style={{background: "linear-gradient(135deg, #6E4E5C 0%, #A87E93 100%)"}}>
+            style={{background: "linear-gradient(135deg, #38070F 0%, #4A0E17 100%)"}}>
             <img
               src="/earrings-stud.webp"
               alt="Earrings"
@@ -57,19 +57,19 @@ export default function Home({ products, categories, handleAddToCart, productSta
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
             <div className="relative z-10 p-10 md:p-16 max-w-lg">
-              <span className="text-[10px] font-bold tracking-[0.4em] uppercase mb-3 block" style={{color: "#EFC3D4"}}>
+              <span className="text-[10px] font-bold tracking-[0.4em] uppercase mb-3 block" style={{color: "#C59B58"}}>
                 Statement Pieces
               </span>
-              <h2 className="text-3xl md:text-4xl font-black mb-4 leading-tight" style={{color: "#F7F3EE"}}>
+              <h2 className="text-3xl md:text-4xl font-black mb-4 leading-tight" style={{color: "#FAF7F2"}}>
                 Bold Designs for Bold Personalities
               </h2>
-              <p className="text-brand-cream/60 text-sm mb-6">
+              <p className="text-brand-cream/70 text-sm mb-6">
                 From everyday elegance to occasion-ready glam, find your perfect match.
               </p>
               <a
                 href="/products?category=necklaces"
-                className="inline-block px-8 py-3 text-sm font-bold tracking-wider uppercase transition-all"
-                style={{backgroundColor: "#EFC3D4", color: "#6E4E5C"}}
+                className="inline-block px-8 py-3 text-sm font-bold tracking-wider uppercase transition-all hover:bg-white hover:text-brand-black"
+                style={{backgroundColor: "#C59B58", color: "#38070F"}}
               >
                 Shop Necklaces
               </a>
@@ -87,7 +87,7 @@ export default function Home({ products, categories, handleAddToCart, productSta
               <img src="/earrings-portrait.webp" alt="Earrings Collection" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 p-6">
-                <span className="text-[10px] font-bold tracking-wider uppercase block mb-1" style={{color: "#C08AA5"}}>Featured</span>
+                <span className="text-[10px] font-bold tracking-wider uppercase block mb-1" style={{color: "#C59B58"}}>Featured</span>
                 <h3 className="text-lg font-bold text-white">Earring Collection</h3>
                 <p className="text-xs text-white/60 mt-1">Shop Now →</p>
               </div>
@@ -118,7 +118,7 @@ export default function Home({ products, categories, handleAddToCart, productSta
               <img src="/earrings-hand.webp" alt="Earrings" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
               <div className="absolute bottom-0 left-0 p-6">
-                <span className="text-[10px] font-bold tracking-wider uppercase block mb-1" style={{color: "#C08AA5"}}>New Drop</span>
+                <span className="text-[10px] font-bold tracking-wider uppercase block mb-1" style={{color: "#C59B58"}}>New Drop</span>
                 <h3 className="text-xl font-bold text-white">Earrings Collection</h3>
                 <p className="text-xs text-white/60 mt-1">Shop the Latest →</p>
               </div>
@@ -136,10 +136,10 @@ export default function Home({ products, categories, handleAddToCart, productSta
               <img src="/earrings-stud.webp" alt="Gifts" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               <div className="absolute bottom-0 left-0 p-8">
-                <span className="text-[10px] font-bold tracking-wider uppercase block mb-2" style={{color: "#C08AA5"}}>Gift Idea</span>
+                <span className="text-[10px] font-bold tracking-wider uppercase block mb-2" style={{color: "#C59B58"}}>Gift Idea</span>
                 <h3 className="text-xl font-bold text-white mb-2">Perfect Gifts for Her</h3>
                 <p className="text-xs text-white/50">Curated gift sets starting Rs. 999</p>
-                <a href="/products" className="text-xs font-bold tracking-wider uppercase mt-4 inline-block" style={{color: "#C08AA5"}}>
+                <a href="/products" className="text-xs font-bold tracking-wider uppercase mt-4 inline-block hover:underline" style={{color: "#C59B58"}}>
                   Shop Gifts →
                 </a>
               </div>
@@ -150,10 +150,10 @@ export default function Home({ products, categories, handleAddToCart, productSta
               <img src="/image_2.webp" alt="" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
               <div className="absolute bottom-0 left-0 p-8">
-                <span className="text-[10px] font-bold tracking-wider uppercase block mb-2" style={{color: "#C08AA5"}}>Celebration Special</span>
+                <span className="text-[10px] font-bold tracking-wider uppercase block mb-2" style={{color: "#C59B58"}}>Celebration Special</span>
                 <h3 className="text-2xl font-bold text-white mb-2">Eid Collection</h3>
                 <p className="text-xs text-white/60 mb-4">Exclusive designs for the festive season</p>
-                <a href="/products" className="inline-block px-6 py-2 text-xs font-bold tracking-wider uppercase transition-all" style={{backgroundColor: "#C08AA5", color: "#ffffff"}}>
+                <a href="/products" className="inline-block px-6 py-2 text-xs font-bold tracking-wider uppercase transition-all hover:opacity-90" style={{backgroundColor: "#4A0E17", color: "#FAF7F2"}}>
                   Shop Now
                 </a>
               </div>
@@ -166,7 +166,7 @@ export default function Home({ products, categories, handleAddToCart, productSta
       <div
         className="w-full overflow-hidden"
         style={{
-          background: "linear-gradient(90deg, #F3D5E1 0%, #F6E7ED 50%, #EDD9C6 100%)",
+          background: "linear-gradient(90deg, #38070F 0%, #4A0E17 50%, #340910 100%)",
           padding: "14px 0",
         }}
       >
@@ -187,11 +187,11 @@ export default function Home({ products, categories, handleAddToCart, productSta
                 <span
                   key={i}
                   className="inline-flex items-center gap-3 px-10 text-xs font-bold tracking-[0.2em] uppercase select-none"
-                  style={{ color: "#6E4E5C" }}
+                  style={{ color: "#FAF7F2" }}
                 >
                   <span
                     className="w-2 h-2 rotate-45 shrink-0"
-                    style={{ backgroundColor: "#D9BEA6" }}
+                    style={{ backgroundColor: "#C59B58" }}
                   />
                   Sale is Live • Free Delivery on Orders Over Rs.5000 • Nationwide Shipping
                 </span>
@@ -206,23 +206,23 @@ export default function Home({ products, categories, handleAddToCart, productSta
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div
             className="relative overflow-hidden rounded-sm"
-            style={{ background: "linear-gradient(135deg, #F3D5E1 0%, #EFC3D4 60%, #EDD9C6 100%)" }}
+            style={{ background: "linear-gradient(135deg, #FAF7F2 0%, #F7ECEE 60%, #F4ECE4 100%)" }}
           >
             <div className="grid grid-cols-1 md:grid-cols-2 min-h-[300px]">
               <div className="p-10 md:p-14 flex flex-col justify-center relative z-10">
-                <span className="text-xs font-bold tracking-[0.3em] uppercase mb-3" style={{color: "#6E4E5C"}}>
+                <span className="text-xs font-bold tracking-[0.3em] uppercase mb-3" style={{color: "#C59B58"}}>
                   Limited Time Offer
                 </span>
-                <h2 className="text-4xl md:text-5xl font-black leading-none mb-4" style={{color: "#6E4E5C"}}>
+                <h2 className="text-4xl md:text-5xl font-black leading-none mb-4" style={{color: "#38070F"}}>
                   30% OFF
                 </h2>
-                <p className="text-sm mb-6 max-w-sm" style={{color: "rgba(110,78,92,0.8)"}}>
+                <p className="text-sm mb-6 max-w-sm" style={{color: "rgba(56,7,15,0.8)"}}>
                   On our entire Abaya collection. Handcrafted luxury at unbeatable prices.
                 </p>
                 <a
                   href="/products?category=abayas"
-                  className="inline-block px-8 py-3 text-sm font-bold tracking-wider uppercase transition-all w-fit"
-                  style={{backgroundColor: "#6E4E5C", color: "#F7F3EE"}}
+                  className="inline-block px-8 py-3 text-sm font-bold tracking-wider uppercase transition-all w-fit hover:bg-brand-gold hover:text-white"
+                  style={{backgroundColor: "#4A0E17", color: "#FAF7F2"}}
                 >
                   Shop Abayas
                 </a>
@@ -253,7 +253,7 @@ export default function Home({ products, categories, handleAddToCart, productSta
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 p-6">
-                <span className="text-[10px] font-bold tracking-[0.3em] uppercase mb-2 block" style={{color: "#C08AA5"}}>
+                <span className="text-[10px] font-bold tracking-[0.3em] uppercase mb-2 block" style={{color: "#C59B58"}}>
                   New Arrivals
                 </span>
                 <h3 className="text-lg font-bold text-white mb-2">Necklace Collection</h3>
@@ -272,7 +272,7 @@ export default function Home({ products, categories, handleAddToCart, productSta
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 p-6">
-                <span className="text-[10px] font-bold tracking-[0.3em] uppercase mb-2 block" style={{color: "#C08AA5"}}>
+                <span className="text-[10px] font-bold tracking-[0.3em] uppercase mb-2 block" style={{color: "#C59B58"}}>
                   Bestsellers
                 </span>
                 <h3 className="text-lg font-bold text-white mb-2">Bangle Collection</h3>
@@ -291,7 +291,7 @@ export default function Home({ products, categories, handleAddToCart, productSta
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 p-6">
-                <span className="text-[10px] font-bold tracking-[0.3em] uppercase mb-2 block" style={{color: "#C08AA5"}}>
+                <span className="text-[10px] font-bold tracking-[0.3em] uppercase mb-2 block" style={{color: "#C59B58"}}>
                   Trending
                 </span>
                 <h3 className="text-lg font-bold text-white mb-2">Nail Art Collection</h3>
@@ -309,30 +309,30 @@ export default function Home({ products, categories, handleAddToCart, productSta
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div
             className="relative overflow-hidden rounded-sm p-10 md:p-16 text-center"
-            style={{background: "linear-gradient(135deg, #F6E7ED 0%, #F6E7ED 55%, #F6E7ED 100%)", border: "1px solid #F3D5E1"}}
+            style={{background: "linear-gradient(135deg, #FAF7F2 0%, #F7ECEE 55%, #FAF7F2 100%)", border: "1px solid #DFC18A"}}
           >
             <div className="relative z-10">
-              <span className="text-[10px] font-bold tracking-[0.4em] uppercase mb-3 block" style={{color: "#A87E93"}}>
+              <span className="text-[10px] font-bold tracking-[0.4em] uppercase mb-3 block" style={{color: "#C59B58"}}>
                 Exclusive Collection
               </span>
-              <h2 className="text-3xl md:text-4xl font-black mb-4" style={{color: "#A87E93"}}>
+              <h2 className="text-3xl md:text-4xl font-black mb-4" style={{color: "#38070F"}}>
                 Wedding Season Special
               </h2>
-              <p className="text-sm mb-6 max-w-lg mx-auto" style={{color: "rgba(154,23,77,0.75)"}}>
+              <p className="text-sm mb-6 max-w-lg mx-auto" style={{color: "rgba(56,7,15,0.75)"}}>
                 Discover our curated bridal collection. Bangles, necklaces, and accessories
                 designed to make your special day unforgettable.
               </p>
               <a
                 href="/products"
-                className="inline-block px-10 py-3 text-sm font-bold tracking-wider uppercase transition-all"
-                style={{backgroundColor: "#C08AA5", color: "#ffffff"}}
+                className="inline-block px-10 py-3 text-sm font-bold tracking-wider uppercase transition-all hover:bg-brand-gold hover:text-white"
+                style={{backgroundColor: "#4A0E17", color: "#FAF7F2"}}
               >
                 Explore Bridal Collection
               </a>
             </div>
             {/* Decorative circles */}
-            <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-20" style={{background: "#F3D5E1"}} />
-            <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-30" style={{background: "#D9BEA6"}} />
+            <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-20" style={{background: "#DFC18A"}} />
+            <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-20" style={{background: "#EBDED5"}} />
           </div>
         </div>
       </section>
@@ -356,7 +356,7 @@ export default function Home({ products, categories, handleAddToCart, productSta
               <span className="text-xs font-medium tracking-[0.3em] uppercase text-brand-gold mb-4 block">
                 Our Essence
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 leading-tight text-white">
                 The Art of<br />Refinement
               </h2>
               <p className="text-brand-cream/60 text-sm leading-relaxed mb-6">
@@ -398,7 +398,7 @@ export default function Home({ products, categories, handleAddToCart, productSta
               </p>
               <div className="flex items-center gap-1 mb-6">
                 {[1,2,3,4,5].map(i => (
-                  <svg key={i} className="w-4 h-4" style={{color: "#D9BEA6"}} fill="currentColor" viewBox="0 0 20 20">
+                  <svg key={i} className="w-4 h-4" style={{color: "#C59B58"}} fill="currentColor" viewBox="0 0 20 20">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                   </svg>
                 ))}
@@ -483,7 +483,7 @@ export default function Home({ products, categories, handleAddToCart, productSta
               <span className="text-xs font-medium tracking-[0.3em] uppercase text-brand-cream/40 mb-4 block">
                 Nationwide Reach
               </span>
-              <h2 className="text-2xl md:text-3xl font-bold mb-4 leading-tight">
+              <h2 className="text-2xl md:text-3xl font-bold mb-4 leading-tight text-white">
                 Delivering Elegance<br />All Over Pakistan
               </h2>
               <p className="text-brand-cream/50 text-sm leading-relaxed mb-8">
@@ -554,7 +554,7 @@ export default function Home({ products, categories, handleAddToCart, productSta
           <span className="text-xs font-medium tracking-[0.3em] uppercase text-brand-cream/50 mb-4 block">
             Stay Connected
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
             Join the Inner Circle
           </h2>
           <p className="text-brand-cream/50 text-sm max-w-md mx-auto mb-8">
