@@ -109,7 +109,7 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
               </a>
             </div>
             <div className="relative h-[300px] md:h-auto overflow-hidden">
-              <img src={sale.image || "/earrings-hand.webp"} alt="Sale" className="absolute inset-0 w-full h-full object-cover" />
+              <img src={sale.image || "/Limited Time Sale Banner.webp"} alt="Sale" className="absolute inset-0 w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-r from-brand-wine-dark via-brand-wine-dark/50 to-transparent md:block hidden" />
               <div className="absolute inset-0 bg-gradient-to-t from-brand-wine-dark via-transparent to-transparent md:hidden" />
             </div>
@@ -157,7 +157,7 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
 
       {/* Parallax story section */}
       <section className="relative h-[500px] md:h-[600px] overflow-hidden">
-        <div className="absolute inset-0 bg-fixed bg-center bg-cover" style={{ backgroundImage: `url(${story.image || "/earrings-stud.webp"})` }} />
+        <div className="absolute inset-0 bg-fixed bg-center bg-cover" style={{ backgroundImage: `url(${story.image || "/Brand Story Parallax Banner.webp"})` }} />
         <div className="absolute inset-0 bg-brand-wine-dark/70" />
         <div className="relative h-full flex items-center justify-center text-center px-6">
           <div className="max-w-xl">

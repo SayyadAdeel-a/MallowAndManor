@@ -6,7 +6,10 @@ export default function Favorites({ favorites, addToCart, removeFromFavorites })
 
   if (favorites.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[50vh] text-center px-6">
+      <div className="flex flex-col items-center justify-center min-h-[50vh] text-center px-6 py-12">
+        <div className="w-36 h-36 mb-6 rounded-2xl overflow-hidden border border-brand-border/60 shadow-sm">
+          <img src="/Empty Cart Wishlist Luxury Mood Visual.webp" alt="Empty Wishlist" className="w-full h-full object-cover" />
+        </div>
         <h1 className="text-2xl font-bold mb-3 text-brand-burgundy">Your wishlist is empty</h1>
         <p className="text-brand-wine-dark/60 text-sm mb-6">Save items you love for later.</p>
         <button

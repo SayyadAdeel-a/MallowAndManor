@@ -3,7 +3,7 @@ export default function About() {
     <div>
       {/* Hero */}
       <div className="relative h-[60vh] min-h-[400px] flex items-center justify-center">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1541339907198-e08759df9a13?w=1920&q=80')] bg-cover bg-center" />
+        <div className="absolute inset-0 bg-[url('/About%20Page%20Hero%20Banner.webp')] bg-cover bg-center" />
         <div className="absolute inset-0 bg-black/50" />
         <div className="relative z-10 text-center px-6">
           <span className="text-xs font-medium tracking-[0.3em] uppercase text-brand-cream/60 mb-4 block">Our Story</span>
@@ -35,9 +35,9 @@ export default function About() {
               </p>
             </div>
           </div>
-          <div className="aspect-[4/5] overflow-hidden border border-brand-border shadow-sm">
+          <div className="aspect-[4/5] overflow-hidden border border-brand-border shadow-sm rounded-2xl">
             <img
-              src="https://images.unsplash.com/photo-1491336477066-31156b5e4f35?w=1000&q=80"
+              src="/Craftsmanship & Heritage Showcase.webp"
               alt="Craftsmanship"
               className="w-full h-full object-cover"
             />

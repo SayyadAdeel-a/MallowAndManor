@@ -5,9 +5,9 @@
       "name": "Royal Gold Bangle Set",
       "price": 245,
       "category": "bangles",
-      "mainImage": "https://tse2.mm.bing.net/th/id/OIP.0epZbT2RqZYDVinzPcHhqwHaHa?pid=ImgDet&w=173&h=173&c=7&dpr=1.1&o=7&rm=3",
+      "mainImage": "/Royal Gold Bangle Set.webp",
       "thumbnails": [
-        "https://tse2.mm.bing.net/th/id/OIP.0epZbT2RqZYDVinzPcHhqwHaHa?pid=ImgDet&w=173&h=173&c=7&dpr=1.1&o=7&rm=3"
+        "/Royal Gold Bangle Set.webp"
       ],
       "description": "Exquisite 24k gold-plated bangles with intricate engravings."
     },
@@ -16,9 +16,9 @@
       "name": "Noir Velvet Abaya",
       "price": 350,
       "category": "abayas",
-      "mainImage": "https://th.bing.com/th/id/OIP.8PEHKsgngFgjDpa9K2vDbgHaLH?w=195&h=358&c=7&r=0&o=7&dpr=1.1&pid=1.7&rm=3",
+      "mainImage": "/Noir Velvet Abaya.webp",
       "thumbnails": [
-        "https://th.bing.com/th/id/OIP.8PEHKsgngFgjDpa9K2vDbgHaLH?w=195&h=358&c=7&r=0&o=7&dpr=1.1&pid=1.7&rm=3"
+        "/Noir Velvet Abaya.webp"
       ],
       "description": "Handcrafted velvet abaya featuring delicate silk embroidery."
     },
@@ -27,9 +27,9 @@
       "name": "Diamond Encrusted Nails",
       "price": 85,
       "category": "nails",
-      "mainImage": "https://tse1.explicit.bing.net/th/id/OIP.WpLgMoG9vAwtVXfrZ_5r8AHaE6?rs=1&pid=ImgDetMain&o=7&rm=3",
+      "mainImage": "/Diamond & Pearl Encrusted Nails.webp",
       "thumbnails": [
-        "https://tse1.explicit.bing.net/th/id/OIP.WpLgMoG9vAwtVXfrZ_5r8AHaE6?rs=1&pid=ImgDetMain&o=7&rm=3"
+        "/Diamond & Pearl Encrusted Nails.webp"
       ],
       "description": "Custom luxury press-on nails with genuine Swarovski crystals."
     },
@@ -38,9 +38,9 @@
       "name": "Everesting Pearl Necklace",
       "price": 420,
       "category": "necklaces",
-      "mainImage": "https://a.1stdibscdn.com/2205-ct-si-clarity-hi-color-marquise-pear-diamond-necklace-18-karat-white-gold-for-sale-picture-4/j_25702/j_165959121659532017222/SEN_5322_4_master.JPG?width=768",
+      "mainImage": "/Necklaces Collection Image.webp",
       "thumbnails": [
-        "https://a.1stdibscdn.com/2205-ct-si-clarity-hi-color-marquise-pear-diamond-necklace-18-karat-white-gold-for-sale-picture-4/j_25702/j_165959121659532017222/SEN_5322_4_master.JPG?width=768"
+        "/Necklaces Collection Image.webp"
       ],
       "description": "Timeless freshwater pearl necklace with white gold clasp."
     },
@@ -49,9 +49,9 @@
       "name": "Rose Gold Floral Bangle",
       "price": 180,
       "category": "bangles",
-      "mainImage": "https://tse2.mm.bing.net/th/id/OIP.0epZbT2RqZYDVinzPcHhqwHaHa?pid=ImgDet&w=173&h=173&c=7&dpr=1.1&o=7&rm=3",
+      "mainImage": "/Bangles Collection Image.webp",
       "thumbnails": [
-        "https://tse2.mm.bing.net/th/id/OIP.0epZbT2RqZYDVinzPcHhqwHaHa?pid=ImgDet&w=173&h=173&c=7&dpr=1.1&o=7&rm=3"
+        "/Bangles Collection Image.webp"
       ],
       "description": "Delicate rose gold bangle with hand-carved floral patterns."
     },
@@ -60,9 +60,9 @@
       "name": "Midnight Silk Abaya",
       "price": 290,
       "category": "abayas",
-      "mainImage": "https://th.bing.com/th/id/OIP.8PEHKsgngFgjDpa9K2vDbgHaLH?w=195&h=358&c=7&r=0&o=7&dpr=1.1&pid=1.7&rm=3",
+      "mainImage": "/Abayas Collection Image.webp",
       "thumbnails": [
-        "https://th.bing.com/th/id/OIP.8PEHKsgngFgjDpa9K2vDbgHaLH?w=195&h=358&c=7&r=0&o=7&dpr=1.1&pid=1.7&rm=3"
+        "/Abayas Collection Image.webp"
       ],
       "description": "Premium silk abaya for evening elegance and comfort."
     }
