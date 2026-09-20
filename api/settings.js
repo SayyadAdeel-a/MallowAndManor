@@ -3,18 +3,22 @@ import { verifyToken } from './_lib/auth.js';
 import { handleCors } from './_lib/cors.js';
 import SiteSettings from './_lib/models/SiteSettings.js';
 
+// Bump this when DEFAULT_SETTINGS change to auto-migrate stale docs
+const DEFAULTS_VERSION = 2;
+
 const DEFAULT_SETTINGS = {
+  defaultsVersion: DEFAULTS_VERSION,
   hero: {
-    tagline: 'Curated Beauty',
-    heading1: 'Adorned',
-    heading2: 'in Elegance',
-    subtitle: 'Handcrafted jewelry & beauty essentials, designed for the modern woman who honors tradition.',
-    cta1Text: 'Shop Collection',
+    tagline: '',
+    heading1: 'Curated',
+    heading2: 'Beauty',
+    subtitle: 'Bangles · Abayas · Accessories',
+    cta1Text: 'Shop Now',
     cta1Link: '/products',
     cta2Text: 'Our Story',
     cta2Link: '/about',
-    taglineBottom: '"Where tradition meets modern elegance"',
-    image: '/earrings-portrait.webp',
+    taglineBottom: 'Style with purpose. Elegance in every layer.',
+    image: '/hero-banner.webp',
     features: [
       { icon: 'star', label: 'Elegant' },
       { icon: 'clock', label: 'Timeless' },
@@ -60,7 +64,7 @@ const DEFAULT_SETTINGS = {
     successMessage: 'Thank you for subscribing!',
   },
   footer: {
-    description: 'Handcrafted beauty essentials, designed with intention and delivered with care across Pakistan.',
+    description: 'Premium bangles, abayas, nails and accessories, thoughtfully curated for modern living.',
     instagram: 'https://www.instagram.com/honeybeelane/',
     tiktok: 'https://www.tiktok.com/@honeybeelane?lang=en',
     copyrightText: 'Honeybee Lane. All rights reserved.',
@@ -100,6 +104,13 @@ export default async function handler(req, res) {
       let settings = await SiteSettings.findOne();
       if (!settings) {
         settings = await SiteSettings.create(DEFAULT_SETTINGS);
+      } else if ((settings.defaultsVersion || 0) < DEFAULTS_VERSION) {
+        // Migrate stale/auto-created mock docs to the current real defaults
+        settings = await SiteSettings.findByIdAndUpdate(
+          settings._id,
+          { ...DEFAULT_SETTINGS },
+          { new: true }
+        );
       }
       return res.json(settings);
     }

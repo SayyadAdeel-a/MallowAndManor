@@ -30,9 +30,11 @@ export default function HeroCarousel({ hero }) {
           </svg>
         </div>
 
-        <p className="text-xs md:text-sm font-semibold tracking-[0.3em] uppercase text-[#C59B58] mb-4">
-          {h.tagline || "Curated Beauty"}
-        </p>
+        {h.tagline && (
+          <p className="text-xs md:text-sm font-semibold tracking-[0.3em] uppercase text-[#C59B58] mb-4">
+            {h.tagline}
+          </p>
+        )}
 
         <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.95] mb-4 text-[#340910]">
           {h.heading1 || "Curated"}
@@ -40,9 +42,11 @@ export default function HeroCarousel({ hero }) {
           <span className="text-[#C59B58]">{h.heading2 || "Beauty"}</span>
         </h1>
 
-        <p className="text-xs md:text-sm font-medium text-[#4A0E17]/70 mb-10 max-w-lg leading-relaxed">
-          {h.subtitle || "Handcrafted jewelry & beauty essentials, designed for the modern woman who honors tradition."}
-        </p>
+        {h.subtitle && (
+          <p className="text-xs md:text-sm font-semibold tracking-[0.3em] uppercase text-[#4A0E17]/70 mb-10">
+            {h.subtitle}
+          </p>
+        )}
 
         <div className="flex items-center gap-4 mb-10">
           <div className="w-12 h-px bg-[#C59B58]" />
@@ -87,9 +91,11 @@ export default function HeroCarousel({ hero }) {
           </button>
         </div>
 
-        <p className="font-display text-base md:text-lg italic text-[#4A0E17]/50">
-          {h.taglineBottom || '"Where tradition meets modern elegance"'}
-        </p>
+        {h.taglineBottom && (
+          <p className="font-display text-base md:text-lg italic text-[#4A0E17]/50">
+            {h.taglineBottom}
+          </p>
+        )}
       </div>
 
       <style>{`

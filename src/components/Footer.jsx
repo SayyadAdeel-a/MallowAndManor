@@ -23,8 +23,7 @@ export default function Footer() {
             </Link>
             <p className="text-brand-cream/60 text-sm leading-relaxed max-w-sm mb-6">
               {f.description || "Premium bangles, abayas, nails and accessories, thoughtfully curated for modern living."}
-            </p>
-            <div className="flex gap-4">
+            </p>            <div className="flex gap-4">
               <a href={f.instagram || "https://www.instagram.com/honeybeelane/"} target="_blank" rel="noopener noreferrer"
                 className="w-9 h-9 border border-brand-gold/30 rounded-full flex items-center justify-center text-brand-gold hover:bg-brand-gold hover:text-brand-wine-dark transition-all" aria-label="Instagram">
                 <AnimatedIcon path={ICONS.instagram} animation="wiggle" className="w-4 h-4" fill="currentColor" strokeWidth={0} />

@@ -95,7 +95,7 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
                 <span className="text-brand-gold">{sale.headingAccent || "OFF"}</span>
               </h2>
               <p className="text-brand-cream/70 text-sm md:text-base mb-8 max-w-md leading-relaxed">
-                {sale.description || "Handcrafted luxury at accessible prices."}
+                {sale.description || "Our entire Abaya collection. Handcrafted luxury, now at prices that make elegance accessible."}
               </p>
               <a
                 href={sale.ctaLink || "/products"}
