@@ -182,7 +182,7 @@ export default function AdminDashboard() {
             setFormData({ name: "", price: "", category: "bangles", description: "", mainImage: "", thumbnails: [] });
             setMainImageFile(null); setThumbnailFiles([]);
           }}
-            className={`px-5 py-2.5 text-xs font-semibold tracking-wider uppercase transition-colors shadow-sm rounded-sm ${showForm ? "bg-brand-blush text-brand-wine-dark border border-brand-border" : "bg-brand-burgundy text-brand-cream hover:bg-brand-wine-dark"}`}>
+            className={`px-5 py-2.5 text-xs font-semibold tracking-wider uppercase transition-colors shadow-sm rounded-full ${showForm ? "bg-brand-blush text-brand-wine-dark border border-brand-border" : "bg-brand-burgundy text-brand-cream hover:bg-brand-wine-dark"}`}>
             {showForm ? "Cancel" : "Add Product"}
           </button>
         </div>
@@ -253,7 +253,7 @@ export default function AdminDashboard() {
                   className="w-full px-4 py-2.5 bg-brand-blush/20 border border-brand-border text-brand-wine-dark text-sm focus:outline-none focus:border-brand-gold" />
               </div>
               <button type="submit" disabled={loading || uploading}
-                className="px-6 py-2.5 bg-brand-burgundy text-brand-cream text-xs font-semibold tracking-wider uppercase hover:bg-brand-wine-dark transition-colors disabled:opacity-50 shadow-sm rounded-sm">
+                className="px-6 py-2.5 bg-brand-burgundy text-brand-cream text-xs font-semibold tracking-wider uppercase hover:bg-brand-wine-dark transition-colors disabled:opacity-50 shadow-sm rounded-full">
                 {loading ? "Saving..." : uploading ? "Uploading..." : editingProduct ? "Update" : "Create"}
               </button>
             </form>

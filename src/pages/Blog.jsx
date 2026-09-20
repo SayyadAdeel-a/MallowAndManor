@@ -53,7 +53,7 @@ export default function Blog() {
           <p className="text-brand-wine-dark/60 text-sm mb-4">{error}</p>
           <button
             onClick={loadPosts}
-            className="px-6 py-2 text-sm font-medium text-brand-burgundy border border-brand-border hover:border-brand-gold hover:text-brand-gold transition-colors"
+            className="px-6 py-2 text-sm font-medium text-brand-burgundy border border-brand-border hover:border-brand-gold hover:text-brand-gold transition-colors rounded-full"
           >
             Try Again
           </button>

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import HeroCarousel from "../components/HeroCarousel";
 import Collections from "../components/Collections";
@@ -12,30 +12,43 @@ const trustItems = [
   { iconKey: "truck", label: "Delivered Across Pakistan", animation: "bounce" },
 ];
 
-const categoryCards = [
-  { id: "necklaces", name: "Necklaces", tagline: "Royal adornments", image: "/earrings-portrait.webp" },
-  { id: "bangles", name: "Bangles", tagline: "Artisanal adornments", image: "/image_3.webp" },
-  { id: "nails", name: "Nails", tagline: "Precision artistry", image: "/nails-art.webp" },
-  { id: "abayas", name: "Abayas", tagline: "Silk & sobriety", image: "/earrings-stud.webp" },
+const promises = [
+  {
+    iconKey: "heart",
+    animation: "beat",
+    title: "Made with Love",
+    description: "Every piece is handcrafted by skilled artisans who pour care into each detail.",
+  },
+  {
+    iconKey: "sparkle",
+    animation: "pulse",
+    title: "Premium Materials",
+    description: "We source only the finest fabrics, stones, and metals for lasting quality.",
+  },
+  {
+    iconKey: "truck",
+    animation: "float",
+    title: "Fast Delivery",
+    description: "Free nationwide shipping on orders over Rs. 5,000. Delivered to your doorstep.",
+  },
+  {
+    iconKey: "shield",
+    animation: "spin",
+    title: "Quality Guarantee",
+    description: "Not satisfied? We accept returns within 24 hours of delivery. No questions asked.",
+  },
 ];
 
 export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
-  const scrollRef = useRef(null);
 
   const handleSubscribe = (e) => {
     e.preventDefault();
     if (!email || !email.includes("@")) return;
     setSubscribed(true);
     setEmail("");
-  };
-
-  const scroll = (direction) => {
-    if (!scrollRef.current) return;
-    const amount = scrollRef.current.offsetWidth * 0.75;
-    scrollRef.current.scrollBy({ left: direction === "left" ? -amount : amount, behavior: "smooth" });
   };
 
   return (
@@ -127,68 +140,36 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
         </div>
       </section>
 
-      {/* Category carousel */}
-      <section className="py-12">
+      {/* Brand Promise */}
+      <section className="py-16 md:py-24 bg-brand-cream/30">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="flex items-end justify-between mb-8">
-            <div>
-              <span className="text-xs font-bold tracking-[0.3em] uppercase text-brand-gold mb-3 block">
-                Explore
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-brand-burgundy">
-                Shop by Category
-              </h2>
-            </div>
-            <div className="hidden md:flex gap-2">
-              <button
-                onClick={() => scroll("left")}
-                className="w-10 h-10 flex items-center justify-center border border-brand-border rounded-full hover:border-brand-gold hover:text-brand-gold transition-colors"
-                aria-label="Scroll left"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <button
-                onClick={() => scroll("right")}
-                className="w-10 h-10 flex items-center justify-center border border-brand-border rounded-full hover:border-brand-gold hover:text-brand-gold transition-colors"
-                aria-label="Scroll right"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
+          <div className="text-center mb-14">
+            <div className="w-10 h-px bg-brand-gold mx-auto mb-6" />
+            <span className="text-xs font-bold tracking-[0.3em] uppercase text-brand-gold mb-3 block">
+              The Honeybee Promise
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-brand-burgundy">
+              Why Women Trust Us
+            </h2>
           </div>
 
-          <div
-            ref={scrollRef}
-            className="flex gap-5 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 -mx-4 px-4"
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-          >
-            {categoryCards.map((card) => (
-              <div
-                key={card.id}
-                onClick={() => navigate(`/products?category=${card.id}`)}
-                className="snap-start shrink-0 w-[280px] md:w-[320px] cursor-pointer group"
-              >
-                <div className="relative aspect-[3/4] overflow-hidden rounded-2xl mb-4">
-                  <img
-                    src={card.image}
-                    alt={card.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+            {promises.map((item, i) => (
+              <div key={i} className="text-center group">
+                <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center group-hover:bg-brand-gold/20 group-hover:border-brand-gold/40 transition-all duration-300">
+                  <AnimatedIcon
+                    path={ICONS[item.iconKey]}
+                    animation={item.animation}
+                    className="w-6 h-6 text-brand-gold"
+                    strokeWidth={1.5}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                    <span className="text-[10px] font-bold tracking-[0.3em] uppercase block mb-1" style={{ color: "#C59B58" }}>
-                      {card.tagline}
-                    </span>
-                    <span className="text-sm font-bold text-white">Shop Now →</span>
-                  </div>
                 </div>
-                <h3 className="text-sm font-semibold tracking-wider uppercase text-brand-burgundy group-hover:text-brand-gold transition-colors">
-                  {card.name}
+                <h3 className="text-sm font-bold tracking-wider uppercase text-brand-burgundy mb-2">
+                  {item.title}
                 </h3>
+                <p className="text-xs text-brand-wine-dark/60 leading-relaxed max-w-[200px] mx-auto">
+                  {item.description}
+                </p>
               </div>
             ))}
           </div>

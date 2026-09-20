@@ -52,7 +52,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
         </svg>
         <h1 className="text-2xl font-bold mb-2 text-brand-burgundy">Product not found</h1>
         <p className="text-brand-wine-dark/60 text-sm mb-6">This product may have been removed or is no longer available.</p>
-        <a href="/products" className="inline-block px-6 py-2 text-sm font-medium text-brand-burgundy border border-brand-border hover:border-brand-gold hover:text-brand-gold transition-colors">
+        <a href="/products" className="inline-block px-6 py-2 text-sm font-medium text-brand-burgundy border border-brand-border hover:border-brand-gold hover:text-brand-gold transition-colors rounded-full">
           Back to Shop
         </a>
       </div>
@@ -172,14 +172,14 @@ Thank you.`;
             <div className="inline-flex items-center border border-brand-border">
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-10 h-10 flex items-center justify-center hover:bg-brand-blush transition-colors text-brand-wine-dark"
+                className="w-10 h-10 flex items-center justify-center hover:bg-brand-blush transition-colors text-brand-wine-dark rounded-full"
               >
                 -
               </button>
               <span className="w-12 text-center text-sm font-medium text-brand-wine-dark">{quantity}</span>
               <button
                 onClick={() => setQuantity(quantity + 1)}
-                className="w-10 h-10 flex items-center justify-center hover:bg-brand-blush transition-colors text-brand-wine-dark"
+                className="w-10 h-10 flex items-center justify-center hover:bg-brand-blush transition-colors text-brand-wine-dark rounded-full"
               >
                 +
               </button>
@@ -190,13 +190,13 @@ Thank you.`;
           <div className="flex gap-3 mb-8">
             <button
               onClick={() => handleAddToCart(product)}
-              className="flex-1 bg-brand-burgundy text-brand-cream py-3.5 text-sm font-semibold tracking-wider uppercase hover:bg-brand-wine-dark transition-colors shadow-sm"
+              className="flex-1 bg-brand-burgundy text-brand-cream py-3.5 text-sm font-semibold tracking-wider uppercase hover:bg-brand-wine-dark transition-colors shadow-sm rounded-full"
             >
               Add to Cart
             </button>
             <button
               onClick={handleWhatsAppOrder}
-              className="flex-1 bg-[#25D366] text-brand-cream py-3.5 text-sm font-semibold tracking-wider uppercase hover:bg-[#128C7E] transition-colors shadow-sm"
+              className="flex-1 bg-[#25D366] text-brand-cream py-3.5 text-sm font-semibold tracking-wider uppercase hover:bg-[#128C7E] transition-colors shadow-sm rounded-full"
             >
               Order via WhatsApp
             </button>

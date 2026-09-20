@@ -101,7 +101,7 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
         <div className="flex gap-1 overflow-x-auto">
           <button
             onClick={() => handleFilterChange({ category: "all" })}
-            className={`px-4 py-2 text-xs font-medium tracking-wider uppercase whitespace-nowrap transition-colors rounded-sm ${selectedCategory === "all" ? "bg-brand-burgundy text-brand-cream" : "text-brand-wine-dark/70 hover:text-brand-burgundy hover:bg-brand-blush/40"
+            className={`px-4 py-2 text-xs font-medium tracking-wider uppercase whitespace-nowrap transition-colors rounded-full ${selectedCategory === "all" ? "bg-brand-burgundy text-brand-cream" : "text-brand-wine-dark/70 hover:text-brand-burgundy hover:bg-brand-blush/40"
               }`}
           >
             All
@@ -110,7 +110,7 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
             <button
               key={cat}
               onClick={() => handleFilterChange({ category: cat })}
-              className={`px-4 py-2 text-xs font-medium tracking-wider uppercase whitespace-nowrap transition-colors rounded-sm ${selectedCategory === cat ? "bg-brand-burgundy text-brand-cream" : "text-brand-wine-dark/70 hover:text-brand-burgundy hover:bg-brand-blush/40"
+              className={`px-4 py-2 text-xs font-medium tracking-wider uppercase whitespace-nowrap transition-colors rounded-full ${selectedCategory === cat ? "bg-brand-burgundy text-brand-cream" : "text-brand-wine-dark/70 hover:text-brand-burgundy hover:bg-brand-blush/40"
                 }`}
             >
               {cat}
@@ -155,7 +155,7 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
               <button
                 onClick={() => handlePageChange(page - 1)}
                 disabled={page === 1}
-                className="px-3 py-2 text-sm font-medium border border-brand-border hover:border-brand-gold hover:text-brand-burgundy disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="px-3 py-2 text-sm font-medium border border-brand-border hover:border-brand-gold hover:text-brand-burgundy disabled:opacity-30 disabled:cursor-not-allowed transition-colors rounded-full"
               >
                 ←
               </button>
@@ -174,7 +174,7 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
                   <button
                     key={pageNum}
                     onClick={() => handlePageChange(pageNum)}
-                    className={`w-10 h-10 text-sm font-medium transition-colors ${page === pageNum
+                    className={`w-10 h-10 text-sm font-medium transition-colors rounded-full ${page === pageNum
                         ? "bg-brand-burgundy text-brand-cream"
                         : "border border-brand-border text-brand-wine-dark hover:border-brand-gold hover:text-brand-burgundy"
                       }`}
@@ -186,7 +186,7 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
               <button
                 onClick={() => handlePageChange(page + 1)}
                 disabled={page === totalPages}
-                className="px-3 py-2 text-sm font-medium border border-brand-border hover:border-brand-gold hover:text-brand-burgundy disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="px-3 py-2 text-sm font-medium border border-brand-border hover:border-brand-gold hover:text-brand-burgundy disabled:opacity-30 disabled:cursor-not-allowed transition-colors rounded-full"
               >
                 →
               </button>

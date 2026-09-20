@@ -53,7 +53,7 @@ export default function BlogPost() {
         />
         <h1 className="text-2xl font-bold mb-2 text-brand-burgundy">Post not found</h1>
         <p className="text-brand-wine-dark/60 text-sm mb-6">This story may have been removed or is no longer available.</p>
-        <Link to="/blog" className="inline-block px-6 py-2 text-sm font-medium text-brand-burgundy border border-brand-border hover:border-brand-gold hover:text-brand-gold transition-colors">
+        <Link to="/blog" className="inline-block px-6 py-2 text-sm font-medium text-brand-burgundy border border-brand-border hover:border-brand-gold hover:text-brand-gold transition-colors rounded-full">
           Back to Journal
         </Link>
       </div>

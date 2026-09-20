@@ -65,7 +65,7 @@ export default function AdminLogin() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-brand-burgundy text-brand-cream py-3 text-sm font-semibold tracking-wider uppercase hover:bg-brand-wine-dark transition-colors disabled:opacity-50 shadow-sm"
+            className="w-full bg-brand-burgundy text-brand-cream py-3 text-sm font-semibold tracking-wider uppercase hover:bg-brand-wine-dark transition-colors disabled:opacity-50 shadow-sm rounded-full"
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>

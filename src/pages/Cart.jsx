@@ -37,7 +37,7 @@ Thank you.`;
         <p className="text-brand-wine-dark/60 text-sm mb-6">Discover our curated collection.</p>
         <button
           onClick={() => navigate("/products")}
-          className="bg-brand-burgundy text-brand-cream px-8 py-3 text-sm font-semibold tracking-wider uppercase hover:bg-brand-wine-dark transition-colors shadow-sm"
+          className="bg-brand-burgundy text-brand-cream px-8 py-3 text-sm font-semibold tracking-wider uppercase hover:bg-brand-wine-dark transition-colors shadow-sm rounded-full"
         >
           Browse Products
         </button>
@@ -78,9 +78,9 @@ Thank you.`;
                 </div>
                 <div className="flex justify-between items-center mt-3">
                   <div className="flex items-center border border-brand-border">
-                    <button onClick={() => updateQuantity(item.id, (item.quantity || 1) - 1)} className="w-8 h-8 flex items-center justify-center text-sm hover:bg-brand-blush text-brand-wine-dark">-</button>
+                    <button onClick={() => updateQuantity(item.id, (item.quantity || 1) - 1)} className="w-8 h-8 flex items-center justify-center text-sm hover:bg-brand-blush text-brand-wine-dark rounded-full">-</button>
                     <span className="w-8 text-center text-sm text-brand-wine-dark">{item.quantity || 1}</span>
-                    <button onClick={() => updateQuantity(item.id, (item.quantity || 1) + 1)} className="w-8 h-8 flex items-center justify-center text-sm hover:bg-brand-blush text-brand-wine-dark">+</button>
+                    <button onClick={() => updateQuantity(item.id, (item.quantity || 1) + 1)} className="w-8 h-8 flex items-center justify-center text-sm hover:bg-brand-blush text-brand-wine-dark rounded-full">+</button>
                   </div>
                   <span className="text-sm font-bold text-brand-burgundy">Rs. {item.price * (item.quantity || 1)}</span>
                 </div>
@@ -110,7 +110,7 @@ Thank you.`;
           </div>
           <button
             onClick={handleCheckout}
-            className="w-full bg-[#25D366] text-brand-cream py-3.5 text-sm font-semibold tracking-wider uppercase hover:bg-[#128C7E] transition-colors shadow-sm"
+            className="w-full bg-[#25D366] text-brand-cream py-3.5 text-sm font-semibold tracking-wider uppercase hover:bg-[#128C7E] transition-colors shadow-sm rounded-full"
           >
             Order via WhatsApp
           </button>
