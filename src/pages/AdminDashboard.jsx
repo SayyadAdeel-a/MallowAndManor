@@ -87,8 +87,6 @@ export default function AdminDashboard() {
   const [showProductForm, setShowProductForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [productForm, setProductForm] = useState({ name: "", price: "", category: "", description: "" });
-  const [mainImageFile, setMainImageFile] = useState(null);
-  const [thumbnailFiles, setThumbnailFiles] = useState([]);
   const [productSearch, setProductSearch] = useState("");
   const [productCategoryFilter, setProductCategoryFilter] = useState("");
 
@@ -154,11 +152,6 @@ export default function AdminDashboard() {
       alert("Saved!");
     } catch (err) { alert("Error: " + err.message); }
     setSaving(false);
-  };
-
-  const handleImageUpload = async (file) => {
-    try { return await uploadImage(file); }
-    catch (err) { alert("Upload failed: " + err.message); return null; }
   };
 
   const handleProductSubmit = async (e) => {

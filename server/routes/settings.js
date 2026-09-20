@@ -5,7 +5,7 @@ import { verifyToken } from '../middleware/auth.js';
 const router = express.Router();
 
 // Bump this when DEFAULT_SETTINGS change to auto-migrate stale docs
-const DEFAULTS_VERSION = 2;
+const DEFAULTS_VERSION = 3;
 
 const DEFAULT_SETTINGS = {
   defaultsVersion: DEFAULTS_VERSION,
@@ -40,7 +40,7 @@ const DEFAULT_SETTINGS = {
     description: 'Our entire Abaya collection. Handcrafted luxury, now at prices that make elegance accessible.',
     ctaText: 'Shop Abayas',
     ctaLink: '/products?category=abayas',
-    image: '/earrings-hand.webp',
+    image: '/Limited Time Sale Banner.webp',
     enabled: true,
   },
   promises: [
@@ -55,7 +55,7 @@ const DEFAULT_SETTINGS = {
     description: "We believe luxury isn't about the price tag — it's about wearing something created with intention.",
     ctaText: 'Read Our Story',
     ctaLink: '/about',
-    image: '/earrings-stud.webp',
+    image: '/Brand Story Parallax Banner.webp',
   },
   newsletter: {
     tagline: 'Stay Connected',
@@ -91,7 +91,7 @@ const DEFAULT_SETTINGS = {
       'Honeybee Lane was born from a simple belief: every woman deserves access to handcrafted beauty without compromise.',
       'Our pieces blend traditional craftsmanship with modern design, creating jewelry and accessories that honor heritage while embracing the contemporary woman.',
     ],
-    image: '/earrings-portrait.webp',
+    image: '/About Page Hero Banner.webp',
   },
 };
 

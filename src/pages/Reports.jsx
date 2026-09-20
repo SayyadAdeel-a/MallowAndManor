@@ -12,11 +12,6 @@ const ROWS = [
 
 function formatNum(n) { return n.toLocaleString(); }
 
-function csvEscape(val) {
-  const s = String(val);
-  return s.includes(',') || s.includes('"') || s.includes('\n') ? `"${s.replace(/"/g, '""')}"` : s;
-}
-
 function downloadCSV(filename, rows) {
   const csv = rows.map(r => r.join(',')).join('\n');
   const blob = new Blob([csv], { type: 'text/csv' });

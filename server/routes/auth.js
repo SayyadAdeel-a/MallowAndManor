@@ -81,7 +81,7 @@ router.post('/login', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-router.post('/refresh', async (req, res, next) => {
+router.post('/refresh', async (req, res) => {
   try {
     const { refreshToken } = req.body;
     if (!refreshToken) return res.status(401).json({ error: 'No refresh token' });

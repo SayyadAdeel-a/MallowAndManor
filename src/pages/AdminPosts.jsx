@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCurrentUser, logout, fetchAdminPosts, createPost, updatePost, deletePost, uploadImage } from "../lib/api";
+import { getCurrentUser, fetchAdminPosts, createPost, updatePost, deletePost, uploadImage } from "../lib/api";
 import AdminHeader from "../components/AdminHeader";
 
 function slugify(text) {

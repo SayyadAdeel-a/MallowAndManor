@@ -63,9 +63,7 @@ function FunnelBar({ label, value, max, color }) {
 export default function AnalyticsDashboard() {
   const [productStats, setProductStats] = useState({});
   const [dailyData, setDailyData] = useState({});
-  const [loading, setLoading] = useState(false);
   const [timeRange, setTimeRange] = useState(7);
-  const [lastUpdated, setLastUpdated] = useState(null);
   const [userEmail, setUserEmail] = useState("");
   const navigate = useNavigate();
 
@@ -78,14 +76,11 @@ export default function AnalyticsDashboard() {
   useEffect(() => { fetchData(timeRange); }, []);
 
   const fetchData = async (days) => {
-    setLoading(true);
     try {
       const statsRes = await fetchProductStats(days);
       setProductStats(statsRes?.productStats || {});
       setDailyData(statsRes?.daily || {});
-      setLastUpdated(new Date());
     } catch (err) { console.error("Error:", err); }
-    finally { setLoading(false); }
   };
 
   const stats = useMemo(() => {
