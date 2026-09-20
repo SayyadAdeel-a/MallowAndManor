@@ -24,10 +24,10 @@ export default function ProductsSection({ onAddToCart, favorites = [], onToggleF
     <section className="py-20 px-6 lg:px-8 max-w-7xl mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
         <div>
-          <span className="text-xs font-medium tracking-[0.3em] uppercase text-gray-400 mb-4 block">
+          <span className="text-xs font-bold tracking-[0.3em] uppercase text-brand-gold mb-4 block">
             Discovery
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-brand-burgundy">
             Curated Selection
           </h2>
         </div>
@@ -44,9 +44,9 @@ export default function ProductsSection({ onAddToCart, favorites = [], onToggleF
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`px-4 py-2 text-xs font-medium tracking-wider uppercase transition-colors whitespace-nowrap ${selectedCategory === cat.id
-                  ? "bg-brand-black text-brand-cream"
-                  : "text-gray-500 hover:text-brand-dark"
+              className={`px-4 py-2 text-xs font-semibold tracking-wider uppercase transition-colors whitespace-nowrap rounded-sm ${selectedCategory === cat.id
+                  ? "bg-brand-burgundy text-brand-cream shadow-sm"
+                  : "text-brand-wine-dark/70 hover:text-brand-burgundy hover:bg-brand-blush/40"
                 }`}
             >
               {cat.label}
@@ -57,7 +57,7 @@ export default function ProductsSection({ onAddToCart, favorites = [], onToggleF
 
       {loading ? (
         <div className="text-center py-20">
-          <div className="w-6 h-6 border-2 border-gray-300 border-t-brand-dark rounded-full animate-spin mx-auto" />
+          <div className="w-6 h-6 border-2 border-brand-border border-t-brand-burgundy rounded-full animate-spin mx-auto" />
         </div>
       ) : filteredProducts.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -73,7 +73,7 @@ export default function ProductsSection({ onAddToCart, favorites = [], onToggleF
         </div>
       ) : (
         <div className="text-center py-20">
-          <p className="text-gray-400">
+          <p className="text-brand-wine-dark/60">
             No products found. Check back soon for new arrivals.
           </p>
         </div>
@@ -83,7 +83,7 @@ export default function ProductsSection({ onAddToCart, favorites = [], onToggleF
         <div className="text-center mt-12">
           <a
             href="/products"
-            className="inline-block text-sm font-semibold tracking-wider uppercase border-b-2 border-brand-black pb-1 hover:text-brand-gold hover:border-brand-gold transition-colors"
+            className="inline-block text-sm font-semibold tracking-wider uppercase border-b-2 border-brand-burgundy text-brand-burgundy pb-1 hover:text-brand-gold hover:border-brand-gold transition-colors"
           >
             View All Products
           </a>

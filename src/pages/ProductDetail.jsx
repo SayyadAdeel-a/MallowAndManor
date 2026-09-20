@@ -22,7 +22,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
   if (!product) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
-        <div className="w-8 h-8 border-2 border-gray-300 border-t-brand-walnut rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-brand-border border-t-brand-burgundy rounded-full animate-spin" />
       </div>
     );
   }
@@ -67,7 +67,7 @@ Thank you.`;
       {/* Breadcrumb */}
       <button
         onClick={() => navigate(-1)}
-        className="text-sm text-gray-400 hover:text-brand-dark transition-colors mb-8 inline-flex items-center gap-1"
+        className="text-sm text-brand-dark/50 hover:text-brand-burgundy transition-colors mb-8 inline-flex items-center gap-1"
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
@@ -78,7 +78,7 @@ Thank you.`;
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Images */}
         <div>
-          <div className="aspect-square bg-gray-100 overflow-hidden mb-4">
+          <div className="aspect-square bg-brand-cream border border-brand-border overflow-hidden mb-4">
             <img
               src={selectedImage}
               alt={product.name}
@@ -91,7 +91,7 @@ Thank you.`;
                 <button
                   key={idx}
                   onClick={() => setSelectedImage(img)}
-                  className={`aspect-square overflow-hidden border-2 transition-all ${selectedImage === img ? "border-brand-black" : "border-transparent opacity-60 hover:opacity-100"
+                  className={`aspect-square overflow-hidden border-2 transition-all ${selectedImage === img ? "border-brand-burgundy" : "border-brand-border/60 opacity-60 hover:opacity-100"
                     }`}
                 >
                   <img src={img} alt="" className="w-full h-full object-cover" />
@@ -103,16 +103,16 @@ Thank you.`;
 
         {/* Info */}
         <div className="lg:sticky lg:top-24 lg:self-start">
-          <span className="text-xs font-medium tracking-widest uppercase text-gray-400 mb-3 block">
+          <span className="text-xs font-semibold tracking-widest uppercase text-brand-gold mb-3 block">
             {product.category}
           </span>
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold mb-2">{product.name}</h1>
-              <p className="text-2xl font-semibold">Rs. {product.price}</p>
+              <h1 className="text-2xl md:text-3xl font-bold mb-2 text-brand-burgundy">{product.name}</h1>
+              <p className="text-2xl font-bold text-brand-burgundy">Rs. {product.price}</p>
             </div>
             <button onClick={() => toggleFavorite(product)}
-              className={`shrink-0 w-10 h-10 flex items-center justify-center border rounded-full transition-colors ${isFav ? 'border-red-200 bg-red-50 text-red-500' : 'border-gray-200 text-gray-400 hover:border-gray-400'}`}
+              className={`shrink-0 w-10 h-10 flex items-center justify-center border rounded-full transition-colors ${isFav ? 'border-brand-rose bg-brand-blush text-brand-rose' : 'border-brand-border text-brand-dark/40 hover:border-brand-gold hover:text-brand-gold'}`}
               title={isFav ? 'Remove from Wishlist' : 'Add to Wishlist'}>
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill={isFav ? "currentColor" : "none"} stroke="currentColor" strokeWidth={2}>
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
@@ -121,25 +121,25 @@ Thank you.`;
           </div>
 
           {product.description && (
-            <p className="text-gray-500 text-sm leading-relaxed mb-8">{product.description}</p>
+            <p className="text-brand-wine-dark/70 text-sm leading-relaxed mb-8">{product.description}</p>
           )}
 
           {/* Quantity */}
           <div className="mb-6">
-            <label className="text-xs font-medium tracking-wider uppercase text-gray-400 mb-3 block">
+            <label className="text-xs font-medium tracking-wider uppercase text-brand-wine-dark/60 mb-3 block">
               Quantity
             </label>
-            <div className="inline-flex items-center border border-gray-200">
+            <div className="inline-flex items-center border border-brand-border">
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-10 h-10 flex items-center justify-center hover:bg-gray-50 transition-colors"
+                className="w-10 h-10 flex items-center justify-center hover:bg-brand-blush transition-colors text-brand-wine-dark"
               >
                 -
               </button>
-              <span className="w-12 text-center text-sm font-medium">{quantity}</span>
+              <span className="w-12 text-center text-sm font-medium text-brand-wine-dark">{quantity}</span>
               <button
                 onClick={() => setQuantity(quantity + 1)}
-                className="w-10 h-10 flex items-center justify-center hover:bg-gray-50 transition-colors"
+                className="w-10 h-10 flex items-center justify-center hover:bg-brand-blush transition-colors text-brand-wine-dark"
               >
                 +
               </button>
@@ -150,13 +150,13 @@ Thank you.`;
           <div className="flex gap-3 mb-8">
             <button
               onClick={() => handleAddToCart(product)}
-              className="flex-1 bg-brand-black text-brand-cream py-3.5 text-sm font-semibold tracking-wider uppercase hover:bg-brand-gold transition-colors"
+              className="flex-1 bg-brand-burgundy text-brand-cream py-3.5 text-sm font-semibold tracking-wider uppercase hover:bg-brand-wine-dark transition-colors shadow-sm"
             >
               Add to Cart
             </button>
             <button
               onClick={handleWhatsAppOrder}
-              className="flex-1 bg-[#25D366] text-brand-cream py-3.5 text-sm font-semibold tracking-wider uppercase hover:bg-[#128C7E] transition-colors"
+              className="flex-1 bg-[#25D366] text-brand-cream py-3.5 text-sm font-semibold tracking-wider uppercase hover:bg-[#128C7E] transition-colors shadow-sm"
             >
               Order via WhatsApp
             </button>

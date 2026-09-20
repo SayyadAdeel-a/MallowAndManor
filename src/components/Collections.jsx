@@ -29,10 +29,10 @@ export default function Collections({ onCategoryClick }) {
   return (
     <section className="py-20 px-6 lg:px-8 max-w-7xl mx-auto">
       <div className="text-center mb-16">
-        <span className="text-xs font-medium tracking-[0.3em] uppercase text-gray-400 mb-4 block">
+        <span className="text-xs font-bold tracking-[0.3em] uppercase text-brand-gold mb-4 block">
           Collections
         </span>
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-brand-burgundy">
           Shop by Category
         </h2>
       </div>
@@ -44,18 +44,18 @@ export default function Collections({ onCategoryClick }) {
             onClick={() => onCategoryClick(category.id)}
             className="group cursor-pointer"
           >
-            <div className="relative aspect-[3/4] overflow-hidden mb-4 bg-gray-100">
+            <div className="relative aspect-[3/4] overflow-hidden mb-4 bg-brand-cream border border-brand-border/60">
               <img
                 src={category.image}
                 alt={category.name}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+              <div className="absolute inset-0 bg-brand-wine-dark/0 group-hover:bg-brand-wine-dark/10 transition-colors duration-300" />
             </div>
-            <h3 className="text-sm font-semibold tracking-wider uppercase mb-1">
+            <h3 className="text-sm font-semibold tracking-wider uppercase mb-1 text-brand-burgundy group-hover:text-brand-gold transition-colors">
               {category.name}
             </h3>
-            <p className="text-xs text-gray-400">{category.tagline}</p>
+            <p className="text-xs text-brand-wine-dark/60">{category.tagline}</p>
           </div>
         ))}
       </div>

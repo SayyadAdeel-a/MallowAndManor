@@ -14,9 +14,9 @@ export default function OfferHeadline({
     <div
       className="w-full overflow-hidden"
       style={{
-        background: "linear-gradient(90deg, #F3D5E1 0%, #F6E7ED 50%, #EDD9C6 100%)",
-        padding: big ? "16px 0" : "12px 0",
-        boxShadow: "0 4px 20px rgba(192, 138, 165, 0.2)",
+        backgroundColor: "#4A0E17",
+        borderBottom: "1px solid #340910",
+        padding: big ? "14px 0" : "10px 0",
       }}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
@@ -40,16 +40,16 @@ export default function OfferHeadline({
             {Array.from({ length: repeats }).map((_, i) => (
               <span
                 key={i}
-                className={`inline-flex items-center ${big ? 'px-12 text-2xl md:text-4xl font-black' : 'px-8 text-xs font-extrabold'} tracking-[0.15em] uppercase select-none`}
+                className={`inline-flex items-center ${big ? 'px-12 text-xl md:text-2xl font-bold' : 'px-8 text-xs font-semibold'} tracking-[0.18em] uppercase select-none`}
                 style={{
-                  color: "#6E4E5C",
+                  color: "#FAF7F2",
                   textShadow: "none",
                 }}
               >
                 {showDot && (
                   <span
-                    className={`shrink-0 ${big ? 'w-3 h-3' : 'w-1.5 h-1.5'} rounded-full mr-3`}
-                    style={{ backgroundColor: "#D9BEA6" }}
+                    className={`shrink-0 ${big ? 'w-2 h-2' : 'w-1.5 h-1.5'} rounded-full mr-3`}
+                    style={{ backgroundColor: "#C59B58" }}
                   />
                 )}
                 {text}

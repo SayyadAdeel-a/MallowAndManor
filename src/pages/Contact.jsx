@@ -9,14 +9,14 @@ export default function Contact() {
   return (
     <div className="max-w-5xl mx-auto px-6 lg:px-8 py-16">
       <div className="text-center mb-16">
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-3">Get In Touch</h1>
-        <p className="text-gray-400 text-sm">We're here to help you get every detail right.</p>
+        <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-3 text-brand-burgundy">Get In Touch</h1>
+        <p className="text-brand-wine-dark/60 text-sm">We're here to help you get every detail right.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
         {/* Contact */}
         <div>
-          <h2 className="text-lg font-semibold mb-6">Contact Details</h2>
+          <h2 className="text-lg font-semibold mb-6 text-brand-burgundy">Contact Details</h2>
           <div className="space-y-5">
             {[
               { label: "Phone", value: "+92 323 3334492", icon: "M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" },
@@ -24,37 +24,37 @@ export default function Contact() {
               { label: "Address", value: "DHA Phase 6, Karachi, Pakistan", icon: "M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" },
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-gray-50 flex items-center justify-center shrink-0">
-                  <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-10 h-10 bg-brand-blush/60 border border-brand-border flex items-center justify-center shrink-0 rounded-sm">
+                  <svg className="w-4 h-4 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400 tracking-wider uppercase mb-1">{item.label}</p>
-                  <p className="text-sm font-medium">{item.value}</p>
+                  <p className="text-xs text-brand-wine-dark/60 tracking-wider uppercase mb-1">{item.label}</p>
+                  <p className="text-sm font-medium text-brand-burgundy">{item.value}</p>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="mt-8 p-6 bg-gray-50">
-            <h3 className="text-sm font-semibold mb-3">Business Hours</h3>
-            <div className="space-y-2 text-sm text-gray-500">
-              <div className="flex justify-between"><span>Mon - Fri</span><span className="font-medium text-brand-dark">9:00 AM - 6:00 PM</span></div>
-              <div className="flex justify-between"><span>Saturday</span><span className="font-medium text-brand-dark">10:00 AM - 4:00 PM</span></div>
-              <div className="flex justify-between"><span>Sunday</span><span className="font-medium text-gray-400">Closed</span></div>
+          <div className="mt-8 p-6 bg-brand-blush/30 border border-brand-border rounded-lg">
+            <h3 className="text-sm font-semibold mb-3 text-brand-burgundy">Business Hours</h3>
+            <div className="space-y-2 text-sm text-brand-wine-dark/70">
+              <div className="flex justify-between"><span>Mon - Fri</span><span className="font-semibold text-brand-burgundy">9:00 AM - 6:00 PM</span></div>
+              <div className="flex justify-between"><span>Saturday</span><span className="font-semibold text-brand-burgundy">10:00 AM - 4:00 PM</span></div>
+              <div className="flex justify-between"><span>Sunday</span><span className="font-medium text-brand-wine-dark/40">Closed</span></div>
             </div>
           </div>
         </div>
 
         {/* FAQ */}
         <div>
-          <h2 className="text-lg font-semibold mb-6">Frequently Asked Questions</h2>
+          <h2 className="text-lg font-semibold mb-6 text-brand-burgundy">Frequently Asked Questions</h2>
           <div className="space-y-4">
             {faqs.map((faq, i) => (
-              <div key={i} className="border-b border-gray-100 pb-4">
-                <h4 className="text-sm font-medium mb-2">{faq.q}</h4>
-                <p className="text-sm text-gray-500 leading-relaxed">{faq.a}</p>
+              <div key={i} className="border-b border-brand-border pb-4">
+                <h4 className="text-sm font-semibold mb-2 text-brand-burgundy">{faq.q}</h4>
+                <p className="text-sm text-brand-wine-dark/70 leading-relaxed">{faq.a}</p>
               </div>
             ))}
           </div>
@@ -62,14 +62,14 @@ export default function Contact() {
       </div>
 
       {/* Delivery */}
-      <div className="bg-brand-black text-brand-cream py-12 px-8 text-center">
-        <h2 className="text-xl font-bold mb-6">Where We Deliver</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-brand-cream/70 mb-6">
+      <div className="bg-brand-burgundy text-brand-cream py-12 px-8 text-center rounded-lg border border-brand-wine-dark shadow-md">
+        <h2 className="text-xl font-bold mb-6 text-brand-cream">Where We Deliver</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-brand-cream/80 mb-6">
           {["Karachi", "Lahore", "Islamabad", "Faisalabad", "Multan", "Peshawar", "Quetta", "Sialkot"].map((city) => (
-            <span key={city}>{city}</span>
+            <span key={city} className="border border-brand-gold/30 py-2 rounded-sm bg-brand-wine-dark/40">{city}</span>
           ))}
         </div>
-        <p className="text-xs text-brand-cream/40">We deliver to all districts across Pakistan</p>
+        <p className="text-xs text-brand-gold tracking-wider uppercase font-semibold">We deliver to all districts across Pakistan</p>
       </div>
     </div>
   );

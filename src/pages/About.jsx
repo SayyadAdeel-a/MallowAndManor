@@ -18,9 +18,9 @@ export default function About() {
       <section className="py-20 px-6 lg:px-8 max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <div>
-            <span className="text-xs font-medium tracking-[0.3em] uppercase text-gray-400 mb-4 block">Who We Are</span>
-            <h2 className="text-3xl font-bold tracking-tight mb-6">Modern Essentials for a New Generation</h2>
-            <div className="space-y-4 text-gray-500 text-sm leading-relaxed">
+            <span className="text-xs font-bold tracking-[0.3em] uppercase text-brand-gold mb-4 block">Who We Are</span>
+            <h2 className="text-3xl font-bold tracking-tight mb-6 text-brand-burgundy">Modern Essentials for a New Generation</h2>
+            <div className="space-y-4 text-brand-wine-dark/75 text-sm leading-relaxed">
               <p>
                 In a world of mass production, we stand for the unique. Honeybee Lane is not just
                 an e-commerce platform — it's a carefully curated collection of quality essentials.
@@ -35,7 +35,7 @@ export default function About() {
               </p>
             </div>
           </div>
-          <div className="aspect-[4/5] overflow-hidden">
+          <div className="aspect-[4/5] overflow-hidden border border-brand-border shadow-sm">
             <img
               src="https://images.unsplash.com/photo-1491336477066-31156b5e4f35?w=1000&q=80"
               alt="Craftsmanship"
@@ -46,7 +46,7 @@ export default function About() {
       </section>
 
       {/* Stats */}
-      <section className="py-16 border-y border-gray-100">
+      <section className="py-16 border-y border-brand-border bg-brand-blush/20">
         <div className="max-w-6xl mx-auto px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {[
             { value: "2024", label: "Founded" },
@@ -55,8 +55,8 @@ export default function About() {
             { value: "85+", label: "Districts Served" },
           ].map((stat, i) => (
             <div key={i}>
-              <p className="text-2xl font-bold mb-1">{stat.value}</p>
-              <p className="text-xs text-gray-400 tracking-wider uppercase">{stat.label}</p>
+              <p className="text-3xl font-serif font-bold text-brand-burgundy mb-1">{stat.value}</p>
+              <p className="text-xs text-brand-wine-dark/60 tracking-wider uppercase">{stat.label}</p>
             </div>
           ))}
         </div>
@@ -65,8 +65,8 @@ export default function About() {
       {/* Values */}
       <section className="py-20 px-6 lg:px-8 max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <span className="text-xs font-medium tracking-[0.3em] uppercase text-gray-400 mb-4 block">Our Principles</span>
-          <h2 className="text-3xl font-bold tracking-tight">What We Stand For</h2>
+          <span className="text-xs font-bold tracking-[0.3em] uppercase text-brand-gold mb-4 block">Our Principles</span>
+          <h2 className="text-3xl font-bold tracking-tight text-brand-burgundy">What We Stand For</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
@@ -74,9 +74,9 @@ export default function About() {
             { title: "Global Craftsmanship", desc: "From the finest silk to precise movements, we source from artisans worldwide who live and breathe their craft." },
             { title: "Seamless Luxury", desc: "Our unique WhatsApp integration ensures your shopping experience is personal, fast, and human-centric." },
           ].map((v, i) => (
-            <div key={i} className="text-center">
-              <h3 className="text-lg font-semibold mb-3">{v.title}</h3>
-              <p className="text-sm text-gray-500 leading-relaxed">{v.desc}</p>
+            <div key={i} className="text-center p-6 bg-brand-cream border border-brand-border/60">
+              <h3 className="text-lg font-semibold mb-3 text-brand-burgundy">{v.title}</h3>
+              <p className="text-sm text-brand-wine-dark/70 leading-relaxed">{v.desc}</p>
             </div>
           ))}
         </div>
@@ -84,14 +84,14 @@ export default function About() {
 
       {/* CTA */}
       <section className="py-20 px-6 lg:px-8 max-w-6xl mx-auto">
-        <div className="bg-brand-black text-brand-cream py-16 px-8 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">Join the Inner Circle</h2>
-          <p className="text-brand-cream/50 text-sm max-w-md mx-auto mb-8">
+        <div className="bg-brand-burgundy text-brand-cream py-16 px-8 text-center border border-brand-wine-dark shadow-md">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-brand-cream">Join the Inner Circle</h2>
+          <p className="text-brand-cream/80 text-sm max-w-md mx-auto mb-8">
             Experience luxury redefined. Every order handled with personal care.
           </p>
           <button
             onClick={() => (window.location.href = "/products")}
-            className="px-8 py-3 bg-brand-cream text-brand-dark text-sm font-semibold tracking-wider uppercase hover:bg-brand-gold hover:text-brand-cream transition-all duration-300"
+            className="px-8 py-3 bg-brand-gold text-brand-wine-dark text-sm font-bold tracking-wider uppercase hover:bg-brand-cream hover:text-brand-burgundy transition-all duration-300 shadow-sm"
           >
             Explore Collections
           </button>

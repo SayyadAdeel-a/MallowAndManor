@@ -5,25 +5,25 @@ export default function Philosophy() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Text */}
           <div>
-            <span className="text-xs font-medium tracking-[0.3em] uppercase text-gray-400 mb-4 block">
+            <span className="text-xs font-bold tracking-[0.3em] uppercase text-brand-gold mb-4 block">
               Our Story
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6 leading-tight">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6 leading-tight text-brand-burgundy">
               Crafted with intention,<br />
               designed for life.
             </h2>
-            <p className="text-gray-500 leading-relaxed mb-4">
+            <p className="text-brand-wine-dark/75 leading-relaxed mb-4">
               Honeybee Lane was founded on a simple principle: to make quality
               beauty accessible, personal, and effortless for the modern customer.
             </p>
-            <p className="text-gray-500 leading-relaxed mb-8">
+            <p className="text-brand-wine-dark/75 leading-relaxed mb-8">
               We specialize in artisanal bangles, handcrafted abayas, boutique
               nails, and exclusive necklaces — items that are intimate, personal,
               and essential to your identity.
             </p>
             <button
               onClick={() => (window.location.href = "/about")}
-              className="text-sm font-semibold tracking-wider uppercase border-b-2 border-brand-black pb-1 hover:text-brand-gold hover:border-brand-gold transition-colors"
+              className="text-sm font-semibold tracking-wider uppercase border-b-2 border-brand-burgundy text-brand-burgundy pb-1 hover:text-brand-gold hover:border-brand-gold transition-colors"
             >
               Read Our Story
             </button>
@@ -31,7 +31,7 @@ export default function Philosophy() {
 
           {/* Image */}
           <div className="relative">
-            <div className="aspect-[4/5] overflow-hidden">
+            <div className="aspect-[4/5] overflow-hidden border border-brand-border shadow-sm">
               <img
                 src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=1470&auto=format&fit=crop"
                 alt="Luxury craftsmanship"
