@@ -109,15 +109,15 @@ export default function AnalyticsDashboard() {
   }, [productStats]);
 
   return (
-    <div className="min-h-screen bg-brand-cream">
+    <div className="min-h-screen bg-gray-50">
       <AdminHeader userEmail="" />
 
       {/* Time range selector */}
       <div className="max-w-6xl mx-auto px-6 py-4">
-        <div className="flex bg-white border border-brand-border w-fit shadow-sm">
+        <div className="flex bg-brand-cream border border-gray-200 w-fit">
           {TIME_RANGES.map(r => (
             <button key={r.days} onClick={() => { setTimeRange(r.days); fetchData(r.days); }}
-              className={`px-3 py-1.5 text-xs font-semibold transition-colors ${timeRange === r.days ? "bg-brand-burgundy text-white" : "text-brand-black/60 hover:text-brand-burgundy"}`}>
+              className={`px-3 py-1.5 text-xs font-medium transition-colors ${timeRange === r.days ? "bg-brand-black text-brand-cream" : "text-gray-400 hover:text-gray-600"}`}>
               {r.label}
             </button>
           ))}
@@ -128,78 +128,79 @@ export default function AnalyticsDashboard() {
         {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {[
-            { label: "Page Views", value: stats.pageViews, color: "bg-brand-gold" },
-            { label: "Product Views", value: stats.productViews, color: "bg-brand-burgundy" },
-            { label: "Add to Cart", value: stats.addToCart, color: "bg-brand-rose" },
-            { label: "Checkouts", value: stats.checkouts, color: "bg-[#25D366]" },
+            { label: "Page Views", value: stats.pageViews, color: "bg-blue-500" },
+            { label: "Product Views", value: stats.productViews, color: "bg-purple-500" },
+            { label: "Add to Cart", value: stats.addToCart, color: "bg-green-500" },
+            { label: "Checkouts", value: stats.checkouts, color: "bg-amber-500" },
           ].map((s, i) => (
-            <div key={i} className="bg-white border border-brand-border p-5 shadow-sm">
-              <div className={`w-2.5 h-2.5 rounded-full ${s.color} mb-3`} />
-              <p className="text-2xl font-bold text-brand-black">{s.value.toLocaleString()}</p>
-              <p className="text-xs text-gray-500 mt-1 uppercase tracking-wider font-medium">{s.label}</p>
+            <div key={i} className="bg-brand-cream border border-gray-100 p-5">
+              <div className={`w-2 h-2 rounded-full ${s.color} mb-3`} />
+              <p className="text-2xl font-bold">{s.value.toLocaleString()}</p>
+              <p className="text-xs text-gray-400 mt-1">{s.label}</p>
             </div>
           ))}
         </div>
 
         {/* Conversion + Funnel */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white border border-brand-border p-6 shadow-sm">
-            <p className="text-xs font-semibold text-gray-500 tracking-wider uppercase mb-2">Conversion Rate</p>
-            <p className="text-4xl font-extrabold text-brand-burgundy">{conversionRate}%</p>
-            <p className="text-xs text-gray-400 mt-2">Add to cart / Product views</p>
+          <div className="bg-brand-cream border border-gray-100 p-6">
+            <p className="text-xs text-gray-400 tracking-wider uppercase mb-2">Conversion Rate</p>
+            <p className="text-3xl font-bold">{conversionRate}%</p>
+            <p className="text-xs text-gray-300 mt-2">Add to cart / Product views</p>
           </div>
-          <div className="bg-white border border-brand-border p-6 lg:col-span-2 shadow-sm">
-            <p className="text-xs font-semibold text-gray-500 tracking-wider uppercase mb-4">Funnel</p>
-            <div className="space-y-3">
-              <FunnelBar label="Page Views" value={stats.pageViews} max={stats.pageViews} color="bg-brand-gold" />
-              <FunnelBar label="Product Views" value={stats.productViews} max={stats.pageViews} color="bg-brand-burgundy" />
-              <FunnelBar label="Add to Cart" value={stats.addToCart} max={stats.pageViews} color="bg-brand-rose" />
-              <FunnelBar label="Checkouts" value={stats.checkouts} max={stats.pageViews} color="bg-[#25D366]" />
+          <div className="bg-brand-cream border border-gray-100 p-6 lg:col-span-2">
+            <p className="text-xs text-gray-400 tracking-wider uppercase mb-4">Funnel</p>
+            <div className="space-y-2">
+              <FunnelBar label="Page Views" value={stats.pageViews} max={stats.pageViews} color="bg-blue-500" />
+              <FunnelBar label="Product Views" value={stats.productViews} max={stats.pageViews} color="bg-purple-500" />
+              <FunnelBar label="Add to Cart" value={stats.addToCart} max={stats.pageViews} color="bg-green-500" />
+              <FunnelBar label="Checkouts" value={stats.checkouts} max={stats.pageViews} color="bg-amber-500" />
             </div>
           </div>
         </div>
 
         {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white border border-brand-border p-6 shadow-sm">
-            <p className="text-xs font-semibold text-gray-500 tracking-wider uppercase mb-4">Page Views</p>
-            <LineChart data={timeSeries.pageViews} color="#4A0E17" />
+          <div className="bg-brand-cream border border-gray-100 p-6">
+            <p className="text-xs text-gray-400 tracking-wider uppercase mb-4">Page Views</p>
+            <LineChart data={timeSeries.pageViews} color="#C08AA5" />
           </div>
-          <div className="bg-white border border-brand-border p-6 shadow-sm">
-            <h3 className="text-xs font-semibold tracking-wider uppercase text-gray-500 mb-4">Product Views</h3>
-            <LineChart data={timeSeries.productViews} color="#C59B58" />
+          <div className="bg-brand-cream border border-gray-100 p-6">
+            <p className="text-xs text-gray-400 tracking-wider uppercase mb-4">Engagement</p>
+            <LineChart data={timeSeries.productViews} color="#D9BEA6" />
           </div>
         </div>
 
-        {/* Top products */}
-        <div className="bg-white border border-brand-border overflow-hidden shadow-sm">
-          <div className="p-5 border-b border-brand-border bg-brand-blush/20">
-            <h3 className="text-sm font-bold text-brand-black">Top Products</h3>
-          </div>
+        {/* Top Products */}
+        <div className="bg-brand-cream border border-gray-100 p-6">
+          <p className="text-xs text-gray-400 tracking-wider uppercase mb-4">Top Products</p>
           {topProducts.length === 0 ? (
-            <div className="p-8 text-center text-gray-400 text-sm">No data</div>
+            <p className="text-gray-300 text-sm py-4 text-center">No data yet</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-brand-border bg-brand-blush/30">
-                    <th className="text-left p-3 text-xs font-semibold uppercase text-brand-black/70">#</th>
-                    <th className="text-left p-3 text-xs font-semibold uppercase text-brand-black/70">Product</th>
-                    <th className="text-right p-3 text-xs font-semibold uppercase text-brand-black/70">Views</th>
-                    <th className="text-right p-3 text-xs font-semibold uppercase text-brand-black/70">Cart Adds</th>
-                    <th className="text-right p-3 text-xs font-semibold uppercase text-brand-black/70">Rate</th>
+                  <tr className="border-b border-gray-100">
+                    <th className="text-left p-3 text-xs font-medium text-gray-400">#</th>
+                    <th className="text-left p-3 text-xs font-medium text-gray-400">Product</th>
+                    <th className="text-right p-3 text-xs font-medium text-gray-400">Views</th>
+                    <th className="text-right p-3 text-xs font-medium text-gray-400">Cart</th>
+                    <th className="text-right p-3 text-xs font-medium text-gray-400">Rate</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {topProducts.map((p, i) => (
-                    <tr key={p.id} className="border-b border-gray-50 hover:bg-brand-blush/10 transition-colors">
-                      <td className="p-3 text-brand-gold font-bold">{i + 1}</td>
-                      <td className="p-3 font-semibold text-brand-black truncate max-w-[200px]">{p.productName || p.id}</td>
-                      <td className="p-3 text-right font-medium text-brand-black">{p.views}</td>
-                      <td className="p-3 text-right font-medium text-brand-black">{p.cartAdds}</td>
-                      <td className="p-3 text-right text-brand-burgundy font-semibold">{p.views > 0 ? ((p.cartAdds / p.views) * 100).toFixed(1) : "0.0"}%</td>
-                    </tr>
-                  ))}
+                  {topProducts.map((p, i) => {
+                    const rate = p.views > 0 ? ((p.cartAdds / p.views) * 100).toFixed(1) : "0.0";
+                    return (
+                      <tr key={p.id} className="border-b border-gray-50">
+                        <td className="p-3 text-gray-300">{i + 1}</td>
+                        <td className="p-3 font-medium truncate max-w-[200px]">{p.productName || `Product ${p.id.slice(-6)}`}</td>
+                        <td className="p-3 text-right">{p.views}</td>
+                        <td className="p-3 text-right">{p.cartAdds}</td>
+                        <td className="p-3 text-right text-gray-500">{rate}%</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

@@ -1,31 +1,27 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-black: #38070F;
-  --color-brand-dark: #581420;
-  --color-brand-burgundy: #4A0E17;
-  --color-brand-wine: #340910;
-  --color-brand-gold: #C59B58;
-  --color-brand-gold-light: #DFC18A;
-  --color-brand-honey: #D8AF6E;
-  --color-brand-pink: #E2ACB4;
-  --color-brand-hotpink: #C59B58;
-  --color-brand-rose: #D495A0;
-  --color-brand-blush: #F7ECEE;
-  --color-brand-purple: #EADDCF;
-  --color-brand-plum: #7A2837;
-  --color-brand-nude: #EADDCF;
-  --color-brand-beige: #F3ECE2;
-  --color-brand-light: #F7ECEE;
-  --color-brand-border: #EBDED5;
-  --color-brand-cream: #FAF7F2;
+  --color-brand-black: #6E4E5C;
+  --color-brand-dark: #8A6A7C;
+  --color-brand-gold: #C08AA5;
+  --color-brand-honey: #D9BEA6;
+  --color-brand-pink: #EFC3D4;
+  --color-brand-hotpink: #C08AA5;
+  --color-brand-rose: #F3D5E1;
+  --color-brand-blush: #F6E7ED;
+  --color-brand-purple: #EDD9C6;
+  --color-brand-plum: #A87E93;
+  --color-brand-nude: #EDD9C6;
+  --color-brand-beige: #F1E7D8;
+  --color-brand-light: #F6E7ED;
+  --color-brand-cream: #F7F3EE;
   --font-family-brand: "Poppins", sans-serif;
   --font-family-display: "Cormorant Garamond", "Georgia", serif;
 }
 
 body {
-  background-color: #FAF7F2;
-  color: #38070F;
+  background-color: #F7F3EE;
+  color: #6E4E5C;
   font-family: var(--font-family-brand);
 }
 
@@ -33,7 +29,8 @@ body {
   font-family: var(--font-family-brand);
 }
 
-h1, h2 {
+h1,
+h2 {
   font-family: var(--font-family-display);
   font-weight: 600;
 }
@@ -43,6 +40,7 @@ a {
   text-decoration: none;
   transition: opacity 0.2s;
 }
+
 a:hover {
   opacity: 0.7;
 }
@@ -58,10 +56,12 @@ html {
 ::-webkit-scrollbar {
   width: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #C59B58;
+  background: #EFC3D4;
   border-radius: 3px;
 }

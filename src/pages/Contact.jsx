@@ -24,24 +24,24 @@ export default function Contact() {
               { label: "Address", value: "DHA Phase 6, Karachi, Pakistan", icon: "M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" },
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-brand-blush/60 rounded-full border border-brand-border flex items-center justify-center shrink-0">
-                  <svg className="w-4 h-4 text-brand-burgundy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-10 h-10 bg-gray-50 flex items-center justify-center shrink-0">
+                  <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-xs text-brand-gold font-semibold tracking-wider uppercase mb-1">{item.label}</p>
-                  <p className="text-sm font-semibold text-brand-black">{item.value}</p>
+                  <p className="text-xs text-gray-400 tracking-wider uppercase mb-1">{item.label}</p>
+                  <p className="text-sm font-medium">{item.value}</p>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="mt-8 p-6 bg-brand-cream border border-brand-border rounded-lg shadow-sm">
-            <h3 className="text-xs font-bold tracking-wider uppercase text-brand-black mb-3">Business Hours</h3>
-            <div className="space-y-2 text-sm text-gray-600">
-              <div className="flex justify-between"><span>Mon - Fri</span><span className="font-semibold text-brand-burgundy">9:00 AM - 6:00 PM</span></div>
-              <div className="flex justify-between"><span>Saturday</span><span className="font-semibold text-brand-burgundy">10:00 AM - 4:00 PM</span></div>
+          <div className="mt-8 p-6 bg-gray-50">
+            <h3 className="text-sm font-semibold mb-3">Business Hours</h3>
+            <div className="space-y-2 text-sm text-gray-500">
+              <div className="flex justify-between"><span>Mon - Fri</span><span className="font-medium text-brand-dark">9:00 AM - 6:00 PM</span></div>
+              <div className="flex justify-between"><span>Saturday</span><span className="font-medium text-brand-dark">10:00 AM - 4:00 PM</span></div>
               <div className="flex justify-between"><span>Sunday</span><span className="font-medium text-gray-400">Closed</span></div>
             </div>
           </div>
@@ -63,7 +63,7 @@ export default function Contact() {
 
       {/* Delivery */}
       <div className="bg-brand-black text-brand-cream py-12 px-8 text-center">
-        <h2 className="text-xl font-bold mb-6 text-white">Where We Deliver</h2>
+        <h2 className="text-xl font-bold mb-6">Where We Deliver</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-brand-cream/70 mb-6">
           {["Karachi", "Lahore", "Islamabad", "Faisalabad", "Multan", "Peshawar", "Quetta", "Sialkot"].map((city) => (
             <span key={city}>{city}</span>

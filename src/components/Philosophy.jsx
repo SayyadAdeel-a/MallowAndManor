@@ -23,7 +23,7 @@ export default function Philosophy() {
             </p>
             <button
               onClick={() => (window.location.href = "/about")}
-              className="text-sm font-semibold tracking-wider uppercase border-b-2 border-brand-burgundy pb-1 hover:text-brand-gold hover:border-brand-gold transition-colors"
+              className="text-sm font-semibold tracking-wider uppercase border-b-2 border-brand-black pb-1 hover:text-brand-gold hover:border-brand-gold transition-colors"
             >
               Read Our Story
             </button>

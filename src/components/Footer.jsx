@@ -42,25 +42,25 @@ export default function Footer() {
 
           {/* Shop */}
           <div>
-            <h4 className="text-xs font-bold tracking-widest uppercase mb-6 text-brand-gold">Shop</h4>
-            <ul className="space-y-3 text-sm text-brand-cream/70">
-              <li><Link to="/products" className="hover:text-brand-gold transition-colors">All Products</Link></li>
-              <li><Link to="/products?category=bangles" className="hover:text-brand-gold transition-colors">Bangles</Link></li>
-              <li><Link to="/products?category=nails" className="hover:text-brand-gold transition-colors">Nails</Link></li>
-              <li><Link to="/products?category=abayas" className="hover:text-brand-gold transition-colors">Abayas</Link></li>
-              <li><Link to="/products?category=necklaces" className="hover:text-brand-gold transition-colors">Necklaces</Link></li>
+            <h4 className="text-xs font-semibold tracking-widest uppercase mb-6 text-brand-honey">Shop</h4>
+            <ul className="space-y-3 text-sm text-brand-cream/60">
+              <li><Link to="/products" className="hover:text-brand-cream transition-colors">All Products</Link></li>
+              <li><Link to="/products?category=bangles" className="hover:text-brand-cream transition-colors">Bangles</Link></li>
+              <li><Link to="/products?category=nails" className="hover:text-brand-cream transition-colors">Nails</Link></li>
+              <li><Link to="/products?category=abayas" className="hover:text-brand-cream transition-colors">Abayas</Link></li>
+              <li><Link to="/products?category=necklaces" className="hover:text-brand-cream transition-colors">Necklaces</Link></li>
             </ul>
           </div>
 
           {/* Company */}
           <div>
-            <h4 className="text-xs font-bold tracking-widest uppercase mb-6 text-brand-gold">Company</h4>
-            <ul className="space-y-3 text-sm text-brand-cream/70">
-              <li><Link to="/about" className="hover:text-brand-gold transition-colors">Our Story</Link></li>
-              <li><Link to="/blog" className="hover:text-brand-gold transition-colors">Journal</Link></li>
-              <li><Link to="/contact" className="hover:text-brand-gold transition-colors">Contact</Link></li>
-              <li><Link to="/favorites" className="hover:text-brand-gold transition-colors">Wishlist</Link></li>
-              <li><Link to="/cart" className="hover:text-brand-gold transition-colors">Cart</Link></li>
+            <h4 className="text-xs font-semibold tracking-widest uppercase mb-6 text-brand-honey">Company</h4>
+            <ul className="space-y-3 text-sm text-brand-cream/60">
+              <li><Link to="/about" className="hover:text-brand-cream transition-colors">Our Story</Link></li>
+              <li><Link to="/blog" className="hover:text-brand-cream transition-colors">Journal</Link></li>
+              <li><Link to="/contact" className="hover:text-brand-cream transition-colors">Contact</Link></li>
+              <li><Link to="/favorites" className="hover:text-brand-cream transition-colors">Wishlist</Link></li>
+              <li><Link to="/cart" className="hover:text-brand-cream transition-colors">Cart</Link></li>
             </ul>
           </div>
         </div>
@@ -77,8 +77,8 @@ export default function Footer() {
             >
               Made with Love by Mentee
             </a>
-            <Link to="#" className="hover:text-brand-gold transition-colors">Privacy</Link>
-            <Link to="#" className="hover:text-brand-gold transition-colors">Terms</Link>
+            <Link to="#" className="hover:text-brand-cream transition-colors">Privacy</Link>
+            <Link to="#" className="hover:text-brand-cream transition-colors">Terms</Link>
           </div>
         </div>
       </div>

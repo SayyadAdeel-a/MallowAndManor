@@ -110,21 +110,21 @@ export default function Reports() {
   };
 
   return (
-    <div className="min-h-screen bg-brand-cream">
+    <div className="min-h-screen bg-gray-50">
       <AdminHeader userEmail="" />
 
       {/* Controls */}
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-3">
-        <div className="flex bg-white border border-brand-border shadow-sm">
+        <div className="flex bg-brand-cream border border-gray-200">
           {[7, 30, 90].map(d => (
             <button key={d} onClick={() => setDays(d)}
-              className={`px-3 py-1.5 text-xs font-semibold transition-colors ${days === d ? "bg-brand-burgundy text-white" : "text-brand-black/60 hover:text-brand-burgundy"}`}>
+              className={`px-3 py-1.5 text-xs font-medium transition-colors ${days === d ? "bg-brand-black text-brand-cream" : "text-gray-400 hover:text-gray-600"}`}>
               {d}D
             </button>
           ))}
         </div>
         <button onClick={handleExport} disabled={loading}
-          className="px-4 py-1.5 bg-brand-burgundy text-white text-xs font-semibold hover:bg-brand-gold transition-colors disabled:opacity-50 shadow-sm">
+          className="px-4 py-1.5 bg-brand-black text-brand-cream text-xs font-medium hover:bg-brand-gold transition-colors disabled:opacity-50">
           Export
         </button>
       </div>
@@ -132,24 +132,24 @@ export default function Reports() {
       <main className="max-w-6xl mx-auto px-6 py-8">
         {loading ? (
           <div className="flex justify-center py-20">
-            <div className="w-6 h-6 border-2 border-gray-300 border-t-brand-gold rounded-full animate-spin" />
+            <div className="w-6 h-6 border-2 border-gray-300 border-t-brand-walnut rounded-full animate-spin" />
           </div>
         ) : (
           <>
             {/* Comparison Table */}
-            <div className="bg-white border border-brand-border overflow-hidden shadow-sm mb-8">
-              <div className="p-5 border-b border-brand-border flex justify-between items-center bg-brand-blush/20">
-                <h3 className="text-sm font-bold text-brand-black">Performance Overview</h3>
-                <span className="text-xs text-gray-500">Current vs Previous {days} days</span>
+            <div className="bg-brand-cream border border-gray-100 overflow-hidden mb-8">
+              <div className="p-5 border-b border-gray-100 flex justify-between items-center">
+                <h3 className="text-sm font-semibold">Performance Overview</h3>
+                <span className="text-xs text-gray-400">Current vs Previous {days} days</span>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-brand-border bg-brand-blush/30">
-                      <th className="text-left p-4 text-xs font-semibold uppercase text-brand-black/70">Metric</th>
-                      <th className="text-right p-4 text-xs font-semibold uppercase text-brand-black/70">Current</th>
-                      <th className="text-right p-4 text-xs font-semibold uppercase text-brand-black/70">Previous</th>
-                      <th className="text-right p-4 text-xs font-semibold uppercase text-brand-black/70">Change</th>
+                    <tr className="border-b border-gray-100">
+                      <th className="text-left p-4 text-xs font-medium text-gray-400">Metric</th>
+                      <th className="text-right p-4 text-xs font-medium text-gray-400">Current</th>
+                      <th className="text-right p-4 text-xs font-medium text-gray-400">Previous</th>
+                      <th className="text-right p-4 text-xs font-medium text-gray-400">Change</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -158,12 +158,12 @@ export default function Reports() {
                       const prev = totals.previous[r.key];
                       const change = pctChange(curr, prev);
                       return (
-                        <tr key={r.key} className="border-b border-gray-50 hover:bg-brand-blush/10 transition-colors">
-                          <td className="p-4 font-semibold text-brand-black">{r.label}</td>
-                          <td className="p-4 text-right font-medium text-brand-black">{formatNum(curr)}</td>
+                        <tr key={r.key} className="border-b border-gray-50">
+                          <td className="p-4 font-medium">{r.label}</td>
+                          <td className="p-4 text-right">{formatNum(curr)}</td>
                           <td className="p-4 text-right text-gray-400">{formatNum(prev)}</td>
                           <td className="p-4 text-right">
-                            <span className={`text-xs font-semibold ${change > 0 ? 'text-green-600' : change < 0 ? 'text-red-500' : 'text-gray-400'}`}>
+                            <span className={`text-xs font-medium ${change > 0 ? 'text-green-600' : change < 0 ? 'text-red-500' : 'text-gray-400'}`}>
                               {change > 0 ? '+' : ''}{change.toFixed(1)}%
                             </span>
                           </td>
@@ -176,32 +176,32 @@ export default function Reports() {
             </div>
 
             {/* Top Products */}
-            <div className="bg-white border border-brand-border overflow-hidden shadow-sm mb-8">
-              <div className="p-5 border-b border-brand-border bg-brand-blush/20">
-                <h3 className="text-sm font-bold text-brand-black">Top Products</h3>
+            <div className="bg-brand-cream border border-gray-100 overflow-hidden mb-8">
+              <div className="p-5 border-b border-gray-100">
+                <h3 className="text-sm font-semibold">Top Products</h3>
               </div>
               {topProducts.length === 0 ? (
-                <div className="p-8 text-center text-gray-400 text-sm">No data</div>
+                <div className="p-8 text-center text-gray-300 text-sm">No data</div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-brand-border bg-brand-blush/30">
-                        <th className="text-left p-4 text-xs font-semibold uppercase text-brand-black/70">#</th>
-                        <th className="text-left p-4 text-xs font-semibold uppercase text-brand-black/70">Product</th>
-                        <th className="text-right p-4 text-xs font-semibold uppercase text-brand-black/70">Views</th>
-                        <th className="text-right p-4 text-xs font-semibold uppercase text-brand-black/70">Cart</th>
-                        <th className="text-right p-4 text-xs font-semibold uppercase text-brand-black/70">Rate</th>
+                      <tr className="border-b border-gray-100">
+                        <th className="text-left p-4 text-xs font-medium text-gray-400">#</th>
+                        <th className="text-left p-4 text-xs font-medium text-gray-400">Product</th>
+                        <th className="text-right p-4 text-xs font-medium text-gray-400">Views</th>
+                        <th className="text-right p-4 text-xs font-medium text-gray-400">Cart</th>
+                        <th className="text-right p-4 text-xs font-medium text-gray-400">Rate</th>
                       </tr>
                     </thead>
                     <tbody>
                       {topProducts.map((p, i) => (
-                        <tr key={p.id} className="border-b border-gray-50 hover:bg-brand-blush/10 transition-colors">
-                          <td className="p-4 text-brand-gold font-semibold">{i + 1}</td>
-                          <td className="p-4 font-semibold text-brand-black truncate max-w-[200px]">{p.productName || `Product ${p.id.slice(-6)}`}</td>
-                          <td className="p-4 text-right font-medium text-brand-black">{formatNum(p.views)}</td>
-                          <td className="p-4 text-right font-medium text-brand-black">{formatNum(p.cartAdds)}</td>
-                          <td className="p-4 text-right text-brand-burgundy font-semibold">{p.views > 0 ? ((p.cartAdds / p.views) * 100).toFixed(1) : '0.0'}%</td>
+                        <tr key={p.id} className="border-b border-gray-50">
+                          <td className="p-4 text-gray-300">{i + 1}</td>
+                          <td className="p-4 font-medium truncate max-w-[200px]">{p.productName || `Product ${p.id.slice(-6)}`}</td>
+                          <td className="p-4 text-right">{formatNum(p.views)}</td>
+                          <td className="p-4 text-right">{formatNum(p.cartAdds)}</td>
+                          <td className="p-4 text-right text-gray-500">{p.views > 0 ? ((p.cartAdds / p.views) * 100).toFixed(1) : '0.0'}%</td>
                         </tr>
                       ))}
                     </tbody>
@@ -211,32 +211,32 @@ export default function Reports() {
             </div>
 
             {/* Daily Breakdown */}
-            <div className="bg-white border border-brand-border overflow-hidden shadow-sm">
-              <div className="p-5 border-b border-brand-border flex justify-between items-center bg-brand-blush/20">
-                <h3 className="text-sm font-bold text-brand-black">Daily Breakdown</h3>
-                <button onClick={handleExportDaily} className="text-xs text-brand-gold hover:text-brand-burgundy transition-colors font-semibold">Export CSV</button>
+            <div className="bg-brand-cream border border-gray-100 overflow-hidden">
+              <div className="p-5 border-b border-gray-100 flex justify-between items-center">
+                <h3 className="text-sm font-semibold">Daily Breakdown</h3>
+                <button onClick={handleExportDaily} className="text-xs text-gray-400 hover:text-gray-600 transition-colors font-medium">Export CSV</button>
               </div>
               <div className="overflow-x-auto max-h-96 overflow-y-auto">
                 <table className="w-full text-sm">
-                  <thead className="sticky top-0 bg-brand-cream border-b border-brand-border">
-                    <tr>
-                      <th className="text-left p-3 text-xs font-semibold uppercase text-brand-black/70">Date</th>
-                      <th className="text-right p-3 text-xs font-semibold uppercase text-brand-black/70">Views</th>
-                      <th className="text-right p-3 text-xs font-semibold uppercase text-brand-black/70">Prod</th>
-                      <th className="text-right p-3 text-xs font-semibold uppercase text-brand-black/70">Cart</th>
-                      <th className="text-right p-3 text-xs font-semibold uppercase text-brand-black/70">Total</th>
+                  <thead className="sticky top-0 bg-brand-cream">
+                    <tr className="border-b border-gray-100">
+                      <th className="text-left p-3 text-xs font-medium text-gray-400">Date</th>
+                      <th className="text-right p-3 text-xs font-medium text-gray-400">Views</th>
+                      <th className="text-right p-3 text-xs font-medium text-gray-400">Prod</th>
+                      <th className="text-right p-3 text-xs font-medium text-gray-400">Cart</th>
+                      <th className="text-right p-3 text-xs font-medium text-gray-400">Total</th>
                     </tr>
                   </thead>
                   <tbody>
                     {Object.entries(currentData).sort(([a], [b]) => a.localeCompare(b)).map(([date, day]) => {
                       const total = (day.pageViews || 0) + (day.productViews || 0) + (day.addToCart || 0) + (day.checkouts || 0);
                       return (
-                        <tr key={date} className="border-b border-gray-50 hover:bg-brand-blush/10 transition-colors">
-                          <td className="p-3 text-brand-black font-medium">{new Date(date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</td>
-                          <td className="p-3 text-right text-gray-600">{day.pageViews || 0}</td>
-                          <td className="p-3 text-right text-gray-600">{day.productViews || 0}</td>
-                          <td className="p-3 text-right text-gray-600">{day.addToCart || 0}</td>
-                          <td className="p-3 text-right font-bold text-brand-black">{total}</td>
+                        <tr key={date} className="border-b border-gray-50">
+                          <td className="p-3 text-gray-500">{new Date(date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</td>
+                          <td className="p-3 text-right">{day.pageViews || 0}</td>
+                          <td className="p-3 text-right">{day.productViews || 0}</td>
+                          <td className="p-3 text-right">{day.addToCart || 0}</td>
+                          <td className="p-3 text-right font-medium">{total}</td>
                         </tr>
                       );
                     })}

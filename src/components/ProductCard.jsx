@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const tagColors = {
-  sale: { bg: "#4A0E17", text: "#FAF7F2" },
-  new: { bg: "#38070F", text: "#FAF7F2" },
-  bestseller: { bg: "#C59B58", text: "#38070F" },
-  hot: { bg: "#D495A0", text: "#38070F" },
+  sale: { bg: "#C08AA5", text: "#ffffff" },
+  new: { bg: "#6E4E5C", text: "#F7F3EE" },
+  bestseller: { bg: "#D9BEA6", text: "#6E4E5C" },
+  hot: { bg: "#EFC3D4", text: "#6E4E5C" },
 };
 
 function getTag(product) {
@@ -41,7 +41,7 @@ export default function ProductCard({ product, onAddToCart, isFavorite, onToggle
         {onToggleFavorite && (
           <button
             onClick={(e) => { e.preventDefault(); onToggleFavorite(product); }}
-            className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-brand-cream/90 hover:bg-brand-cream text-brand-gold hover:text-brand-burgundy rounded-full shadow-sm transition-colors"
+            className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-brand-cream/80 hover:bg-brand-cream rounded-full transition-colors"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill={isFavorite ? "currentColor" : "none"} stroke="currentColor" strokeWidth={2}>
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
@@ -60,11 +60,10 @@ export default function ProductCard({ product, onAddToCart, isFavorite, onToggle
               <button
                 key={idx}
                 onMouseEnter={() => setSelectedImage(img)}
-                className={`w-8 h-8 rounded overflow-hidden border transition-all ${
-                  selectedImage === img
-                    ? "border-brand-burgundy"
-                    : "border-brand-border hover:border-brand-gold"
-                }`}
+                className={`w-8 h-8 rounded overflow-hidden border transition-all ${selectedImage === img
+                    ? "border-brand-black"
+                    : "border-gray-200 hover:border-gray-400"
+                  }`}
               >
                 <img src={img} alt="" className="w-full h-full object-cover" />
               </button>
@@ -76,15 +75,15 @@ export default function ProductCard({ product, onAddToCart, isFavorite, onToggle
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <Link to={`/product/${product.id}`}>
-            <h3 className="text-sm font-semibold truncate text-brand-black hover:text-brand-burgundy transition-colors">
+            <h3 className="text-sm font-medium truncate hover:underline">
               {product.name}
             </h3>
           </Link>
-          <p className="text-sm font-bold text-brand-burgundy">Rs. {product.price?.toLocaleString()}</p>
+          <p className="text-sm text-gray-500">Rs. {product.price}</p>
         </div>
         <button
           onClick={() => onAddToCart(product)}
-          className="shrink-0 w-9 h-9 flex items-center justify-center border border-brand-border rounded-full text-brand-black hover:bg-brand-burgundy hover:text-white hover:border-brand-burgundy transition-all shadow-sm"
+          className="shrink-0 w-9 h-9 flex items-center justify-center border border-gray-200 rounded-full hover:bg-brand-black hover:text-brand-cream hover:border-brand-black transition-all"
           title="Add to cart"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

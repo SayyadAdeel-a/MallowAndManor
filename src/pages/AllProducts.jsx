@@ -83,9 +83,9 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
             placeholder="Search products..."
             value={searchTerm}
             onChange={(e) => handleFilterChange({ search: e.target.value })}
-            className="w-full px-4 py-2.5 bg-white border border-brand-border text-brand-black text-sm focus:outline-none focus:border-brand-gold transition-colors shadow-sm"
+            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 text-sm focus:outline-none focus:border-brand-gold transition-colors"
           />
-          <svg className="absolute right-3 top-3 w-4 h-4 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="absolute right-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
@@ -94,9 +94,8 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
         <div className="flex gap-1 overflow-x-auto">
           <button
             onClick={() => handleFilterChange({ category: "all" })}
-            className={`px-4 py-2 text-xs font-semibold tracking-wider uppercase whitespace-nowrap transition-colors rounded-sm shadow-sm ${
-              selectedCategory === "all" ? "bg-brand-burgundy text-white" : "text-brand-black/70 hover:text-brand-burgundy hover:bg-brand-blush bg-white border border-brand-border/60"
-            }`}
+            className={`px-4 py-2 text-xs font-medium tracking-wider uppercase whitespace-nowrap transition-colors ${selectedCategory === "all" ? "bg-brand-black text-brand-cream" : "text-gray-500 hover:text-brand-dark"
+              }`}
           >
             All
           </button>
@@ -104,9 +103,8 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
             <button
               key={cat}
               onClick={() => handleFilterChange({ category: cat })}
-              className={`px-4 py-2 text-xs font-semibold tracking-wider uppercase whitespace-nowrap transition-colors rounded-sm shadow-sm ${
-                selectedCategory === cat ? "bg-brand-burgundy text-white" : "text-brand-black/70 hover:text-brand-burgundy hover:bg-brand-blush bg-white border border-brand-border/60"
-              }`}
+              className={`px-4 py-2 text-xs font-medium tracking-wider uppercase whitespace-nowrap transition-colors ${selectedCategory === cat ? "bg-brand-black text-brand-cream" : "text-gray-500 hover:text-brand-dark"
+                }`}
             >
               {cat}
             </button>
@@ -117,7 +115,7 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
         <select
           value={sortBy}
           onChange={(e) => handleFilterChange({ sort: e.target.value })}
-          className="px-4 py-2 bg-white border border-brand-border text-sm focus:outline-none focus:border-brand-gold text-brand-black shadow-sm"
+          className="px-4 py-2 bg-gray-50 border border-gray-200 text-sm focus:outline-none"
         >
           <option value="latest">Latest</option>
           <option value="price-low">Price: Low to High</option>
@@ -128,7 +126,7 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
       {/* Grid */}
       {loading ? (
         <div className="text-center py-20">
-          <div className="w-6 h-6 border-2 border-brand-border border-t-brand-gold rounded-full animate-spin mx-auto" />
+          <div className="w-6 h-6 border-2 border-gray-300 border-t-brand-dark rounded-full animate-spin mx-auto" />
         </div>
       ) : products.length > 0 ? (
         <>
@@ -150,7 +148,7 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
               <button
                 onClick={() => handlePageChange(page - 1)}
                 disabled={page === 1}
-                className="px-3 py-2 text-sm font-medium border border-brand-border hover:border-brand-gold hover:text-brand-burgundy disabled:opacity-30 disabled:cursor-not-allowed transition-colors bg-white shadow-sm"
+                className="px-3 py-2 text-sm font-medium border border-gray-200 hover:border-brand-gold disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
               >
                 ←
               </button>
@@ -169,11 +167,10 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
                   <button
                     key={pageNum}
                     onClick={() => handlePageChange(pageNum)}
-                    className={`w-10 h-10 text-sm font-semibold transition-colors shadow-sm ${
-                      page === pageNum
-                        ? "bg-brand-burgundy text-white"
-                        : "bg-white border border-brand-border text-brand-black hover:border-brand-gold hover:text-brand-burgundy"
-                    }`}
+                    className={`w-10 h-10 text-sm font-medium transition-colors ${page === pageNum
+                        ? "bg-brand-black text-brand-cream"
+                        : "border border-gray-200 hover:border-brand-gold"
+                      }`}
                   >
                     {pageNum}
                   </button>
@@ -182,7 +179,7 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
               <button
                 onClick={() => handlePageChange(page + 1)}
                 disabled={page === totalPages}
-                className="px-3 py-2 text-sm font-medium border border-brand-border hover:border-brand-gold hover:text-brand-burgundy disabled:opacity-30 disabled:cursor-not-allowed transition-colors bg-white shadow-sm"
+                className="px-3 py-2 text-sm font-medium border border-gray-200 hover:border-brand-gold disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
               >
                 →
               </button>

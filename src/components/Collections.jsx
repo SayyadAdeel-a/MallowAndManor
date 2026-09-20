@@ -52,10 +52,10 @@ export default function Collections({ onCategoryClick }) {
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
             </div>
-            <h3 className="text-sm font-semibold tracking-wider uppercase mb-1 text-brand-black group-hover:text-brand-gold transition-colors">
+            <h3 className="text-sm font-semibold tracking-wider uppercase mb-1">
               {category.name}
             </h3>
-            <p className="text-xs text-gray-500">{category.tagline}</p>
+            <p className="text-xs text-gray-400">{category.tagline}</p>
           </div>
         ))}
       </div>

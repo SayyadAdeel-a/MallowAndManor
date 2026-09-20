@@ -85,7 +85,7 @@ export default function About() {
       {/* CTA */}
       <section className="py-20 px-6 lg:px-8 max-w-6xl mx-auto">
         <div className="bg-brand-black text-brand-cream py-16 px-8 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">Join the Inner Circle</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">Join the Inner Circle</h2>
           <p className="text-brand-cream/50 text-sm max-w-md mx-auto mb-8">
             Experience luxury redefined. Every order handled with personal care.
           </p>
