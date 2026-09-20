@@ -125,10 +125,10 @@ export default function AdminDashboard() {
     const checkAuth = async () => {
       try {
         const u = await getCurrentUser();
-        if (!u || !u.isAdmin) { navigate("/login"); return; }
+        if (u.error || !u._id) { navigate("/admin/login"); return; }
         setUser(u);
         loadAll();
-      } catch { navigate("/login"); }
+      } catch { navigate("/admin/login"); }
     };
     checkAuth();
   }, [navigate]);
@@ -248,7 +248,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-brand-cream">
-      <AdminHeader user={user} />
+      <AdminHeader userEmail={user.email} />
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-brand-burgundy font-display">Admin Dashboard</h1>

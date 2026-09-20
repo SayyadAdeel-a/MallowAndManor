@@ -7,7 +7,7 @@ export default function Contact() {
 
   useEffect(() => {
     fetchSettings().then(s => setContact(s?.contact)).catch(() => {});
-  }, {});
+  }, []);
 
   const c = contact || {};
   const faqs = c.faqs?.length ? c.faqs : [
