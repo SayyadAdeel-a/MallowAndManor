@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { fetchProducts } from "../lib/api";
 import ProductCard from "../components/ProductCard";
 import { SkeletonGrid, ErrorState } from "../components/Skeletons";
+import AnimatedIcon, { ICONS } from "../components/AnimatedIcon";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -88,9 +89,12 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
             onChange={(e) => handleFilterChange({ search: e.target.value })}
             className="w-full px-4 py-2.5 bg-brand-blush/30 border border-brand-border text-brand-wine-dark placeholder:text-brand-wine-dark/40 text-sm focus:outline-none focus:border-brand-gold transition-colors"
           />
-          <svg className="absolute right-3 top-3 w-4 h-4 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
+          <AnimatedIcon
+            path={ICONS.search}
+            animation="none"
+            className="absolute right-3 top-3 w-4 h-4 text-brand-gold"
+            strokeWidth={2}
+          />
         </div>
 
         {/* Category tabs */}
@@ -195,9 +199,12 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
         </>
       ) : (
         <div className="text-center py-20">
-          <svg className="w-12 h-12 mx-auto mb-4 text-brand-wine-dark/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
+          <AnimatedIcon
+            path={ICONS.search}
+            animation="pulse"
+            className="w-12 h-12 mx-auto mb-4 text-brand-wine-dark/20"
+            strokeWidth={1.5}
+          />
           <p className="text-brand-wine-dark/60 text-sm mb-2">No products found.</p>
           <p className="text-brand-wine-dark/40 text-xs mb-4">Try adjusting your search or filter.</p>
           <button

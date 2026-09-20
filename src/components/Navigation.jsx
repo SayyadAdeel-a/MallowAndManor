@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import AnimatedIcon, { ICONS } from "./AnimatedIcon";
 
 export default function Navigation({ cartCount, favCount }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -78,10 +79,13 @@ export default function Navigation({ cartCount, favCount }) {
               </button>
             </div>
 
-            <Link to="/favorites" className="relative p-1 hover:opacity-80 transition-opacity" style={{ color: '#D495A0' }}>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
+            <Link to="/favorites" className="relative p-1 hover:opacity-80 transition-opacity">
+              <AnimatedIcon
+                path={ICONS.heart}
+                animation="beat"
+                className="w-5 h-5 text-brand-pink"
+                strokeWidth={1.5}
+              />
               {favCount > 0 && (
                 <span className="absolute -top-1 -right-1 text-[8px] rounded-full w-3.5 h-3.5 flex items-center justify-center font-bold" style={{ backgroundColor: '#C59B58', color: '#340910' }}>
                   {favCount}
@@ -89,10 +93,13 @@ export default function Navigation({ cartCount, favCount }) {
               )}
             </Link>
 
-            <Link to="/cart" className="relative p-1 hover:opacity-80 transition-opacity" style={{ color: '#4A0E17' }}>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-              </svg>
+            <Link to="/cart" className="relative p-1 hover:opacity-80 transition-opacity">
+              <AnimatedIcon
+                path={ICONS.bag}
+                animation="float"
+                className="w-5 h-5 text-brand-burgundy"
+                strokeWidth={1.5}
+              />
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 text-[8px] rounded-full w-3.5 h-3.5 flex items-center justify-center font-bold" style={{ backgroundColor: '#C59B58', color: '#340910' }}>
                   {cartCount}

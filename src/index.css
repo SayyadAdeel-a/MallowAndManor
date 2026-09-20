@@ -69,3 +69,8 @@ html {
   background: #D495A0;
   border-radius: 3px;
 }
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}

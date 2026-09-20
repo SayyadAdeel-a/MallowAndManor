@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { trackCheckout } from "../lib/analytics";
+import AnimatedIcon, { ICONS } from "../components/AnimatedIcon";
 
 export default function Cart({ cart, removeFromCart, updateQuantity }) {
   const navigate = useNavigate();
@@ -66,9 +67,13 @@ Thank you.`;
                     onClick={() => removeFromCart(item.id)}
                     className="text-brand-wine-dark/40 hover:text-brand-burgundy transition-colors shrink-0"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+                    <AnimatedIcon
+                      path={ICONS.close}
+                      animation="none"
+                      hoverAnimation="spin"
+                      className="w-4 h-4"
+                      strokeWidth={1.5}
+                    />
                   </button>
                 </div>
                 <div className="flex justify-between items-center mt-3">

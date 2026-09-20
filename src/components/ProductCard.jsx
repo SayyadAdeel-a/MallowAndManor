@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import AnimatedIcon, { ICONS } from "./AnimatedIcon";
 
 const tagColors = {
   sale: { bg: "#4A0E17", text: "#ffffff" },
@@ -43,9 +44,13 @@ export default function ProductCard({ product, onAddToCart, isFavorite, onToggle
             onClick={(e) => { e.preventDefault(); onToggleFavorite(product); }}
             className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-brand-cream/90 hover:bg-brand-cream text-brand-gold hover:text-brand-burgundy rounded-full transition-colors shadow-sm"
           >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill={isFavorite ? "currentColor" : "none"} stroke="currentColor" strokeWidth={2}>
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-            </svg>
+            <AnimatedIcon
+              path={isFavorite ? ICONS.heartFilled : ICONS.heart}
+              animation={isFavorite ? "beat" : "none"}
+              className="w-4 h-4"
+              fill={isFavorite ? "currentColor" : "none"}
+              strokeWidth={2}
+            />
           </button>
         )}
       </Link>
@@ -86,9 +91,13 @@ export default function ProductCard({ product, onAddToCart, isFavorite, onToggle
           className="shrink-0 w-9 h-9 flex items-center justify-center border border-brand-border rounded-full hover:bg-brand-burgundy hover:text-white hover:border-brand-burgundy transition-all shadow-sm"
           title="Add to cart"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
-          </svg>
+          <AnimatedIcon
+            path={ICONS.plus}
+            animation="none"
+            hoverAnimation="spin"
+            className="w-4 h-4"
+            strokeWidth={1.5}
+          />
         </button>
       </div>
     </div>

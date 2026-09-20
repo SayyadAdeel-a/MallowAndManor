@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { trackProductView } from "../lib/analytics";
 import { fetchProductById } from "../lib/api";
+import AnimatedIcon, { ICONS } from "../components/AnimatedIcon";
 
 export default function ProductDetail({ products, handleAddToCart, toggleFavorite, favorites }) {
   const { id } = useParams();
@@ -149,9 +150,13 @@ Thank you.`;
             <button onClick={() => toggleFavorite(product)}
               className={`shrink-0 w-10 h-10 flex items-center justify-center border rounded-full transition-colors ${isFav ? 'border-brand-rose bg-brand-blush text-brand-rose' : 'border-brand-border text-brand-dark/40 hover:border-brand-gold hover:text-brand-gold'}`}
               title={isFav ? 'Remove from Wishlist' : 'Add to Wishlist'}>
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill={isFav ? "currentColor" : "none"} stroke="currentColor" strokeWidth={2}>
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-              </svg>
+              <AnimatedIcon
+                path={isFav ? ICONS.heartFilled : ICONS.heart}
+                animation={isFav ? "beat" : "none"}
+                className="w-5 h-5"
+                fill={isFav ? "currentColor" : "none"}
+                strokeWidth={2}
+              />
             </button>
           </div>
 
@@ -201,9 +206,12 @@ Thank you.`;
           <div className="border-t border-gray-100 pt-6 space-y-3">
             {["Free shipping on orders over Rs. 5,000", "Handcrafted with premium materials", "Nationwide delivery across Pakistan"].map((feat, i) => (
               <div key={i} className="flex items-center gap-3 text-sm text-gray-500">
-                <svg className="w-4 h-4 text-brand-gold shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
+                <AnimatedIcon
+                  path={ICONS.check}
+                  animation="none"
+                  className="w-4 h-4 text-brand-gold shrink-0"
+                  strokeWidth={2}
+                />
                 {feat}
               </div>
             ))}

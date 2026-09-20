@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { fetchProducts } from "../lib/api";
 import ProductCard from "./ProductCard";
 import { SkeletonGrid, ErrorState } from "./Skeletons";
+import AnimatedIcon, { ICONS } from "./AnimatedIcon";
 
 export default function ProductsSection({ onAddToCart, favorites = [], onToggleFavorite }) {
   const [products, setProducts] = useState([]);
@@ -84,9 +85,12 @@ export default function ProductsSection({ onAddToCart, favorites = [], onToggleF
         </div>
       ) : (
         <div className="text-center py-20">
-          <svg className="w-12 h-12 mx-auto mb-4 text-brand-wine-dark/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-          </svg>
+          <AnimatedIcon
+            path={ICONS.package}
+            animation="float"
+            className="w-12 h-12 mx-auto mb-4 text-brand-wine-dark/20"
+            strokeWidth={1.5}
+          />
           <p className="text-brand-wine-dark/60 text-sm mb-4">No products in this category yet.</p>
           <button
             onClick={() => setSelectedCategory("all")}

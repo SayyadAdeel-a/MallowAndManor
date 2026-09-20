@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import AnimatedIcon, { ICONS } from "./AnimatedIcon";
 
 export default function BackToTop() {
   const [isVisible, setIsVisible] = useState(false);
@@ -17,9 +18,12 @@ export default function BackToTop() {
       className="fixed bottom-6 right-6 w-11 h-11 bg-brand-burgundy text-brand-cream border border-brand-gold/60 shadow-lg hover:bg-brand-wine-dark hover:scale-105 transition-all rounded-full flex items-center justify-center z-50"
       aria-label="Back to top"
     >
-      <svg className="w-4 h-4 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" />
-      </svg>
+      <AnimatedIcon
+        path={ICONS.chevronUp}
+        animation="float"
+        className="w-4 h-4 text-brand-gold"
+        strokeWidth={2.5}
+      />
     </button>
   );
 }
