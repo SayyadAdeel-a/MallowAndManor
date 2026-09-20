@@ -1,5 +1,6 @@
 import connectDB from './_lib/db.js';
 import { verifyToken } from './_lib/auth.js';
+import { handleCors } from './_lib/cors.js';
 import Product from './_lib/models/Product.js';
 import Category from './_lib/models/Category.js';
 
@@ -7,17 +8,8 @@ import Category from './_lib/models/Category.js';
 let productCountCache = { count: null, timestamp: 0 };
 const CACHE_TTL = 60 * 1000; // 1 minute
 
-async function getProductCount() {
-  const now = Date.now();
-  if (productCountCache.count !== null && now - productCountCache.timestamp < CACHE_TTL) {
-    return productCountCache.count;
-  }
-  const count = await Product.countDocuments();
-  productCountCache = { count, timestamp: now };
-  return count;
-}
-
 export default async function handler(req, res) {
+  if (handleCors(req, res)) return;
   try {
     await connectDB();
 
@@ -84,8 +76,25 @@ export default async function handler(req, res) {
     if (!user) return res.status(401).json({ error: 'Unauthorized' });
 
     if (req.method === 'POST' && !req.query?.categories) {
-      const product = await Product.create(req.body);
-      productCountCache.count = null; // Invalidate cache
+      const { name, price, category } = req.body;
+      if (!name || typeof name !== 'string' || !name.trim()) {
+        return res.status(400).json({ error: 'Product name is required' });
+      }
+      if (price === undefined || typeof price !== 'number' || price < 0) {
+        return res.status(400).json({ error: 'Valid price is required' });
+      }
+      if (!category || typeof category !== 'string') {
+        return res.status(400).json({ error: 'Category is required' });
+      }
+      const product = await Product.create({
+        name: name.trim(),
+        price,
+        category: category.trim(),
+        mainImage: req.body.mainImage || '',
+        thumbnails: Array.isArray(req.body.thumbnails) ? req.body.thumbnails.slice(0, 5) : [],
+        description: typeof req.body.description === 'string' ? req.body.description.trim() : '',
+      });
+      productCountCache.count = null;
       return res.status(201).json(product);
     }
 

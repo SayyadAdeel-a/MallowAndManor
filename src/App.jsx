@@ -21,17 +21,28 @@ import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import BackToTop from "./components/BackToTop";
 
+function NotFound() {
+  return (
+    <div className="max-w-7xl mx-auto px-6 py-32 text-center">
+      <h1 className="text-6xl font-bold text-brand-burgundy mb-4">404</h1>
+      <p className="text-brand-wine-dark/60 text-lg mb-8">Page not found</p>
+      <a href="/" className="inline-block px-8 py-3 bg-brand-burgundy text-brand-cream text-sm font-semibold tracking-wider uppercase hover:bg-brand-wine-dark transition-colors">
+        Back to Store
+      </a>
+    </div>
+  );
+}
+
 function App() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [productStats, setProductStats] = useState({});
-  const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState(() => {
-    const saved = sessionStorage.getItem("cart");
+    const saved = localStorage.getItem("honeybee_cart");
     return saved ? JSON.parse(saved) : [];
   });
   const [favorites, setFavorites] = useState(() => {
-    const saved = sessionStorage.getItem("favorites");
+    const saved = localStorage.getItem("honeybee_favorites");
     return saved ? JSON.parse(saved) : [];
   });
 
@@ -67,7 +78,6 @@ function App() {
           if (now - prodCache.timestamp < 300000 && now - catCache.timestamp < 300000) {
             setProducts(prodCache.data);
             setCategories(catCache.data);
-            setLoading(false);
             return;
           }
         }
@@ -105,8 +115,6 @@ function App() {
         }));
       } catch (err) {
         console.error("Error loading data from API:", err);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -114,11 +122,11 @@ function App() {
   }, []);
 
   useEffect(() => {
-    sessionStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem("honeybee_cart", JSON.stringify(cart));
   }, [cart]);
 
   useEffect(() => {
-    sessionStorage.setItem("favorites", JSON.stringify(favorites));
+    localStorage.setItem("honeybee_favorites", JSON.stringify(favorites));
   }, [favorites]);
 
   const handleAddToCart = (product, quantity = 1) => {
@@ -168,7 +176,6 @@ function App() {
         <Navigation
           cartCount={cart.length}
           favCount={favorites.length}
-          categories={categories}
         />
 
         <main>
@@ -241,6 +248,7 @@ function App() {
             <Route path="/admin/analytics" element={<AnalyticsDashboard />} />
             <Route path="/admin/reports" element={<Reports />} />
             <Route path="/admin/posts" element={<AdminPosts />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
 

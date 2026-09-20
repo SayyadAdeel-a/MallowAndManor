@@ -1,19 +1,30 @@
 import { useState, useEffect } from "react";
 import { fetchProducts } from "../lib/api";
 import ProductCard from "./ProductCard";
+import { SkeletonGrid, ErrorState } from "./Skeletons";
 
 export default function ProductsSection({ onAddToCart, favorites = [], onToggleFavorite }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("all");
 
-  useEffect(() => {
+  const loadProducts = () => {
+    setLoading(true);
+    setError(null);
     fetchProducts({ page: 1, limit: 8, sort: "latest" })
       .then((data) => {
         setProducts((data?.products || []).map(p => ({ ...p, id: p._id })));
       })
-      .catch(console.error)
+      .catch((err) => {
+        console.error(err);
+        setError("Failed to load products");
+      })
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    loadProducts();
   }, []);
 
   const filteredProducts = (products || []).filter(
@@ -44,7 +55,7 @@ export default function ProductsSection({ onAddToCart, favorites = [], onToggleF
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`px-4 py-2 text-xs font-semibold tracking-wider uppercase transition-colors whitespace-nowrap rounded-sm ${selectedCategory === cat.id
+              className={`px-5 py-2 text-xs font-semibold tracking-wider uppercase transition-colors whitespace-nowrap rounded-full ${selectedCategory === cat.id
                   ? "bg-brand-burgundy text-brand-cream shadow-sm"
                   : "text-brand-wine-dark/70 hover:text-brand-burgundy hover:bg-brand-blush/40"
                 }`}
@@ -56,9 +67,9 @@ export default function ProductsSection({ onAddToCart, favorites = [], onToggleF
       </div>
 
       {loading ? (
-        <div className="text-center py-20">
-          <div className="w-6 h-6 border-2 border-brand-border border-t-brand-burgundy rounded-full animate-spin mx-auto" />
-        </div>
+        <SkeletonGrid count={8} />
+      ) : error ? (
+        <ErrorState message={error} onRetry={loadProducts} />
       ) : filteredProducts.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredProducts.map((product) => (
@@ -73,9 +84,16 @@ export default function ProductsSection({ onAddToCart, favorites = [], onToggleF
         </div>
       ) : (
         <div className="text-center py-20">
-          <p className="text-brand-wine-dark/60">
-            No products found. Check back soon for new arrivals.
-          </p>
+          <svg className="w-12 h-12 mx-auto mb-4 text-brand-wine-dark/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+          </svg>
+          <p className="text-brand-wine-dark/60 text-sm mb-4">No products in this category yet.</p>
+          <button
+            onClick={() => setSelectedCategory("all")}
+            className="text-sm font-medium text-brand-burgundy underline hover:text-brand-gold transition-colors"
+          >
+            View all products
+          </button>
         </div>
       )}
 

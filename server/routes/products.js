@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import Product from '../models/Product.js';
 import Category from '../models/Category.js';
-import { authenticate } from '../middleware/auth.js';
+import { authenticate, verifyAuth } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -25,7 +25,7 @@ router.get('/', async (req, res, next) => {
 
     // Admin: all products
     if (admin === 'true') {
-      const user = authenticate(req, res);
+      const user = verifyAuth(req);
       if (!user) return res.status(401).json({ error: 'Unauthorized' });
       const products = await Product.find().sort({ createdAt: -1 });
       return res.json({ products, total: products.length });
@@ -69,11 +69,35 @@ router.post('/', authenticate, async (req, res, next) => {
     const { categories } = req.query;
 
     if (categories === 'true') {
-      const category = await Category.create(req.body);
+      const { slug, name } = req.body;
+      if (!slug || typeof slug !== 'string' || !slug.trim()) {
+        return res.status(400).json({ error: 'Category slug is required' });
+      }
+      if (!name || typeof name !== 'string' || !name.trim()) {
+        return res.status(400).json({ error: 'Category name is required' });
+      }
+      const category = await Category.create({ slug: slug.trim(), name: name.trim(), icon: req.body.icon || '' });
       return res.status(201).json(category);
     }
 
-    const product = await Product.create(req.body);
+    const { name, price, category } = req.body;
+    if (!name || typeof name !== 'string' || !name.trim()) {
+      return res.status(400).json({ error: 'Product name is required' });
+    }
+    if (price === undefined || typeof price !== 'number' || price < 0) {
+      return res.status(400).json({ error: 'Valid price is required' });
+    }
+    if (!category || typeof category !== 'string') {
+      return res.status(400).json({ error: 'Category is required' });
+    }
+    const product = await Product.create({
+      name: name.trim(),
+      price,
+      category: category.trim(),
+      mainImage: req.body.mainImage || '',
+      thumbnails: Array.isArray(req.body.thumbnails) ? req.body.thumbnails.slice(0, 5) : [],
+      description: typeof req.body.description === 'string' ? req.body.description.trim() : '',
+    });
     res.status(201).json(product);
   } catch (err) { next(err); }
 });

@@ -1,14 +1,6 @@
+// Rate limiting for serverless (per-invocation only)
+// In production, use Redis or a dedicated rate-limiting service
 const loginAttempts = new Map();
-
-// Clean up old entries every 5 minutes
-setInterval(() => {
-  const now = Date.now();
-  for (const [key, record] of loginAttempts) {
-    if (now - record.firstAttempt > 30 * 60 * 1000) {
-      loginAttempts.delete(key);
-    }
-  }
-}, 5 * 60 * 1000);
 
 export const checkRateLimit = (req, maxAttempts = 5, windowMs = 15 * 60 * 1000) => {
   const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim()

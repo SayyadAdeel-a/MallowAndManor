@@ -23,7 +23,7 @@ export default function ProductCard({ product, onAddToCart, isFavorite, onToggle
   return (
     <div className="group">
       {/* Image */}
-      <Link to={`/product/${product.id}`} className="block relative aspect-[3/4] overflow-hidden mb-3 bg-gray-100">
+      <Link to={`/product/${product.id}`} className="block relative aspect-[3/4] overflow-hidden mb-3 bg-gray-100 rounded-2xl shadow-sm">
         <img
           src={selectedImage}
           alt={product.name}
@@ -32,7 +32,7 @@ export default function ProductCard({ product, onAddToCart, isFavorite, onToggle
         {/* Tag Badge */}
         {tag && (
           <span
-            className="absolute top-3 left-3 px-3 py-1 text-[10px] font-bold tracking-wider uppercase"
+            className="absolute top-3 left-3 px-3 py-1 text-[10px] font-bold tracking-wider uppercase rounded-full shadow-sm"
             style={{ backgroundColor: tagColors[tag.key].bg, color: tagColors[tag.key].text }}
           >
             {tag.label}
@@ -60,7 +60,7 @@ export default function ProductCard({ product, onAddToCart, isFavorite, onToggle
               <button
                 key={idx}
                 onMouseEnter={() => setSelectedImage(img)}
-                className={`w-8 h-8 rounded overflow-hidden border transition-all ${selectedImage === img
+                className={`w-8 h-8 rounded-xl overflow-hidden border transition-all ${selectedImage === img
                     ? "border-brand-burgundy ring-1 ring-brand-burgundy/50"
                     : "border-brand-border hover:border-brand-gold"
                   }`}

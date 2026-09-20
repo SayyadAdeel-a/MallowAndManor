@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { fetchPostBySlug } from "../lib/api";
 import { marked } from "marked";
+import DOMPurify from "dompurify";
 
 export default function BlogPost() {
   const { slug } = useParams();
@@ -18,13 +19,24 @@ export default function BlogPost() {
 
   const renderedContent = useMemo(() => {
     if (!post?.content) return '';
-    return marked(post.content, { breaks: true });
-  }, [post?.content]);
+    const html = marked(post.content, { breaks: true });
+    return DOMPurify.sanitize(html);
+  }, [post]);
 
   if (loading) {
     return (
-      <div className="flex justify-center py-32">
-        <div className="w-6 h-6 border-2 border-brand-border border-t-brand-burgundy rounded-full animate-spin" />
+      <div className="max-w-3xl mx-auto px-6 lg:px-8 py-16">
+        <div className="animate-pulse">
+          <div className="h-3 bg-brand-blush/40 rounded w-1/4 mb-8" />
+          <div className="aspect-[16/9] bg-brand-blush/40 rounded mb-8" />
+          <div className="h-4 bg-brand-blush/40 rounded w-1/3 mb-4" />
+          <div className="h-8 bg-brand-blush/40 rounded w-3/4 mb-4" />
+          <div className="space-y-3">
+            <div className="h-3 bg-brand-blush/40 rounded w-full" />
+            <div className="h-3 bg-brand-blush/40 rounded w-5/6" />
+            <div className="h-3 bg-brand-blush/40 rounded w-4/6" />
+          </div>
+        </div>
       </div>
     );
   }
@@ -32,21 +44,28 @@ export default function BlogPost() {
   if (!post) {
     return (
       <div className="max-w-3xl mx-auto px-6 py-32 text-center">
+        <svg className="w-16 h-16 mx-auto mb-4 text-brand-wine-dark/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+        </svg>
         <h1 className="text-2xl font-bold mb-2 text-brand-burgundy">Post not found</h1>
-        <p className="text-brand-wine-dark/60 text-sm mb-6">This story may have been removed.</p>
-        <Link to="/blog" className="text-sm font-medium text-brand-burgundy underline hover:text-brand-gold transition-colors">Back to Journal</Link>
+        <p className="text-brand-wine-dark/60 text-sm mb-6">This story may have been removed or is no longer available.</p>
+        <Link to="/blog" className="inline-block px-6 py-2 text-sm font-medium text-brand-burgundy border border-brand-border hover:border-brand-gold hover:text-brand-gold transition-colors">
+          Back to Journal
+        </Link>
       </div>
     );
   }
 
   return (
     <article className="max-w-3xl mx-auto px-6 lg:px-8 py-16">
-      <Link to="/blog" className="inline-flex items-center gap-1 text-sm text-brand-wine-dark/60 hover:text-brand-burgundy mb-8 transition-colors">
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
-        </svg>
-        Back to Journal
-      </Link>
+      {/* Breadcrumb */}
+      <nav className="flex items-center gap-2 text-sm text-brand-dark/50 mb-8">
+        <a href="/" className="hover:text-brand-burgundy transition-colors">Home</a>
+        <span>/</span>
+        <Link to="/blog" className="hover:text-brand-burgundy transition-colors">Journal</Link>
+        <span>/</span>
+        <span className="text-brand-burgundy truncate max-w-[300px]">{post.title}</span>
+      </nav>
 
       {post.featuredImage && (
         <div className="aspect-[16/9] overflow-hidden mb-8 bg-brand-cream border border-brand-border shadow-sm">

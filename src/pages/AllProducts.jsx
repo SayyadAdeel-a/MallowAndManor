@@ -1,18 +1,19 @@
 import { useState, useEffect, useCallback } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { fetchProducts } from "../lib/api";
 import ProductCard from "../components/ProductCard";
+import { SkeletonGrid, ErrorState } from "../components/Skeletons";
 
 const ITEMS_PER_PAGE = 12;
 
 export default function AllProducts({ handleAddToCart, toggleFavorite, favorites }) {
   const location = useLocation();
-  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("latest");
@@ -29,6 +30,7 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
 
   const loadProducts = useCallback(async () => {
     setLoading(true);
+    setError(null);
     try {
       const data = await fetchProducts({
         page,
@@ -42,6 +44,7 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
       setTotalPages(data.totalPages || 1);
     } catch (err) {
       console.error("Error loading products:", err);
+      setError("Failed to load products. Please try again.");
     }
     setLoading(false);
   }, [page, selectedCategory, searchTerm, sortBy]);
@@ -125,9 +128,9 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
 
       {/* Grid */}
       {loading ? (
-        <div className="text-center py-20">
-          <div className="w-6 h-6 border-2 border-brand-border border-t-brand-burgundy rounded-full animate-spin mx-auto" />
-        </div>
+        <SkeletonGrid count={12} />
+      ) : error ? (
+        <ErrorState message={error} onRetry={loadProducts} />
       ) : products.length > 0 ? (
         <>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -192,12 +195,16 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
         </>
       ) : (
         <div className="text-center py-20">
-          <p className="text-brand-wine-dark/60 mb-4">No products found.</p>
+          <svg className="w-12 h-12 mx-auto mb-4 text-brand-wine-dark/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <p className="text-brand-wine-dark/60 text-sm mb-2">No products found.</p>
+          <p className="text-brand-wine-dark/40 text-xs mb-4">Try adjusting your search or filter.</p>
           <button
             onClick={() => handleFilterChange({ category: "all", search: "" })}
             className="text-sm font-medium text-brand-burgundy underline hover:text-brand-gold transition-colors"
           >
-            Clear filters
+            Clear all filters
           </button>
         </div>
       )}

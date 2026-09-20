@@ -3,9 +3,11 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { verifyToken } from './_lib/auth.js';
 import { checkRateLimit, resetRateLimit } from './_lib/rateLimit.js';
+import { handleCors } from './_lib/cors.js';
 import User from './_lib/models/User.js';
 
 export default async function handler(req, res) {
+  if (handleCors(req, res)) return;
   try {
     await connectDB();
 

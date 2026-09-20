@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Navigation({ cartCount, favCount, categories }) {
+export default function Navigation({ cartCount, favCount }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
@@ -44,6 +44,9 @@ export default function Navigation({ cartCount, favCount, categories }) {
             <Link to="/about" className="text-xs font-semibold tracking-widest uppercase hover:text-brand-gold transition-colors" style={{ color: '#4A0E17' }}>
               Story
             </Link>
+            <Link to="/contact" className="text-xs font-semibold tracking-widest uppercase hover:text-brand-gold transition-colors" style={{ color: '#4A0E17' }}>
+              Contact
+            </Link>
           </div>
 
           {/* Logo - center */}
@@ -64,9 +67,15 @@ export default function Navigation({ cartCount, favCount, categories }) {
                 className="w-32 lg:w-48 px-3.5 py-1.5 rounded-full text-xs focus:outline-none transition-colors"
                 style={{ backgroundColor: '#F5E8EB', borderColor: '#EBDED5', color: '#340910', borderWidth: '1px' }}
               />
-              <svg className="absolute right-3 w-3.5 h-3.5" style={{ color: '#C59B58' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
+              <button
+                onClick={() => { if (searchTerm.trim()) { navigate(`/products?search=${encodeURIComponent(searchTerm.trim())}`); setSearchTerm(""); } }}
+                className="absolute right-2 p-1 rounded-full hover:opacity-80 transition-opacity"
+                aria-label="Search"
+              >
+                <svg className="w-3.5 h-3.5" style={{ color: '#C59B58' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </button>
             </div>
 
             <Link to="/favorites" className="relative p-1 hover:opacity-80 transition-opacity" style={{ color: '#D495A0' }}>
@@ -108,9 +117,18 @@ export default function Navigation({ cartCount, favCount, categories }) {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={handleSearch}
-              className="w-full px-4 py-2.5 rounded-lg text-sm focus:outline-none"
+              className="w-full px-4 py-2.5 rounded-full text-sm focus:outline-none"
               style={{ backgroundColor: '#F5E8EB', borderColor: '#EBDED5', color: '#340910', borderWidth: '1px' }}
             />
+            <button
+              onClick={() => { if (searchTerm.trim()) { navigate(`/products?search=${encodeURIComponent(searchTerm.trim())}`); setSearchTerm(""); setIsMobileMenuOpen(false); } }}
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1"
+              aria-label="Search"
+            >
+              <svg className="w-4 h-4" style={{ color: '#C59B58' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
           </div>
           <Link to="/products" onClick={() => setIsMobileMenuOpen(false)} className="block text-sm font-semibold tracking-wider uppercase" style={{ color: '#4A0E17' }}>
             Shop

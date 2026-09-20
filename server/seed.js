@@ -6,7 +6,7 @@ import User from './models/User.js';
 
 dotenv.config();
 
-await mongoose.connect(process.env.MONGODB_URI);
+await mongoose.connect(process.env.MONGODB_URI, { tls: true });
 
 // Seed categories
 const categories = [
@@ -21,10 +21,10 @@ for (const cat of categories) {
 }
 console.log('Categories seeded');
 
-// Seed admin users
+// Seed admin users (passwords from env vars, never hardcoded)
 const admins = [
-  { email: 'admin@honeybeelane.com', password: 'HoneybeeLane2026!@#' },
-  { email: 'marwashahwazirkhan@gmail.com', password: 'marwashahwazirkhanbusiness@1' },
+  { email: 'admin@honeybeelane.com', password: process.env.ADMIN_PASSWORD || 'changeme' },
+  { email: 'marwashahwazirkhan@gmail.com', password: process.env.ADMIN_PASSWORD_2 || 'changeme' },
 ];
 
 for (const admin of admins) {

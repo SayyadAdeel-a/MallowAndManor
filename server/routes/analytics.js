@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import Analytics from '../models/Analytics.js';
-import { authenticate } from '../middleware/auth.js';
+import { verifyAuth } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -26,35 +26,59 @@ router.get('/', async (req, res, next) => {
 
     // Admin: /api/analytics?admin=true - returns raw events
     if (admin === 'true') {
-      const user = authenticate(req, res);
+      const user = verifyAuth(req);
       if (!user) return res.status(401).json({ error: 'Unauthorized' });
       const events = await Analytics.find(dateFilter).sort({ createdAt: -1 }).limit(500);
       return res.json(events);
     }
 
-    // Stats: /api/analytics?days=N - aggregated data
-    const events = await Analytics.find({
+    // Stats: /api/analytics?days=N - aggregated data using MongoDB aggregation pipeline
+    const matchStage = {
       eventType: { $in: ['product_view', 'add_to_cart', 'page_view', 'checkout'] },
       ...dateFilter,
-    }).sort({ createdAt: 1 });
+    };
+
+    // Daily aggregation
+    const dailyPipeline = [
+      { $match: matchStage },
+      {
+        $group: {
+          _id: { date: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, eventType: "$eventType" },
+          count: { $sum: 1 },
+        },
+      },
+    ];
+    const dailyResults = await Analytics.aggregate(dailyPipeline);
+
+    const dailyMap = {};
+    dailyResults.forEach(r => {
+      const day = r._id.date;
+      if (!dailyMap[day]) dailyMap[day] = { pageViews: 0, productViews: 0, addToCart: 0, checkouts: 0 };
+      if (r._id.eventType === 'page_view') dailyMap[day].pageViews = r.count;
+      else if (r._id.eventType === 'product_view') dailyMap[day].productViews = r.count;
+      else if (r._id.eventType === 'add_to_cart') dailyMap[day].addToCart = r.count;
+      else if (r._id.eventType === 'checkout') dailyMap[day].checkouts = r.count;
+    });
+
+    // Product stats aggregation
+    const productPipeline = [
+      { $match: { ...matchStage, "eventData.productId": { $exists: true, $ne: null } } },
+      {
+        $group: {
+          _id: { productId: "$eventData.productId", eventType: "$eventType" },
+          count: { $sum: 1 },
+          productName: { $first: "$eventData.productName" },
+        },
+      },
+    ];
+    const productResults = await Analytics.aggregate(productPipeline);
 
     const productStats = {};
-    const dailyMap = {};
-
-    events.forEach(e => {
-      const pid = e.eventData?.productId;
-      const day = new Date(e.createdAt).toISOString().split('T')[0];
-
-      if (!dailyMap[day]) dailyMap[day] = { pageViews: 0, productViews: 0, addToCart: 0, checkouts: 0 };
-      if (e.eventType === 'page_view') dailyMap[day].pageViews++;
-      else if (e.eventType === 'product_view') dailyMap[day].productViews++;
-      else if (e.eventType === 'add_to_cart') dailyMap[day].addToCart++;
-      else if (e.eventType === 'checkout') dailyMap[day].checkouts++;
-
-      if (!pid) return;
-      if (!productStats[pid]) productStats[pid] = { views: 0, cartAdds: 0, productName: e.eventData?.productName || '' };
-      if (e.eventType === 'product_view') productStats[pid].views += 1;
-      if (e.eventType === 'add_to_cart') productStats[pid].cartAdds += 1;
+    productResults.forEach(r => {
+      const pid = r._id.productId;
+      if (!productStats[pid]) productStats[pid] = { views: 0, cartAdds: 0, productName: r.productName || '' };
+      if (r._id.eventType === 'product_view') productStats[pid].views = r.count;
+      if (r._id.eventType === 'add_to_cart') productStats[pid].cartAdds = r.count;
     });
 
     res.json({ productStats, daily: dailyMap });

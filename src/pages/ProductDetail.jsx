@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { trackProductView } from "../lib/analytics";
+import { fetchProductById } from "../lib/api";
 
 export default function ProductDetail({ products, handleAddToCart, toggleFavorite, favorites }) {
   const { id } = useParams();
@@ -8,6 +9,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [loading, setLoading] = useState(true);
   const isFav = product ? favorites.some(f => f.id === product.id) : false;
 
   useEffect(() => {
@@ -16,13 +18,42 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
       setProduct(foundProduct);
       setSelectedImage(foundProduct.mainImage || "");
       trackProductView(foundProduct.id, foundProduct.name);
+      setLoading(false);
+    } else if (products.length > 0) {
+      // Products loaded but this one not found — fetch directly
+      fetchProductById(id)
+        .then(data => {
+          if (data && !data.error) {
+            const mapped = { id: data._id, name: data.name, price: data.price, category: data.category, mainImage: data.mainImage, thumbnails: data.thumbnails || [], description: data.description, createdAt: data.createdAt };
+            setProduct(mapped);
+            setSelectedImage(mapped.mainImage || "");
+            trackProductView(mapped.id, mapped.name);
+          }
+        })
+        .catch(() => {})
+        .finally(() => setLoading(false));
     }
   }, [id, products]);
 
-  if (!product) {
+  if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
         <div className="w-8 h-8 border-2 border-brand-border border-t-brand-burgundy rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="max-w-7xl mx-auto px-6 py-32 text-center">
+        <svg className="w-16 h-16 mx-auto mb-4 text-brand-wine-dark/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+        </svg>
+        <h1 className="text-2xl font-bold mb-2 text-brand-burgundy">Product not found</h1>
+        <p className="text-brand-wine-dark/60 text-sm mb-6">This product may have been removed or is no longer available.</p>
+        <a href="/products" className="inline-block px-6 py-2 text-sm font-medium text-brand-burgundy border border-brand-border hover:border-brand-gold hover:text-brand-gold transition-colors">
+          Back to Shop
+        </a>
       </div>
     );
   }
@@ -65,15 +96,19 @@ Thank you.`;
   return (
     <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
       {/* Breadcrumb */}
-      <button
-        onClick={() => navigate(-1)}
-        className="text-sm text-brand-dark/50 hover:text-brand-burgundy transition-colors mb-8 inline-flex items-center gap-1"
-      >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
-        </svg>
-        Back
-      </button>
+      <nav className="flex items-center gap-2 text-sm text-brand-dark/50 mb-8">
+        <a href="/" className="hover:text-brand-burgundy transition-colors">Home</a>
+        <span>/</span>
+        <a href="/products" className="hover:text-brand-burgundy transition-colors">Shop</a>
+        <span>/</span>
+        {product.category && (
+          <>
+            <a href={`/products?category=${product.category}`} className="hover:text-brand-burgundy transition-colors capitalize">{product.category}</a>
+            <span>/</span>
+          </>
+        )}
+        <span className="text-brand-burgundy truncate max-w-[200px]">{product.name}</span>
+      </nav>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Images */}

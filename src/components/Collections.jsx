@@ -44,7 +44,7 @@ export default function Collections({ onCategoryClick }) {
             onClick={() => onCategoryClick(category.id)}
             className="group cursor-pointer"
           >
-            <div className="relative aspect-[3/4] overflow-hidden mb-4 bg-brand-cream border border-brand-border/60">
+            <div className="relative aspect-[3/4] overflow-hidden mb-4 bg-brand-cream border border-brand-border/60 rounded-2xl shadow-sm">
               <img
                 src={category.image}
                 alt={category.name}

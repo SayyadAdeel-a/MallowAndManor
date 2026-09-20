@@ -1,8 +1,10 @@
 import connectDB from './_lib/db.js';
 import { verifyToken } from './_lib/auth.js';
+import { handleCors } from './_lib/cors.js';
 import Post from './_lib/models/Post.js';
 
 export default async function handler(req, res) {
+  if (handleCors(req, res)) return;
   try {
     await connectDB();
 
@@ -33,7 +35,25 @@ export default async function handler(req, res) {
     if (req.method === 'POST') {
       const user = verifyToken(req);
       if (!user) return res.status(401).json({ error: 'Unauthorized' });
-      const post = await Post.create(req.body);
+      const { title, slug } = req.body;
+      if (!title || typeof title !== 'string' || !title.trim()) {
+        return res.status(400).json({ error: 'Post title is required' });
+      }
+      if (!slug || typeof slug !== 'string' || !slug.trim()) {
+        return res.status(400).json({ error: 'Post slug is required' });
+      }
+      const post = await Post.create({
+        title: title.trim(),
+        slug: slug.trim(),
+        content: typeof req.body.content === 'string' ? req.body.content : '',
+        excerpt: typeof req.body.excerpt === 'string' ? req.body.excerpt.trim() : '',
+        author: typeof req.body.author === 'string' ? req.body.author.trim() : '',
+        published: !!req.body.published,
+        tags: Array.isArray(req.body.tags) ? req.body.tags : [],
+        featuredImage: typeof req.body.featuredImage === 'string' ? req.body.featuredImage : '',
+        seoTitle: typeof req.body.seoTitle === 'string' ? req.body.seoTitle.trim() : '',
+        seoDescription: typeof req.body.seoDescription === 'string' ? req.body.seoDescription.trim() : '',
+      });
       return res.status(201).json(post);
     }
 

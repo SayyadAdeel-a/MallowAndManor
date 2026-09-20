@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchProductStats } from "../lib/api";
+import { fetchProductStats, getCurrentUser } from "../lib/api";
 import AdminHeader from "../components/AdminHeader";
 
 const ROWS = [
@@ -33,7 +33,14 @@ export default function Reports() {
   const [productStats, setProductStats] = useState({});
   const [loading, setLoading] = useState(true);
   const [days, setDays] = useState(30);
+  const [userEmail, setUserEmail] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getCurrentUser()
+      .then(user => { if (user?.email) setUserEmail(user.email); })
+      .catch(() => navigate("/admin/login"));
+  }, []);
 
   useEffect(() => { fetchAll(days); }, [days]);
 
@@ -97,10 +104,10 @@ export default function Reports() {
   };
 
   const handleExportDaily = () => {
-    const days = Object.keys(currentData).sort();
+    const sortedDays = Object.keys(currentData).sort();
     const rows = [
       ['Date', 'Page Views', 'Product Views', 'Add to Cart', 'Checkouts', 'Total'],
-      ...days.map(d => {
+      ...sortedDays.map(d => {
         const day = currentData[d] || {};
         const total = (day.pageViews || 0) + (day.productViews || 0) + (day.addToCart || 0) + (day.checkouts || 0);
         return [d, day.pageViews || 0, day.productViews || 0, day.addToCart || 0, day.checkouts || 0, total];
@@ -111,7 +118,7 @@ export default function Reports() {
 
   return (
     <div className="min-h-screen bg-brand-cream">
-      <AdminHeader userEmail="" />
+      <AdminHeader userEmail={userEmail} />
 
       {/* Controls */}
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-3">

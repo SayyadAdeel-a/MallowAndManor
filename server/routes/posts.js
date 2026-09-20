@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import Post from '../models/Post.js';
-import { authenticate } from '../middleware/auth.js';
+import { authenticate, verifyAuth } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -18,7 +18,7 @@ router.get('/', async (req, res, next) => {
 
     // Admin: all posts
     if (admin === 'true') {
-      const user = authenticate(req, res);
+      const user = verifyAuth(req);
       if (!user) return res.status(401).json({ error: 'Unauthorized' });
       const posts = await Post.find().sort({ createdAt: -1 });
       return res.json(posts);
@@ -33,7 +33,25 @@ router.get('/', async (req, res, next) => {
 // POST /api/posts — admin (create post)
 router.post('/', authenticate, async (req, res, next) => {
   try {
-    const post = await Post.create(req.body);
+    const { title, slug } = req.body;
+    if (!title || typeof title !== 'string' || !title.trim()) {
+      return res.status(400).json({ error: 'Post title is required' });
+    }
+    if (!slug || typeof slug !== 'string' || !slug.trim()) {
+      return res.status(400).json({ error: 'Post slug is required' });
+    }
+    const post = await Post.create({
+      title: title.trim(),
+      slug: slug.trim(),
+      content: typeof req.body.content === 'string' ? req.body.content : '',
+      excerpt: typeof req.body.excerpt === 'string' ? req.body.excerpt.trim() : '',
+      author: typeof req.body.author === 'string' ? req.body.author.trim() : '',
+      published: !!req.body.published,
+      tags: Array.isArray(req.body.tags) ? req.body.tags : [],
+      featuredImage: typeof req.body.featuredImage === 'string' ? req.body.featuredImage : '',
+      seoTitle: typeof req.body.seoTitle === 'string' ? req.body.seoTitle.trim() : '',
+      seoDescription: typeof req.body.seoDescription === 'string' ? req.body.seoDescription.trim() : '',
+    });
     res.status(201).json(post);
   } catch (err) { next(err); }
 });

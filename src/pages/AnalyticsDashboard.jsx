@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchProductStats } from "../lib/api";
+import { fetchProductStats, getCurrentUser } from "../lib/api";
 import AdminHeader from "../components/AdminHeader";
 
 const TIME_RANGES = [
@@ -66,7 +66,14 @@ export default function AnalyticsDashboard() {
   const [loading, setLoading] = useState(false);
   const [timeRange, setTimeRange] = useState(7);
   const [lastUpdated, setLastUpdated] = useState(null);
+  const [userEmail, setUserEmail] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getCurrentUser()
+      .then(user => { if (user?.email) setUserEmail(user.email); })
+      .catch(() => navigate("/admin/login"));
+  }, []);
 
   useEffect(() => { fetchData(timeRange); }, []);
 
@@ -110,7 +117,7 @@ export default function AnalyticsDashboard() {
 
   return (
     <div className="min-h-screen bg-brand-cream">
-      <AdminHeader userEmail="" />
+      <AdminHeader userEmail={userEmail} />
 
       {/* Time range selector */}
       <div className="max-w-6xl mx-auto px-6 py-4">
