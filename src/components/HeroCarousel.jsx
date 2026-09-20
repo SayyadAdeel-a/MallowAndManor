@@ -1,235 +1,144 @@
 import { useNavigate } from "react-router-dom";
 
-const iconStroke = {
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: 1.6,
-  strokeLinecap: "round",
-  strokeLinejoin: "round",
-};
-
-function BagIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="w-10 h-10" {...iconStroke}>
-      <path d="M5.5 8h13l-1 12.5h-11L5.5 8z" />
-      <path d="M9 10V6.5a3 3 0 0 1 6 0V10" />
-    </svg>
-  );
-}
-
-function CartIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="w-10 h-10" {...iconStroke}>
-      <path d="M3 4h2.2l2.3 11.5h10.7l2-8H7" />
-      <circle cx="9.5" cy="19.5" r="1.3" />
-      <circle cx="16.5" cy="19.5" r="1.3" />
-    </svg>
-  );
-}
-
-function BangleIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="w-10 h-10" {...iconStroke}>
-      <circle cx="12" cy="12" r="7.5" />
-      <circle cx="12" cy="12" r="4.5" />
-      <circle cx="12" cy="4.5" r="1.2" />
-    </svg>
-  );
-}
-
-function RingIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="w-10 h-10" {...iconStroke}>
-      <path d="M12 3.5 15 8l-3 3-3-3 3-4.5z" />
-      <path d="M9.5 10.5a4.8 4.8 0 1 0 5 0" />
-    </svg>
-  );
-}
-
-function ShoppingIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="w-10 h-10" {...iconStroke}>
-      <path d="M4 9.5 7 20h10l3-10.5H4z" />
-      <path d="M8.5 9.5 12 4l3.5 5.5" />
-      <path d="M10 13.5h4" />
-    </svg>
-  );
-}
-
-function TagIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="w-10 h-10" {...iconStroke}>
-      <path d="M3.5 11.5V4.5h7L20 14l-7.5 7.5-9-10z" />
-      <circle cx="8.5" cy="9.5" r="1.4" />
-    </svg>
-  );
-}
-
-function DressIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="w-10 h-10" {...iconStroke}>
-      <path d="M12 3.5c-1.8 0-2.3.8-2.3 2L7 9.5l2.2 1L8 20.5h8L14.8 10.5 17 9.5l-2.7-4c0-1.2-.5-2-2.3-2z" />
-      <path d="M9.7 6.5h4.6" />
-    </svg>
-  );
-}
-
-function ShoeIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="w-10 h-10" {...iconStroke}>
-      <path d="M3.5 16.5v-6l3.5-1 4 3.5 4.5 1c2 0 5 .8 5 2.5H3.5z" />
-      <path d="M3.5 19.5h17" />
-    </svg>
-  );
-}
-
-const stickers = [
-  { label: "Bags", Icon: BagIcon, color: "#4A0E17", tilt: "-3deg" },
-  { label: "Cart", Icon: CartIcon, color: "#C59B58", tilt: "2deg" },
-  { label: "Bangles", Icon: BangleIcon, color: "#D495A0", tilt: "-2deg" },
-  { label: "Rings", Icon: RingIcon, color: "#340910", tilt: "3deg" },
-  { label: "Shopping", Icon: ShoppingIcon, color: "#4A0E17", tilt: "2deg" },
-  { label: "Tags", Icon: TagIcon, color: "#C59B58", tilt: "-3deg" },
-  { label: "Clothes", Icon: DressIcon, color: "#D495A0", tilt: "-2deg" },
-  { label: "Shoes", Icon: ShoeIcon, color: "#340910", tilt: "3deg" },
+const features = [
+  {
+    label: "Elegant",
+    path: "M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z",
+    anim: "float",
+  },
+  {
+    label: "Timeless",
+    path: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z",
+    anim: "pulse",
+  },
+  {
+    label: "Empowered",
+    path: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z",
+    anim: "beat",
+  },
+  {
+    label: "Curated",
+    path: "M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z",
+    anim: "spin-slow",
+  },
 ];
 
 export default function HeroCarousel() {
   const navigate = useNavigate();
 
   return (
-    <section
-      className="relative w-full overflow-hidden"
-      style={{
-        background:
-          "linear-gradient(135deg, #FAF7F2 0%, #F5E8EB 50%, #FAF7F2 100%)",
-      }}
-    >
-      {/* Honeycomb corners — brand motif from the logo */}
-      <svg
-        className="absolute top-0 right-0 w-44 md:w-64 pointer-events-none"
-        viewBox="0 0 220 170"
-        fill="#DFC18A"
-        opacity="0.22"
-        aria-hidden
-      >
-        <defs>
-          <polygon
-            id="hb-hive"
-            points="0,-22 19,-11 19,11 0,22 -19,11 -19,-11"
-          />
-        </defs>
-        <use href="#hb-hive" x="180" y="30" />
-        <use href="#hb-hive" x="140" y="30" />
-        <use href="#hb-hive" x="100" y="30" />
-        <use href="#hb-hive" x="160" y="65" />
-        <use href="#hb-hive" x="120" y="65" />
-        <use href="#hb-hive" x="80" y="65" />
-        <use href="#hb-hive" x="180" y="100" />
-        <use href="#hb-hive" x="140" y="100" />
-        <use href="#hb-hive" x="100" y="100" />
-        <use href="#hb-hive" x="160" y="135" />
-        <use href="#hb-hive" x="120" y="135" />
-      </svg>
-      <svg
-        className="absolute bottom-0 left-0 w-44 md:w-64 pointer-events-none"
-        viewBox="0 0 220 170"
-        fill="#DFC18A"
-        opacity="0.22"
-        aria-hidden
-      >
-        <use href="#hb-hive" x="40" y="140" />
-        <use href="#hb-hive" x="80" y="140" />
-        <use href="#hb-hive" x="120" y="140" />
-        <use href="#hb-hive" x="60" y="105" />
-        <use href="#hb-hive" x="100" y="105" />
-        <use href="#hb-hive" x="140" y="105" />
-        <use href="#hb-hive" x="40" y="70" />
-        <use href="#hb-hive" x="80" y="70" />
-        <use href="#hb-hive" x="120" y="70" />
-        <use href="#hb-hive" x="60" y="35" />
-        <use href="#hb-hive" x="100" y="35" />
-      </svg>
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-14 md:py-20 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
-        {/* Left: static copy */}
-        <div>
-          <span
-            className="inline-block text-[10px] md:text-xs font-bold tracking-[0.25em] uppercase mb-5 px-4 py-2 rounded-full"
-            style={{
-              background: "#FAF7F2",
-              color: "#4A0E17",
-              border: "1px solid #C59B58",
-            }}
-          >
-            New Arrivals at Honeybee Lane
-          </span>
-          <h1
-            className="text-4xl md:text-6xl font-bold mb-5 leading-[1.05]"
-            style={{ color: "#4A0E17" }}
-          >
-            Curated beauty,
-            <br />
-            made for every day
-          </h1>
-          <p
-            className="text-sm md:text-lg mb-8 max-w-md leading-relaxed"
-            style={{ color: "rgba(52,9,16,0.8)" }}
-          >
-            Premium bangles, abayas, nails and accessories, delivered across Pakistan.
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <button
-              onClick={() => navigate("/products")}
-              className="px-8 md:px-10 py-3 md:py-4 text-xs md:text-sm font-bold tracking-wider uppercase rounded-full transition-all duration-300 hover:opacity-90 shadow-sm"
-              style={{ background: "#4A0E17", color: "#FAF7F2" }}
-            >
-              Shop Now
-            </button>
-            <button
-              onClick={() => navigate("/about")}
-              className="px-8 py-3 md:py-4 text-xs md:text-sm font-bold tracking-wider uppercase rounded-full transition-all duration-300 hover:bg-brand-blush"
-              style={{
-                background: "transparent",
-                color: "#4A0E17",
-                border: "1.5px solid #C59B58",
-              }}
-            >
-              Our Story
-            </button>
-          </div>
+    <section className="relative w-full overflow-hidden bg-[#F5EDE4]">
+      {/* Background image */}
+      <div className="absolute inset-0">
+        <img
+          src="/hero-banner.webp"
+          alt=""
+          className="w-full h-full object-cover object-top"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#F5EDE4]/50 via-[#F5EDE4]/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#F5EDE4]/40 via-transparent to-transparent" />
+      </div>
+
+      {/* Content */}
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-20 md:py-28 lg:py-36 flex flex-col items-center text-center">
+        {/* Decorative diamond */}
+        <div className="mb-6 animate-[spin-slow_6s_linear_infinite]">
+          <svg className="w-6 h-6 text-[#C59B58]" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
+          </svg>
         </div>
 
-        {/* Right: sticker wall */}
-        <div className="grid grid-cols-4 gap-3 md:gap-4">
-          {stickers.map(({ label, Icon, color, tilt }) => (
-            <div
-              key={label}
-              className="relative rounded-xl px-2 pt-5 pb-3 flex flex-col items-center gap-2"
-              style={{
-                background: "#FFFFFF",
-                border: "1px solid #EBDED5",
-                boxShadow: "0 8px 20px rgba(74,14,23,0.08)",
-                transform: `rotate(${tilt})`,
-              }}
-            >
-              {/* tape strip */}
-              <span
-                className="absolute -top-2 left-1/2 -translate-x-1/2 w-10 h-4 rounded-sm"
-                style={{ background: "#DFC18A", opacity: 0.75 }}
-              />
-              <span style={{ color }}>
-                <Icon />
-              </span>
-              <span
-                className="text-[9px] md:text-[10px] font-bold tracking-[0.15em] uppercase"
-                style={{ color: "#340910" }}
-              >
-                {label}
+        {/* Heading */}
+        <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.95] mb-4 text-[#340910]">
+          Curated
+          <br />
+          <span className="text-[#C59B58]">Beauty</span>
+        </h1>
+
+        {/* Subtitle */}
+        <p className="text-xs md:text-sm font-semibold tracking-[0.3em] uppercase text-[#4A0E17]/70 mb-10">
+          Bangles &middot; Abayas &middot; Accessories
+        </p>
+
+        {/* Decorative line */}
+        <div className="flex items-center gap-4 mb-10">
+          <div className="w-12 h-px bg-[#C59B58]" />
+          <div className="animate-[spin-slow_4s_linear_infinite]">
+            <svg className="w-4 h-4 text-[#C59B58]" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
+            </svg>
+          </div>
+          <div className="w-12 h-px bg-[#C59B58]" />
+        </div>
+
+        {/* Animated feature icons */}
+        <div className="flex items-center gap-8 md:gap-12 mb-10">
+          {features.map((f) => (
+            <div key={f.label} className="flex flex-col items-center gap-3 group">
+              <div className="w-10 h-10 rounded-full border border-[#C59B58]/30 flex items-center justify-center group-hover:border-[#C59B58] transition-colors duration-300">
+                <svg
+                  className={`w-5 h-5 text-[#C59B58] ${
+                    f.anim === "float"
+                      ? "animate-[float_3s_ease-in-out_infinite]"
+                      : f.anim === "pulse"
+                      ? "animate-[pulse_2s_ease-in-out_infinite]"
+                      : f.anim === "beat"
+                      ? "animate-[beat_1.5s_ease-in-out_infinite]"
+                      : "animate-[spin-slow_6s_linear_infinite]"
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d={f.path} />
+                </svg>
+              </div>
+              <span className="text-[9px] md:text-[10px] font-semibold tracking-[0.2em] uppercase text-[#4A0E17]/60 group-hover:text-[#4A0E17] transition-colors">
+                {f.label}
               </span>
             </div>
           ))}
         </div>
+
+        {/* CTA buttons */}
+        <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
+          <button
+            onClick={() => navigate("/products")}
+            className="px-10 py-4 text-xs font-bold tracking-[0.2em] uppercase rounded-full bg-[#340910] text-[#FAF7F2] hover:bg-[#4A0E17] transition-colors duration-300 shadow-lg"
+          >
+            Shop Now
+          </button>
+          <button
+            onClick={() => navigate("/about")}
+            className="px-10 py-4 text-xs font-bold tracking-[0.2em] uppercase rounded-full border border-[#C59B58] text-[#C59B58] hover:bg-[#C59B58] hover:text-[#340910] transition-all duration-300"
+          >
+            Our Story
+          </button>
+        </div>
+
+        {/* Tagline */}
+        <p className="font-display text-base md:text-lg italic text-[#4A0E17]/50">
+          Style with purpose. Elegance in every layer.
+        </p>
       </div>
+
+      <style>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-4px); }
+        }
+        @keyframes beat {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.15); }
+        }
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </section>
   );
 }
