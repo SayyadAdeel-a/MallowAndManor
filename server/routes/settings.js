@@ -1,0 +1,123 @@
+import express from 'express';
+import SiteSettings from '../models/SiteSettings.js';
+import { verifyToken } from '../middleware/auth.js';
+
+const router = express.Router();
+
+const DEFAULT_SETTINGS = {
+  hero: {
+    tagline: 'Curated Beauty',
+    heading1: 'Adorned',
+    heading2: 'in Elegance',
+    subtitle: 'Handcrafted jewelry & beauty essentials, designed for the modern woman who honors tradition.',
+    cta1Text: 'Shop Collection',
+    cta1Link: '/products',
+    cta2Text: 'Our Story',
+    cta2Link: '/about',
+    taglineBottom: '"Where tradition meets modern elegance"',
+    image: '/earrings-portrait.webp',
+    features: [
+      { icon: 'star', label: 'Elegant' },
+      { icon: 'clock', label: 'Timeless' },
+      { icon: 'heart', label: 'Empowered' },
+      { icon: 'sparkle', label: 'Curated' },
+    ],
+  },
+  trustItems: [
+    { iconKey: 'package', label: 'Free Shipping over Rs. 5,000' },
+    { iconKey: 'sparkle', label: 'Handcrafted with Intention' },
+    { iconKey: 'star', label: 'Premium Quality Materials' },
+    { iconKey: 'truck', label: 'Delivered Across Pakistan' },
+  ],
+  sale: {
+    badge: 'Limited Time',
+    heading: '30%',
+    headingAccent: 'OFF',
+    description: 'Our entire Abaya collection. Handcrafted luxury, now at prices that make elegance accessible.',
+    ctaText: 'Shop Abayas',
+    ctaLink: '/products?category=abayas',
+    image: '/earrings-hand.webp',
+    enabled: true,
+  },
+  promises: [
+    { iconKey: 'heart', animation: 'beat', title: 'Made with Love', description: 'Every piece is handcrafted by skilled artisans who pour care into each detail.' },
+    { iconKey: 'sparkle', animation: 'pulse', title: 'Premium Materials', description: 'We source only the finest fabrics, stones, and metals for lasting quality.' },
+    { iconKey: 'truck', animation: 'float', title: 'Fast Delivery', description: 'Free nationwide shipping on orders over Rs. 5,000. Delivered to your doorstep.' },
+    { iconKey: 'shield', animation: 'spin', title: 'Quality Guarantee', description: 'Not satisfied? We accept returns within 24 hours of delivery. No questions asked.' },
+  ],
+  story: {
+    tagline: 'Our Story',
+    heading: 'The Art of\nRefinement',
+    description: "We believe luxury isn't about the price tag — it's about wearing something created with intention.",
+    ctaText: 'Read Our Story',
+    ctaLink: '/about',
+    image: '/earrings-stud.webp',
+  },
+  newsletter: {
+    tagline: 'Stay Connected',
+    heading: 'Join the Inner Circle',
+    description: 'Sign up for early access to exclusive drops and seasonal events.',
+    buttonText: 'Subscribe',
+    successMessage: 'Thank you for subscribing!',
+  },
+  footer: {
+    description: 'Handcrafted beauty essentials, designed with intention and delivered with care across Pakistan.',
+    instagram: 'https://www.instagram.com/honeybeelane/',
+    tiktok: 'https://www.tiktok.com/@honeybeelane?lang=en',
+    copyrightText: 'Honeybee Lane. All rights reserved.',
+  },
+  contact: {
+    heading: 'Get In Touch',
+    subheading: "We're here to help you get every detail right.",
+    phone: '+92 323 3334492',
+    email: 'hello@honeybeelane.com',
+    address: 'DHA Phase 6, Karachi, Pakistan',
+    whatsapp: 'https://wa.me/923233334492',
+    faqs: [
+      { q: 'Where do you deliver?', a: 'We provide nationwide delivery across Pakistan, covering all major cities including Karachi, Lahore, Islamabad, and more.' },
+      { q: 'How can I track my order?', a: 'Once confirmed via WhatsApp, we provide a tracking number and regular delivery updates.' },
+      { q: 'What are the shipping costs?', a: 'Shipping is calculated by destination. Free delivery on orders over Rs. 5,000.' },
+      { q: 'What is your return policy?', a: 'We accept returns for damaged items reported within 24 hours of delivery.' },
+    ],
+  },
+  about: {
+    heading: 'Our Story',
+    subheading: 'Born from a passion for timeless beauty',
+    paragraphs: [
+      'Honeybee Lane was born from a simple belief: every woman deserves access to handcrafted beauty without compromise.',
+      'Our pieces blend traditional craftsmanship with modern design, creating jewelry and accessories that honor heritage while embracing the contemporary woman.',
+    ],
+    image: '/earrings-portrait.webp',
+  },
+};
+
+// GET /api/settings — public
+router.get('/', async (req, res) => {
+  try {
+    let settings = await SiteSettings.findOne();
+    if (!settings) {
+      settings = await SiteSettings.create(DEFAULT_SETTINGS);
+    }
+    res.json(settings);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PUT /api/settings — admin only
+router.put('/', verifyToken, async (req, res) => {
+  try {
+    let settings = await SiteSettings.findOne();
+    if (!settings) {
+      settings = await SiteSettings.create({ ...DEFAULT_SETTINGS, ...req.body });
+    } else {
+      Object.assign(settings, req.body);
+      await settings.save();
+    }
+    res.json(settings);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+export default router;

@@ -229,3 +229,14 @@ export const deletePost = async (id) => {
   const res = await request('/posts', { method: 'DELETE', body: { id } });
   return safeJson(res);
 };
+
+// Site Settings
+export const fetchSettings = async () => {
+  const res = await request('/settings');
+  return safeJson(res);
+};
+
+export const updateSettings = async (settingsData) => {
+  const res = await request('/settings', { method: 'PUT', body: settingsData });
+  return safeJson(res);
+};

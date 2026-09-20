@@ -8,6 +8,7 @@ import analyticsRouter from './routes/analytics.js';
 import authRouter from './routes/auth.js';
 import uploadRouter from './routes/upload.js';
 import postsRouter from './routes/posts.js';
+import settingsRouter from './routes/settings.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 dotenv.config();
@@ -33,6 +34,7 @@ app.use('/api/analytics', analyticsRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/upload', uploadRouter);
 app.use('/api/posts', postsRouter);
+app.use('/api/settings', settingsRouter);
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ ok: true }));
