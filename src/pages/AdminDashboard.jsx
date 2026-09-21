@@ -296,9 +296,9 @@ export default function AdminDashboard() {
                           className="w-full px-3 py-2 bg-white border border-brand-border text-brand-wine-dark text-sm focus:outline-none focus:border-brand-gold rounded-lg"
                         >
                           <option value="">Select category</option>
-                          {categories.map(c => (
-                            <option key={c._id || c.id} value={c._id || c.id}>{c.name}</option>
-                          ))}
+{categories.map(c => (
+<option key={c._id || c.id} value={c.slug || c._id || c.id}>{c.name}</option>
+))}
                         </select>
                       </div>
                       <ImageUpload
@@ -345,7 +345,7 @@ export default function AdminDashboard() {
                   >
                     <option value="">All Categories</option>
                     {categories.map(c => (
-                      <option key={c._id || c.id} value={c._id || c.id}>{c.name}</option>
+                      <option key={c._id || c.id} value={c.slug || c._id || c.id}>{c.name}</option>
                     ))}
                   </select>
                 </div>
