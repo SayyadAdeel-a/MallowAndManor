@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { trackProductView } from "../lib/analytics";
 import { fetchProductById, fetchSettings, fetchProducts } from "../lib/api";
+import { cloudUrl } from "../lib/img";
 import { setMeta, breadcrumbSchema, productSchema } from "../lib/seo";
 import AnimatedIcon, { ICONS } from "../components/AnimatedIcon";
 import NewsletterCTA from "../components/NewsletterCTA";
@@ -163,6 +164,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
     : 5;
   const thumbs = [product.mainImage, ...(product.thumbnails || [])].filter(Boolean).filter((v, i, a) => a.indexOf(v) === i);
   const images = thumbs.length ? thumbs : [product.mainImage || "/hero-banner.webp"];
+  const activeImage = selectedImage || images[0];
 
   const handleWhatsAppOrder = () => {
     const message = `Hello! I would like to order:\n\nProduct: ${product.name}\nPrice: Rs. ${product.price}\nQuantity: ${quantity}${selectedSize ? `\nSize: ${selectedSize}` : ""}\n\n[Product link: ${window.location.href}]`;
@@ -189,7 +191,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
         <Reveal>
         <div>
           <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-brand-cream border border-brand-border/50">
-            <img src={images[0] || selectedImage} alt={product.name} className="w-full h-full object-cover" />
+            <img src={cloudUrl(activeImage, 900)} alt={product.name} className="w-full h-full object-cover" />
             <button
               onClick={() => toggleFavorite(product)}
               className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm border transition-colors ${isFav ? "bg-brand-rose/90 border-brand-rose text-white" : "bg-white/80 border-brand-border/60 text-brand-wine-dark/50 hover:text-brand-gold hover:border-brand-gold"}`}
@@ -204,10 +206,10 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
                 <button
                   key={i}
                   onClick={() => setSelectedImage(img)}
-                  className={`shrink-0 w-16 h-20 rounded-lg overflow-hidden border-2 transition-all ${i === 0 ? "border-brand-gold" : "border-brand-border/50 opacity-60 hover:opacity-100"}`}
+                  className={`shrink-0 w-16 h-20 rounded-lg overflow-hidden border-2 transition-all ${images[i] === activeImage ? "border-brand-gold" : "border-brand-border/50 opacity-60 hover:opacity-100"}`}
                   aria-label={`View image ${i + 1}`}
                 >
-                  <img src={img} alt="" className="w-full h-full object-cover" />
+                  <img src={cloudUrl(img, 150)} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>
@@ -315,7 +317,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
                 {related.slice(0, 3).map((p) => (
                   <div key={p.id} className="flex items-center gap-3 group">
                     <img
-                      src={p.mainImage || "/hero-banner.webp"}
+                      src={cloudUrl(p.mainImage || "/hero-banner.webp", 300)}
                       alt=""
                       className="w-12 h-14 object-cover rounded-lg border border-brand-border/50 cursor-pointer"
                       onClick={() => { navigate(`/product/${p.slug}`); window.scrollTo(0, 0); }}
@@ -450,7 +452,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
             {related.slice(0, pp.alsoLikeCount || 4).map((p) => (
               <div key={p.id} className="group cursor-pointer" onClick={() => { navigate(`/product/${p.slug}`); window.scrollTo(0, 0); }}>
                 <div className="hover-lift relative aspect-[4/5] overflow-hidden rounded-2xl bg-brand-cream border border-brand-border/50 mb-3">
-                  <img src={p.mainImage || "/hero-banner.webp"} alt={p.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={cloudUrl(p.mainImage || "/hero-banner.webp", 300)} alt={p.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
                 <p className="text-sm font-semibold text-brand-burgundy group-hover:text-brand-gold transition-colors truncate">{p.name}</p>
                 <p className="text-sm text-brand-wine-dark/60">Rs. {Number(p.price).toLocaleString()}</p>
@@ -467,6 +469,9 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
     </div>
   );
 }
+
+
+
 
 
 

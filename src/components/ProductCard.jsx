@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { cloudUrl } from "../lib/img";
 import AnimatedIcon, { ICONS } from "./AnimatedIcon";
 
 const tagColors = {
@@ -18,7 +19,7 @@ function getTag(product) {
 }
 
 export default function ProductCard({ product, onAddToCart, isFavorite, onToggleFavorite }) {
-  const [selectedImage, setSelectedImage] = useState(product.mainImage);
+  const [selectedImage, setSelectedImage] = useState(cloudUrl(product.mainImage, 500));
   const tag = getTag(product);
 
   return (
@@ -70,7 +71,7 @@ export default function ProductCard({ product, onAddToCart, isFavorite, onToggle
                     : "border-brand-border hover:border-brand-gold"
                   }`}
               >
-                <img src={img} alt="" className="w-full h-full object-cover" />
+                <img src={cloudUrl(img, 100)} alt="" className="w-full h-full object-cover" />
               </button>
             ))}
         </div>
@@ -103,5 +104,7 @@ export default function ProductCard({ product, onAddToCart, isFavorite, onToggle
     </div>
   );
 }
+
+
 
 

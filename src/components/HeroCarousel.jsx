@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { cloudUrl } from "../lib/img";
 import AnimatedIcon, { ICONS } from "./AnimatedIcon";
 
 const DEFAULT_FEATURES = [
@@ -18,7 +19,7 @@ export default function HeroCarousel({ hero }) {
   return (
     <section className="relative w-full overflow-hidden bg-[#F5EDE4]">
       <div className="absolute inset-0">
-        <img src={h.image || "/hero-banner.webp"} alt="" className="w-full h-full object-cover object-top" />
+        <img src={cloudUrl(h.image || "/hero-banner.webp", 1400)} alt="" className="w-full h-full object-cover object-top" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#F5EDE4]/50 via-[#F5EDE4]/20 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#F5EDE4]/40 via-transparent to-transparent" />
       </div>
@@ -58,10 +59,10 @@ export default function HeroCarousel({ hero }) {
           <div className="w-12 h-px bg-[#C59B58]" />
         </div>
 
-        <div className="flex items-center gap-8 md:gap-12 mb-10">
+        <div className="flex items-center gap-4 sm:gap-8 md:gap-12 mb-10 flex-wrap justify-center px-2">
           {features.map((f, i) => (
-            <div key={f.label} className="flex flex-col items-center gap-3 group">
-              <div className="w-10 h-10 rounded-full border border-[#C59B58]/30 flex items-center justify-center group-hover:border-[#C59B58] transition-colors duration-300">
+            <div key={f.label} className="flex flex-col items-center gap-2 sm:gap-3 group">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#C59B58]/30 flex items-center justify-center group-hover:border-[#C59B58] transition-colors duration-300">
                 <AnimatedIcon
                   path={ICONS[f.icon]}
                   animation={FEATURE_ANIMS[i % FEATURE_ANIMS.length]}
@@ -79,13 +80,13 @@ export default function HeroCarousel({ hero }) {
         <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
           <button
             onClick={() => navigate(h.cta1Link || "/shop")}
-            className="px-10 py-4 text-xs font-bold tracking-[0.2em] uppercase rounded-full bg-[#340910] text-[#FAF7F2] hover:bg-[#4A0E17] transition-colors duration-300 shadow-lg"
+            className="px-7 sm:px-10 py-3.5 sm:py-4 text-xs font-bold tracking-[0.2em] uppercase rounded-full bg-[#340910] text-[#FAF7F2] hover:bg-[#4A0E17] transition-colors duration-300 shadow-lg"
           >
             {h.cta1Text || "Shop Now"}
           </button>
           <button
             onClick={() => navigate(h.cta2Link || "/about")}
-            className="px-10 py-4 text-xs font-bold tracking-[0.2em] uppercase rounded-full border border-[#C59B58] text-[#C59B58] hover:bg-[#C59B58] hover:text-[#340910] transition-all duration-300"
+            className="px-7 sm:px-10 py-3.5 sm:py-4 text-xs font-bold tracking-[0.2em] uppercase rounded-full border border-[#C59B58] text-[#C59B58] hover:bg-[#C59B58] hover:text-[#340910] transition-all duration-300"
           >
             {h.cta2Text || "Our Story"}
           </button>
@@ -107,4 +108,6 @@ export default function HeroCarousel({ hero }) {
     </section>
   );
 }
+
+
 

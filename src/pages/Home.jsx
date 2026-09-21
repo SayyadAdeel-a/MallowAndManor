@@ -9,6 +9,7 @@ import NewsletterCTA from "../components/NewsletterCTA";
 import Reveal from "../components/Reveal";
 import { fetchSettings } from "../lib/api";
 import { setMeta } from "../lib/seo";
+import { cloudUrl } from "../lib/img";
 
 const DEFAULT_TRUST = [
   { iconKey: "package", label: "Free Shipping over Rs. 5,000" },
@@ -59,7 +60,7 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
           {[0, 1, 2].map((copy) => (
             <div key={copy} className="flex shrink-0 items-center" aria-hidden={copy > 0}>
               {trustItems.map((item, i) => (
-                <div key={`${copy}-${i}`} className="inline-flex items-center gap-3 px-10">
+                <div key={`${copy}-${i}`} className="inline-flex items-center gap-2 sm:gap-3 px-5 sm:px-10">
                   <AnimatedIcon
                     path={ICONS[item.iconKey]}
                     animation={TRUST_ANIMATIONS[i % TRUST_ANIMATIONS.length]}
@@ -112,7 +113,7 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
               </a>
             </div>
             <div className="relative h-[300px] md:h-auto overflow-hidden">
-              <img src={sale.image || "/Limited Time Sale Banner.webp"} alt="Sale" className="absolute inset-0 w-full h-full object-cover" />
+              <img src={cloudUrl(sale.image || "/Limited Time Sale Banner.webp", 900)} alt="Sale" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-r from-brand-wine-dark/70 via-brand-wine-dark/20 to-transparent md:block hidden" />
               <div className="absolute inset-0 bg-gradient-to-t from-brand-wine-dark/70 via-transparent to-transparent md:hidden" />
             </div>
@@ -201,4 +202,6 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
     </div>
   );
 }
+
+
 
