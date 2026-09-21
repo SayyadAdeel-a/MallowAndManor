@@ -48,7 +48,9 @@ function ImageUpload({ label, value, onChange }) {
     if (!file) return;
     setUploading(true);
     try {
-      const url = await uploadImage(file);
+      const result = await uploadImage(file);
+      const url = typeof result === "string" ? result : result?.url;
+      if (!url) throw new Error("Upload returned no URL");
       setPreview(url);
       onChange(url);
     } catch (err) {
