@@ -142,14 +142,14 @@ export default function AdminPosts() {
     <div className="min-h-screen bg-brand-cream">
       <AdminHeader userEmail={user.email} />
 
-      <main className="max-w-6xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-4 lg:px-6 py-8">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight text-brand-burgundy">Blog Posts</h2>
+            <h2 className="admin-panel-title text-3xl md:text-4xl font-bold">Blog Posts</h2>
             <p className="text-sm text-brand-wine-dark/60 mt-1">{posts.length} total</p>
           </div>
           <button onClick={() => { resetForm(); setShowForm(!showForm); }}
-            className={`px-5 py-2.5 text-xs font-semibold tracking-wider uppercase transition-colors shadow-sm rounded-sm ${showForm ? "bg-brand-blush text-brand-wine-dark border border-brand-border" : "bg-brand-burgundy text-brand-cream hover:bg-brand-wine-dark"}`}>
+            className={`px-5 py-2.5 text-xs font-semibold tracking-wider uppercase transition-colors shadow-sm rounded-full ${showForm ? "bg-brand-blush text-brand-wine-dark border border-brand-border" : "bg-brand-burgundy text-brand-cream hover:bg-brand-wine-dark"}`}>
             {showForm ? "Cancel" : "New Post"}
           </button>
         </div>
@@ -269,4 +269,5 @@ export default function AdminPosts() {
     </div>
   );
 }
+
 

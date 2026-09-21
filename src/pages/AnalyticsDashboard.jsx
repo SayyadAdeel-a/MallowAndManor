@@ -115,18 +115,20 @@ export default function AnalyticsDashboard() {
       <AdminHeader userEmail={userEmail} />
 
       {/* Time range selector */}
-      <div className="max-w-6xl mx-auto px-6 py-4">
-        <div className="flex bg-white border border-brand-border rounded-sm overflow-hidden w-fit">
+      <div className="max-w-6xl mx-auto px-4 lg:px-6 pt-6">
+        <h1 className="admin-panel-title text-3xl md:text-4xl font-bold mb-1">Analytics</h1>
+        <p className="text-sm text-brand-wine-dark/60 mb-4">Store performance at a glance.</p>
+        <div className="admin-card inline-flex gap-1 p-1.5">
           {TIME_RANGES.map(r => (
             <button key={r.days} onClick={() => { setTimeRange(r.days); fetchData(r.days); }}
-              className={`px-3 py-1.5 text-xs font-semibold tracking-wider transition-colors ${timeRange === r.days ? "bg-brand-burgundy text-brand-cream" : "text-brand-wine-dark/60 hover:text-brand-burgundy"}`}>
+              className={`px-3.5 py-1.5 text-xs font-semibold tracking-wider rounded-full transition-colors ${timeRange === r.days ? "bg-brand-burgundy text-brand-cream" : "text-brand-wine-dark/60 hover:text-brand-burgundy hover:bg-brand-blush/50"}`}>
               {r.label}
             </button>
           ))}
         </div>
       </div>
 
-      <main className="max-w-6xl mx-auto px-6 py-8">
+      <main className="max-w-6xl mx-auto px-4 lg:px-6 py-8">
         {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {[

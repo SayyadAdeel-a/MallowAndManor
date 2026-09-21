@@ -300,21 +300,27 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-brand-cream">
       <AdminHeader userEmail={user.email} />
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-brand-burgundy font-display">Admin Dashboard</h1>
+      <div className="max-w-7xl mx-auto px-4 lg:px-6 py-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
+          <div>
+            <h1 className="admin-panel-title text-3xl md:text-4xl font-bold">Dashboard</h1>
+            <p className="text-sm text-brand-wine-dark/60 mt-1">Manage products, content and everything on your storefront.</p>
+          </div>
+          <span className="admin-card w-fit px-4 py-2 text-xs text-brand-wine-dark/60">
+            {products.length} products · {posts.length} posts · {categories.length} categories
+          </span>
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="admin-card flex gap-1 p-1.5 mb-6 overflow-x-auto scrollbar-hide">
           {tabs.map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2 text-xs font-semibold tracking-wider uppercase rounded-full transition-colors ${
+              className={`px-4 py-2 text-xs font-semibold tracking-wider uppercase whitespace-nowrap rounded-full transition-colors ${
                 activeTab === tab.id
-                  ? "bg-brand-burgundy text-brand-cream"
-                  : "bg-white border border-brand-border text-brand-wine-dark/70 hover:border-brand-gold hover:text-brand-burgundy"
+                  ? "bg-brand-burgundy text-brand-cream shadow-sm"
+                  : "text-brand-wine-dark/60 hover:text-brand-burgundy hover:bg-brand-blush/50"
               }`}
             >
               {tab.label}
@@ -323,9 +329,12 @@ export default function AdminDashboard() {
         </div>
 
         {loading ? (
-          <div className="text-center py-12 text-brand-wine-dark/50">Loading dashboard...</div>
+          <div className="admin-card text-center py-16 text-brand-wine-dark/50">
+            <div className="w-8 h-8 border-2 border-brand-border border-t-brand-burgundy rounded-full animate-spin mx-auto mb-4" />
+            Loading dashboard...
+          </div>
         ) : (
-          <div className="bg-white border border-brand-border rounded-xl shadow-sm p-6">
+          <div className="admin-card p-5 md:p-6">
             {/* ========== PRODUCTS TAB ========== */}
             {activeTab === "products" && (
               <div>

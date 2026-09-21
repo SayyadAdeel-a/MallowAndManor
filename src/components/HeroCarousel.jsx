@@ -43,9 +43,9 @@ export default function HeroCarousel({ hero }) {
           <span className="text-[#C59B58]">{h.heading2 || "Beauty"}</span>
         </h1>
 
-        {h.subtitle && (
+        {(h.subtitle !== undefined ? h.subtitle : "Bangles · Abayas · Accessories") && (
           <p className="text-xs md:text-sm font-semibold tracking-[0.3em] uppercase text-[#4A0E17]/70 mb-10">
-            {h.subtitle}
+            {h.subtitle !== undefined ? h.subtitle : "Bangles · Abayas · Accessories"}
           </p>
         )}
 

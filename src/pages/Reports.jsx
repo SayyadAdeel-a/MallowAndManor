@@ -116,22 +116,26 @@ export default function Reports() {
       <AdminHeader userEmail={userEmail} />
 
       {/* Controls */}
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-3">
-        <div className="flex bg-white border border-brand-border rounded-sm overflow-hidden">
-          {[7, 30, 90].map(d => (
-            <button key={d} onClick={() => setDays(d)}
-              className={`px-3 py-1.5 text-xs font-semibold tracking-wider transition-colors ${days === d ? "bg-brand-burgundy text-brand-cream" : "text-brand-wine-dark/60 hover:text-brand-burgundy"}`}>
-              {d}D
-            </button>
-          ))}
+      <div className="max-w-6xl mx-auto px-4 lg:px-6 pt-6">
+        <h1 className="admin-panel-title text-3xl md:text-4xl font-bold mb-1">Reports</h1>
+        <p className="text-sm text-brand-wine-dark/60 mb-4">Order and revenue breakdown by category.</p>
+        <div className="flex items-center gap-2.5">
+          <div className="admin-card inline-flex gap-1 p-1.5">
+            {[7, 30, 90].map(d => (
+              <button key={d} onClick={() => setDays(d)}
+                className={`px-3.5 py-1.5 text-xs font-semibold tracking-wider rounded-full transition-colors ${days === d ? "bg-brand-burgundy text-brand-cream" : "text-brand-wine-dark/60 hover:text-brand-burgundy hover:bg-brand-blush/50"}`}>
+                {d}D
+              </button>
+            ))}
+          </div>
+          <button onClick={handleExport} disabled={loading}
+            className="px-4 py-2 bg-brand-burgundy text-brand-cream text-xs font-semibold tracking-wider uppercase hover:bg-brand-wine-dark transition-colors disabled:opacity-50 shadow-sm rounded-full">
+            Export CSV
+          </button>
         </div>
-        <button onClick={handleExport} disabled={loading}
-          className="px-4 py-1.5 bg-brand-burgundy text-brand-cream text-xs font-semibold tracking-wider uppercase hover:bg-brand-wine-dark transition-colors disabled:opacity-50 shadow-sm rounded-sm">
-          Export
-        </button>
       </div>
 
-      <main className="max-w-6xl mx-auto px-6 py-8">
+      <main className="max-w-6xl mx-auto px-4 lg:px-6 py-8">
         {loading ? (
           <div className="flex justify-center py-20">
             <div className="w-6 h-6 border-2 border-brand-border border-t-brand-burgundy rounded-full animate-spin" />
