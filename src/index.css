@@ -154,6 +154,20 @@ html {
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
+/* ===== RTL script (Urdu / Pashto) typography ===== */
+.urdu-text {
+  font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', 'Alvi Nastaleeq', 'Segoe UI', 'Tahoma', serif;
+  direction: rtl;
+  text-align: right;
+  line-height: 2.1;
+  font-size: 0.95rem;
+}
+
+.urdu-name {
+  font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', 'Segoe UI', 'Tahoma', serif;
+  direction: rtl;
+}
+
 /* Scroll reveal (marketing pages) */
 .reveal {
   opacity: 0;

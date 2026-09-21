@@ -282,6 +282,7 @@ export default function AdminDashboard() {
     { id: "hero", label: "Hero" },
     { id: "sale", label: "Sale Banner" },
     { id: "productpage", label: "Product Page" },
+    { id: "homereviews", label: "Home Reviews" },
     { id: "story", label: "Story Section" },
     { id: "newsletter", label: "Newsletter" },
     { id: "contact", label: "Contact" },
@@ -1101,6 +1102,67 @@ export default function AdminDashboard() {
                     disabled={saving}
                     className="px-6 py-2.5 bg-brand-burgundy text-brand-cream text-xs font-semibold tracking-wider uppercase hover:bg-brand-wine-dark transition-colors disabled:opacity-50 shadow-sm rounded-full"
                   >
+                    {saving ? "Saving..." : "Save Changes"}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* ========== HOME REVIEWS TAB ========== */}
+            {activeTab === "homereviews" && (
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-semibold text-brand-burgundy">Home Reviews (Urdu / Pashto testimonials)</h2>
+                  <button
+                    onClick={() => updateSetting("homeReviews", [...(settings.homeReviews || []), { name: "", nameUrdu: "", text: "", textEnglish: "", rating: 5, city: "", language: "ur" }])}
+                    className="px-4 py-1.5 bg-brand-burgundy text-brand-cream text-xs font-semibold tracking-wider uppercase rounded-full hover:bg-brand-wine-dark transition-colors"
+                  >
+                    Add Review
+                  </button>
+                </div>
+                <p className="text-xs text-brand-wine-dark/50 mb-4">Shown in the "What Our Customers Say" section on the main page. Language sets the script badge (اردو / پښتو).</p>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  {(settings.homeReviews || []).map((rev, idx) => (
+                    <div key={idx} className="bg-brand-cream/50 border border-brand-border rounded-lg p-4">
+                      <div className="flex justify-between items-start mb-3">
+                        <span className="text-xs font-semibold text-brand-wine-dark/50">Review #{idx + 1}</span>
+                        <button
+                          onClick={() => updateSetting("homeReviews", (settings.homeReviews || []).filter((_, i) => i !== idx))}
+                          className="text-xs text-red-500 hover:text-red-700"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3 mb-3">
+                        <InputField label="Name (English)" value={rev.name} onChange={e => { const arr = [...(settings.homeReviews || [])]; arr[idx] = { ...arr[idx], name: e.target.value }; updateSetting("homeReviews", arr); }} />
+                        <InputField label="Name (اردو/پښتو)" value={rev.nameUrdu} onChange={e => { const arr = [...(settings.homeReviews || [])]; arr[idx] = { ...arr[idx], nameUrdu: e.target.value }; updateSetting("homeReviews", arr); }} />
+                        <InputField label="City" value={rev.city} onChange={e => { const arr = [...(settings.homeReviews || [])]; arr[idx] = { ...arr[idx], city: e.target.value }; updateSetting("homeReviews", arr); }} />
+                        <div>
+                          <label className="block text-xs font-semibold tracking-wider uppercase text-brand-wine-dark/70 mb-1.5">Language</label>
+                          <select value={rev.language || "ur"} onChange={e => { const arr = [...(settings.homeReviews || [])]; arr[idx] = { ...arr[idx], language: e.target.value }; updateSetting("homeReviews", arr); }}
+                            className="w-full px-3 py-2 bg-white border border-brand-border text-brand-wine-dark text-sm focus:outline-none focus:border-brand-gold rounded-lg">
+                            <option value="ur">اردو (Urdu)</option>
+                            <option value="ps">پښتو (Pashto)</option>
+                            <option value="en">English</option>
+                          </select>
+                        </div>
+                        <InputField label="Stars (1-5)" value={rev.rating} type="number" onChange={e => { const arr = [...(settings.homeReviews || [])]; arr[idx] = { ...arr[idx], rating: Math.min(5, Math.max(1, parseInt(e.target.value) || 5)) }; updateSetting("homeReviews", arr); }} />
+                      </div>
+                      <InputField label="Review (اردو / پښتو)" value={rev.text} onChange={e => { const arr = [...(settings.homeReviews || [])]; arr[idx] = { ...arr[idx], text: e.target.value }; updateSetting("homeReviews", arr); }} multiline rows={3} />
+                      <div className="mt-3">
+                        <InputField label="English Translation" value={rev.textEnglish} onChange={e => { const arr = [...(settings.homeReviews || [])]; arr[idx] = { ...arr[idx], textEnglish: e.target.value }; updateSetting("homeReviews", arr); }} multiline rows={2} />
+                      </div>
+                    </div>
+                  ))}
+                  {(!settings.homeReviews || settings.homeReviews.length === 0) && (
+                    <p className="text-sm text-brand-wine-dark/40 text-center py-8 lg:col-span-2">No reviews yet. Click "Add Review" — the storefront shows 8 built-in ones until you create your own.</p>
+                  )}
+                </div>
+
+                <div className="mt-6">
+                  <button onClick={handleSettingsSave} disabled={saving}
+                    className="px-6 py-2.5 bg-brand-burgundy text-brand-cream text-xs font-semibold tracking-wider uppercase hover:bg-brand-wine-dark transition-colors disabled:opacity-50 shadow-sm rounded-full">
                     {saving ? "Saving..." : "Save Changes"}
                   </button>
                 </div>

@@ -145,6 +145,19 @@ const siteSettingsSchema = new mongoose.Schema({
       intro: { type: String, default: '' },
     },
   ],
+
+  //_main page customer reviews (Urdu/Pashto testimonials)
+  homeReviews: [
+    {
+      name: { type: String, default: '' },
+      nameUrdu: { type: String, default: '' },
+      text: { type: String, default: '' },
+      textEnglish: { type: String, default: '' },
+      rating: { type: Number, default: 5 },
+      city: { type: String, default: '' },
+      language: { type: String, enum: ['ur', 'ps', 'en'], default: 'ur' },
+    },
+  ],
 }, { timestamps: true });
 
 export default mongoose.model('SiteSettings', siteSettingsSchema);
