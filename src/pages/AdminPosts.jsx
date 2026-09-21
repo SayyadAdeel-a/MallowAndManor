@@ -3,6 +3,29 @@ import { useNavigate } from "react-router-dom";
 import { getCurrentUser, fetchAdminPosts, createPost, updatePost, deletePost, uploadImage, resolveUploadUrl } from "../lib/api";
 import AdminHeader from "../components/AdminHeader";
 
+function DeleteButton({ _idKey, onConfirm }) {
+  const [armed, setArmed] = useState(false);
+  const timer = useRef(null);
+  useEffect(() => () => clearTimeout(timer.current), []);
+  const click = () => {
+    if (!armed) {
+      setArmed(true);
+      timer.current = setTimeout(() => setArmed(false), 3000);
+      return;
+    }
+    clearTimeout(timer.current);
+    onConfirm();
+  };
+  return (
+    <button
+      onClick={click}
+      className={`text-xs font-semibold transition-colors ${armed ? "text-white bg-red-500 border border-red-500 px-2.5 py-1 rounded-full" : "text-red-600 hover:text-red-800"}`}
+    >
+      {armed ? "Confirm delete?" : "Delete"}
+    </button>
+  );
+}
+
 function slugify(text) {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 }
@@ -110,7 +133,6 @@ export default function AdminPosts() {
   };
 
   const handleDelete = async (id) => {
-    if (!confirm('Delete this post?')) return;
     try { await deletePost(id); await loadPosts(); } catch (err) { alert('Error: ' + err.message); }
   };
 
@@ -233,7 +255,7 @@ export default function AdminPosts() {
                           View
                         </a>
                         <button onClick={() => handleEdit(post)} className="text-xs text-brand-burgundy hover:text-brand-wine-dark transition-colors mr-3 font-semibold">Edit</button>
-                        <button onClick={() => handleDelete(post._id)} className="text-xs text-red-600 hover:text-red-800 transition-colors font-semibold">Delete</button>
+                        <DeleteButton idKey={post._id} onConfirm={() => handleDelete(post._id)} />
                       </td>
                     </tr>
                   ))}
@@ -247,3 +269,4 @@ export default function AdminPosts() {
     </div>
   );
 }
+

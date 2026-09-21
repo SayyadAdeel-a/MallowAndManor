@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   getCurrentUser, fetchProducts, createProduct, updateProduct, deleteProduct,
@@ -7,6 +7,30 @@ import {
   fetchSettings, updateSettings, uploadImage, resolveUploadUrl,
 } from "../lib/api";
 import AdminHeader from "../components/AdminHeader";
+
+// Two-click delete confirmation (no native confirm() — unaffected by browser/extension blocking)
+function DeleteButton({ _idKey, onConfirm }) {
+  const [armed, setArmed] = useState(false);
+  const timer = useRef(null);
+  useEffect(() => () => clearTimeout(timer.current), []);
+  const click = () => {
+    if (!armed) {
+      setArmed(true);
+      timer.current = setTimeout(() => setArmed(false), 3000);
+      return;
+    }
+    clearTimeout(timer.current);
+    onConfirm();
+  };
+  return (
+    <button
+      onClick={click}
+      className={`px-3 py-1 text-xs rounded-full transition-colors ${armed ? "bg-red-500 text-white border border-red-500" : "border border-red-300 text-red-500 hover:bg-red-50"}`}
+    >
+      {armed ? "Confirm delete?" : "Delete"}
+    </button>
+  );
+}
 
 function InputField({ label, value, onChange, type = "text", multiline, rows = 3 }) {
   if (multiline) {
@@ -184,7 +208,6 @@ export default function AdminDashboard() {
   };
 
   const handleDeleteProduct = async (id) => {
-    if (!confirm("Delete this product?")) return;
     try { await deleteProduct(id); await loadAll(); }
     catch (err) { alert("Error: " + err.message); }
   };
@@ -202,7 +225,6 @@ export default function AdminDashboard() {
   };
 
   const handleDeleteCategory = async (id) => {
-    if (!confirm("Delete this category?")) return;
     try { await deleteCategory(id); await loadAll(); }
     catch (err) { alert("Error: " + err.message); }
   };
@@ -225,7 +247,6 @@ export default function AdminDashboard() {
   };
 
   const handleDeletePost = async (id) => {
-    if (!confirm("Delete this post?")) return;
     try { await deletePost(id); await loadAll(); }
     catch (err) { alert("Error: " + err.message); }
   };
@@ -410,12 +431,7 @@ export default function AdminDashboard() {
                               >
                                 Edit
                               </button>
-                              <button
-                                onClick={() => handleDeleteProduct(product.id || product._id)}
-                                className="px-3 py-1 text-xs rounded-full border border-red-300 text-red-500 hover:bg-red-50 transition-colors"
-                              >
-                                Delete
-                              </button>
+                              <DeleteButton idKey={`product-${product.id || product._id}`} onConfirm={() => handleDeleteProduct(product.id || product._id)} />
                             </div>
                           </td>
                         </tr>
@@ -455,12 +471,7 @@ export default function AdminDashboard() {
                         <span className="font-medium text-brand-wine-dark">{cat.name}</span>
                         <span className="text-brand-wine-dark/50 text-xs ml-2">/{cat.slug}</span>
                       </div>
-                      <button
-                        onClick={() => handleDeleteCategory(cat._id || cat.id)}
-                        className="px-3 py-1 text-xs rounded-full border border-red-300 text-red-500 hover:bg-red-50 transition-colors"
-                      >
-                        Delete
-                      </button>
+                      <DeleteButton idKey={`category-${cat._id || cat.id}`} onConfirm={() => handleDeleteCategory(cat._id || cat.id)} />
                     </div>
                   ))}
                   {categories.length === 0 && (
@@ -564,12 +575,7 @@ export default function AdminDashboard() {
                               >
                                 Edit
                               </button>
-                              <button
-                                onClick={() => handleDeletePost(post.id || post._id)}
-                                className="px-3 py-1 text-xs rounded-full border border-red-300 text-red-500 hover:bg-red-50 transition-colors"
-                              >
-                                Delete
-                              </button>
+                              <DeleteButton idKey={`post-${post.id || post._id}`} onConfirm={() => handleDeletePost(post.id || post._id)} />
                             </div>
                           </td>
                         </tr>
@@ -829,3 +835,4 @@ export default function AdminDashboard() {
     </div>
   );
 }
+
