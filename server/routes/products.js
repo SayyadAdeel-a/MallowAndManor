@@ -46,12 +46,9 @@ router.get('/', async (req, res, next) => {
       return res.json(cats);
     }
 
-    // Single product by id OR slug
+    // Single product by slug only
     if (id) {
-      const isHex = /^[a-f\d]{24}$/i.test(String(id));
-      const product = isHex
-        ? await Product.findById(id)
-        : await Product.findOne({ slug: String(id).toLowerCase() });
+      const product = await Product.findOne({ slug: String(id).toLowerCase() });
       if (!product) return res.status(404).json({ error: 'Not found' });
       return res.json(product);
     }
@@ -84,6 +81,9 @@ router.get('/', async (req, res, next) => {
     let sortOption = { createdAt: -1 };
     if (sort === 'price-low') sortOption = { price: 1 };
     else if (sort === 'price-high') sortOption = { price: -1 };
+
+    // Ensure every product has a slug before serving
+    await backfillProductSlugs();
 
     const [products, total] = await Promise.all([
       Product.find(filter).sort(sortOption).skip(skip).limit(limitNum),

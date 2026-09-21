@@ -24,7 +24,7 @@ export default function ProductCard({ product, onAddToCart, isFavorite, onToggle
   return (
     <div className="group">
       {/* Image */}
-      <Link to={`/product/${product.slug || product.id}`} className="block relative aspect-[3/4] overflow-hidden mb-3 bg-gray-100 rounded-2xl shadow-sm">
+      <Link to={`/product/${product.slug}`} className="block relative aspect-[3/4] overflow-hidden mb-3 bg-gray-100 rounded-2xl shadow-sm">
         <img
           src={selectedImage}
           alt={product.name}
@@ -79,7 +79,7 @@ export default function ProductCard({ product, onAddToCart, isFavorite, onToggle
       {/* Info */}
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
-          <Link to={`/product/${product.slug || product.id}`}>
+          <Link to={`/product/${product.slug}`}>
             <h3 className="text-sm font-medium truncate text-brand-black hover:text-brand-burgundy transition-colors">
               {product.name}
             </h3>
@@ -103,4 +103,5 @@ export default function ProductCard({ product, onAddToCart, isFavorite, onToggle
     </div>
   );
 }
+
 

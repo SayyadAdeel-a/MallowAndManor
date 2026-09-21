@@ -113,7 +113,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
       description: product.description
         ? `${product.description.slice(0, 140)}`
         : `${product.name} by Honeybee Lane. Premium handcrafted quality with nationwide delivery across Pakistan. Order via WhatsApp.`,
-      path: `/product/${product.slug || product.id}`,
+      path: `/product/${product.slug}`,
       image: product.mainImage,
       type: "product",
       jsonLd: [
@@ -121,7 +121,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
         breadcrumbSchema([
           { name: "Home", path: "/" },
           { name: "Shop", path: "/shop" },
-          { name: product.name, path: `/product/${product.slug || product.id}` },
+          { name: product.name, path: `/product/${product.slug}` },
         ]),
       ],
     });
@@ -316,9 +316,9 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
                       src={p.mainImage || "/hero-banner.webp"}
                       alt=""
                       className="w-12 h-14 object-cover rounded-lg border border-brand-border/50 cursor-pointer"
-                      onClick={() => { navigate(`/product/${p.slug || p.id}`); window.scrollTo(0, 0); }}
+                      onClick={() => { navigate(`/product/${p.slug}`); window.scrollTo(0, 0); }}
                     />
-                    <div className="flex-1 min-w-0 cursor-pointer" onClick={() => { navigate(`/product/${p.slug || p.id}`); window.scrollTo(0, 0); }}>
+                    <div className="flex-1 min-w-0 cursor-pointer" onClick={() => { navigate(`/product/${p.slug}`); window.scrollTo(0, 0); }}>
                       <p className="text-sm font-medium text-brand-burgundy truncate group-hover:text-brand-gold transition-colors">{p.name}</p>
                       <p className="text-xs text-brand-wine-dark/50">Rs. {Number(p.price).toLocaleString()}</p>
                     </div>
@@ -446,7 +446,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
             {related.slice(0, pp.alsoLikeCount || 4).map((p) => (
-              <div key={p.id} className="group cursor-pointer" onClick={() => { navigate(`/product/${p.slug || p.id}`); window.scrollTo(0, 0); }}>
+              <div key={p.id} className="group cursor-pointer" onClick={() => { navigate(`/product/${p.slug}`); window.scrollTo(0, 0); }}>
                 <div className="hover-lift relative aspect-[4/5] overflow-hidden rounded-2xl bg-brand-cream border border-brand-border/50 mb-3">
                   <img src={p.mainImage || "/hero-banner.webp"} alt={p.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
@@ -465,5 +465,6 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
     </div>
   );
 }
+
 
 

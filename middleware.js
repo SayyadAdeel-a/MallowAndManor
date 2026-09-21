@@ -48,8 +48,8 @@ export default function middleware(request) {
     });
   }
 
-  // Product ids: Mongo ObjectId (24 hex) or an SEO slug (kebab-case name)
-  if (kind === "product" && !/^[a-f\d]{24}$/i.test(idOrSlug) && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/i.test(idOrSlug)) {
+  // Product URLs accept SEO slugs only (no raw Mongo ids)
+  if (kind === "product" && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/i.test(idOrSlug)) {
     return new Response(notFoundPage, {
       status: 404,
       headers: { "content-type": "text/html; charset=utf-8" },

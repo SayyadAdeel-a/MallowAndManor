@@ -77,6 +77,9 @@ export default async function handler(req, res) {
       if (sort === 'price-low') sortOption = { price: 1 };
       else if (sort === 'price-high') sortOption = { price: -1 };
 
+      // Ensure every product has a slug before serving
+      await backfillProductSlugs();
+
       const [products, total] = await Promise.all([
         Product.find(filter).sort(sortOption).skip(skip).limit(limit),
         Product.countDocuments(filter),
@@ -97,13 +100,10 @@ export default async function handler(req, res) {
       return res.json(categories);
     }
 
-    // Public: GET /api/products?id=xxx (accepts a Mongo id OR a slug) - single product
+    // Public: GET /api/products?id=xxx (accepts only a slug now) - single product
     if (req.method === 'GET' && req.query?.id) {
-      const key = String(req.query.id);
-      const isHex = /^[a-f\d]{24}$/i.test(key);
-      const product = isHex
-        ? await Product.findById(key)
-        : await Product.findOne({ slug: key.toLowerCase() });
+      const key = String(req.query.id).toLowerCase();
+      const product = await Product.findOne({ slug: key });
       if (!product) return res.status(404).json({ error: 'Not found' });
       res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=120, stale-while-revalidate=600');
       return res.json(product);
