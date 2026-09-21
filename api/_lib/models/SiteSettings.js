@@ -94,6 +94,45 @@ const siteSettingsSchema = new mongoose.Schema({
     paragraphs: [String],
     image: { type: String, default: '' },
   },
+
+  // Product detail page
+  productPage: {
+    sizesLabel: { type: String, default: 'Size' },
+    sizes: [String],
+    showSizes: { type: Boolean, default: true },
+    whatsappOrderLabel: { type: String, default: 'Order via WhatsApp' },
+    showWhatsappOrder: { type: Boolean, default: true },
+    reviewsHeading: { type: String, default: 'Customer Reviews' },
+    showReviews: { type: Boolean, default: true },
+    writeReviewLabel: { type: String, default: 'Write a Review' },
+    alsoLikeHeading: { type: String, default: 'You May Also Like' },
+    alsoLikeCount: { type: Number, default: 4 },
+    featuresTitle: { type: String, default: 'Features' },
+    craftedText: {
+      type: String,
+      default:
+        'Crafted from high-quality materials with attention to every detail, this piece offers comfort, versatility and timeless style.',
+    },
+    noteText: { type: String, default: 'Note: You can wear these pieces with almost every outfit.' },
+    shippingInfo: {
+      title: { type: String, default: 'Shipping Information' },
+      text: {
+        type: String,
+        default:
+          'We deliver nationwide across Pakistan, covering all major cities. Free shipping on orders above Rs. 5,000. Orders are dispatched within 24 hours, and delivery takes 3-5 working days. Cash on delivery is available.',
+      },
+    },
+  },
+
+  // Product page customer reviews (shown on every product detail page)
+  productReviews: [
+    {
+      author: { type: String, default: '' },
+      rating: { type: Number, default: 5 },
+      date: { type: String, default: '' },
+      body: { type: String, default: '' },
+    },
+  ],
 }, { timestamps: true });
 
 export default mongoose.model('SiteSettings', siteSettingsSchema);

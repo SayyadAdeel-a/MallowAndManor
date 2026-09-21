@@ -257,6 +257,7 @@ export default function AdminDashboard() {
     { id: "posts", label: "Blog Posts" },
     { id: "hero", label: "Hero" },
     { id: "sale", label: "Sale Banner" },
+    { id: "productpage", label: "Product Page" },
     { id: "story", label: "Story Section" },
     { id: "newsletter", label: "Newsletter" },
     { id: "contact", label: "Contact" },
@@ -790,6 +791,113 @@ export default function AdminDashboard() {
                       <p className="text-sm text-brand-wine-dark/40 text-center py-4">No FAQs yet. Click "Add FAQ" to create one.</p>
                     )}
                   </div>
+                </div>
+
+                <div className="mt-6">
+                  <button
+                    onClick={handleSettingsSave}
+                    disabled={saving}
+                    className="px-6 py-2.5 bg-brand-burgundy text-brand-cream text-xs font-semibold tracking-wider uppercase hover:bg-brand-wine-dark transition-colors disabled:opacity-50 shadow-sm rounded-full"
+                  >
+                    {saving ? "Saving..." : "Save Changes"}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* ========== PRODUCT PAGE TAB ========== */}
+            {activeTab === "productpage" && (
+              <div>
+                <h2 className="text-lg font-semibold text-brand-burgundy mb-4">Product Page</h2>
+
+                {/* Sizes */}
+                <h3 className="text-sm font-semibold text-brand-burgundy mt-2 mb-3">Order Options</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <InputField label="Size Field Label" value={settings.productPage?.sizesLabel} onChange={e => updateSetting("productPage.sizesLabel", e.target.value)} />
+                  <InputField
+                    label="Sizes (comma separated)"
+                    value={(settings.productPage?.sizes || []).join(", ")}
+                    onChange={e => updateSetting("productPage.sizes", e.target.value.split(",").map(s => s.trim()).filter(Boolean))}
+                  />
+                  <div className="flex items-center gap-3">
+                    <input type="checkbox" checked={settings.productPage?.showSizes !== false} onChange={e => updateSetting("productPage.showSizes", e.target.checked)} className="w-4 h-4 accent-brand-burgundy" id="pp-sizes" />
+                    <label htmlFor="pp-sizes" className="text-sm text-brand-wine-dark">Show sizes selector</label>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <input type="checkbox" checked={settings.productPage?.showWhatsappOrder !== false} onChange={e => updateSetting("productPage.showWhatsappOrder", e.target.checked)} className="w-4 h-4 accent-brand-burgundy" id="pp-wa" />
+                    <label htmlFor="pp-wa" className="text-sm text-brand-wine-dark">Show WhatsApp order button</label>
+                  </div>
+                  <InputField label="WhatsApp Button Label" value={settings.productPage?.whatsappOrderLabel} onChange={e => updateSetting("productPage.whatsappOrderLabel", e.target.value)} />
+                </div>
+
+                {/* Description sections */}
+                <h3 className="text-sm font-semibold text-brand-burgundy mt-8 mb-3">Description Section</h3>
+                <InputField label="Crafted Text (description paragraph below product text)" value={settings.productPage?.craftedText} onChange={e => updateSetting("productPage.craftedText", e.target.value)} multiline rows={2} />
+                <div className="mt-4">
+                  <InputField label="Note Text" value={settings.productPage?.noteText} onChange={e => updateSetting("productPage.noteText", e.target.value)} multiline rows={2} />
+                </div>
+
+                {/* Reviews */}
+                <div className="flex items-center justify-between mt-8 mb-3">
+                  <h3 className="text-sm font-semibold text-brand-burgundy">Customer Reviews</h3>
+                  <div className="flex items-center gap-3">
+                    <label className="flex items-center gap-2 text-sm text-brand-wine-dark">
+                      <input type="checkbox" checked={settings.productPage?.showReviews !== false} onChange={e => updateSetting("productPage.showReviews", e.target.checked)} className="w-4 h-4 accent-brand-burgundy" />
+                      Show section
+                    </label>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                  <InputField label="Reviews Section Heading" value={settings.productPage?.reviewsHeading} onChange={e => updateSetting("productPage.reviewsHeading", e.target.value)} />
+                  <InputField label="Write a Review Button Label" value={settings.productPage?.writeReviewLabel} onChange={e => updateSetting("productPage.writeReviewLabel", e.target.value)} />
+                </div>
+
+                <div className="flex items-center justify-between mb-4">
+                  <p className="text-sm text-brand-wine-dark/60">Reviews shown on every product page ({(settings.productReviews || []).length})</p>
+                  <button
+                    onClick={() => updateSetting("productReviews", [...(settings.productReviews || []), { author: "", rating: 5, date: "", body: "" }])}
+                    className="px-4 py-1.5 bg-brand-burgundy text-brand-cream text-xs font-semibold tracking-wider uppercase rounded-full hover:bg-brand-wine-dark transition-colors"
+                  >
+                    Add Review
+                  </button>
+                </div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  {(settings.productReviews || []).map((rev, idx) => (
+                    <div key={idx} className="bg-brand-cream/50 border border-brand-border rounded-lg p-4">
+                      <div className="flex justify-between items-start mb-2">
+                        <span className="text-xs font-semibold text-brand-wine-dark/50">Review #{idx + 1}</span>
+                        <button
+                          onClick={() => updateSetting("productReviews", (settings.productReviews || []).filter((_, i) => i !== idx))}
+                          className="text-xs text-red-500 hover:text-red-700"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
+                        <InputField label="Author" value={rev.author} onChange={e => { const arr = [...(settings.productReviews || [])]; arr[idx] = { ...arr[idx], author: e.target.value }; updateSetting("productReviews", arr); }} />
+                        <InputField label="Stars (1-5)" value={rev.rating} type="number" onChange={e => { const arr = [...(settings.productReviews || [])]; arr[idx] = { ...arr[idx], rating: Math.min(5, Math.max(1, parseInt(e.target.value) || 5)) }; updateSetting("productReviews", arr); }} />
+                        <InputField label="Date" value={rev.date} onChange={e => { const arr = [...(settings.productReviews || [])]; arr[idx] = { ...arr[idx], date: e.target.value }; updateSetting("productReviews", arr); }} />
+                      </div>
+                      <InputField label="Review Text" value={rev.body} onChange={e => { const arr = [...(settings.productReviews || [])]; arr[idx] = { ...arr[idx], body: e.target.value }; updateSetting("productReviews", arr); }} multiline rows={2} />
+                    </div>
+                  ))}
+                  {(!settings.productReviews || settings.productReviews.length === 0) && (
+                    <p className="text-sm text-brand-wine-dark/40 text-center py-4 lg:col-span-2">No reviews yet. Click "Add Review" to create one.</p>
+                  )}
+                </div>
+
+                {/* Shipping accordion */}
+                <h3 className="text-sm font-semibold text-brand-burgundy mt-8 mb-3">Shipping Accordion</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <InputField label="Accordion Title" value={settings.productPage?.shippingInfo?.title} onChange={e => updateSetting("productPage.shippingInfo.title", e.target.value)} />
+                  <InputField label="Accordion Text" value={settings.productPage?.shippingInfo?.text} onChange={e => updateSetting("productPage.shippingInfo.text", e.target.value)} multiline rows={3} />
+                </div>
+
+                {/* Also like */}
+                <h3 className="text-sm font-semibold text-brand-burgundy mt-8 mb-3">You May Also Like</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <InputField label="Heading" value={settings.productPage?.alsoLikeHeading} onChange={e => updateSetting("productPage.alsoLikeHeading", e.target.value)} />
+                  <InputField label="Number of Products Shown" value={settings.productPage?.alsoLikeCount} type="number" onChange={e => updateSetting("productPage.alsoLikeCount", Math.min(8, Math.max(2, parseInt(e.target.value) || 4)))} />
                 </div>
 
                 <div className="mt-6">

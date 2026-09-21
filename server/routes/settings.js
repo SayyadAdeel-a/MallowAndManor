@@ -93,6 +93,26 @@ const DEFAULT_SETTINGS = {
     ],
     image: '/About Page Hero Banner.webp',
   },
+  productPage: {
+    sizesLabel: 'Size',
+    sizes: ['S', 'M', 'L', 'XL'],
+    showSizes: true,
+    whatsappOrderLabel: 'Order via WhatsApp',
+    showWhatsappOrder: true,
+    reviewsHeading: 'Customer Reviews',
+    showReviews: true,
+    writeReviewLabel: 'Write a Review',
+    alsoLikeHeading: 'You May Also Like',
+    alsoLikeCount: 4,
+    featuresTitle: 'Features',
+    craftedText: 'Crafted from high-quality materials with attention to every detail, this piece offers comfort, versatility and timeless style.',
+    noteText: 'Note: You can wear these pieces with almost every outfit.',
+    shippingInfo: {
+      title: 'Shipping Information',
+      text: 'We deliver nationwide across Pakistan, covering all major cities. Free shipping on orders above Rs. 5,000. Orders are dispatched within 24 hours, and delivery takes 3-5 working days. Cash on delivery is available.',
+    },
+  },
+  productReviews: [],
 };
 
 // GET /api/settings — public
