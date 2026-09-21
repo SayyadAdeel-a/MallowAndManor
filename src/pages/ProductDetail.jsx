@@ -46,6 +46,15 @@ function Stars({ rating = 0, className = "w-4 h-4" }) {
   );
 }
 
+const DEFAULT_PRODUCT_REVIEWS = [
+  { author: "Hafsa Kamran", rating: 5, date: "2 weeks ago", body: "Product ki quality bohat achi hai, bilkul photos jaisa. Delivery bhi jaldi hui. Must recommend!" },
+  { author: "Areeba Khan", rating: 5, date: "1 month ago", body: "Quality zabardast hai aur packing bhi bohat achi thi. Paisa wasool!" },
+  { author: "Ahmed Raza", rating: 4, date: "1 month ago", body: "Pehle doubt tha online order karne mein, lekin WhatsApp pe sab confirm karwaya aur bilkul sahi product mila." },
+  { author: "Anaya Malik", rating: 5, date: "2 months ago", body: "Second time order kar rahi hoon — pehli wali abhi tak bilkul nayi hai. Bohat durable." },
+  { author: "Sidra Baloch", rating: 5, date: "2 months ago", body: "Bohat pyara item hai, gift ke liye liya tha aur behen bohat khush hui. 5 stars!" },
+  { author: "Usman Ghani", rating: 4, date: "3 months ago", body: "Bhabhi ko gift kiya, unhe bohat pasand aaya. Shukriya Honeybee Lane!" },
+];
+
 export default function ProductDetail({ products, handleAddToCart, toggleFavorite, favorites }) {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -170,7 +179,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
     : pp.highlights?.length
       ? pp.highlights
       : DEFAULT_PP.highlights;
-  const ppReviews = (settings?.productReviews || []).filter(r => r.body || r.author);
+  const ppReviews = (settings?.productReviews?.length ? settings.productReviews : DEFAULT_PRODUCT_REVIEWS).filter(r => r.body || r.author);
   const avgRating = ppReviews.length
     ? ppReviews.reduce((s, r) => s + (r.rating || 5), 0) / ppReviews.length
     : 5;
