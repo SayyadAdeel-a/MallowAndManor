@@ -156,9 +156,19 @@ export default function AdminDashboard() {
 
   const handleProductSubmit = async (e) => {
     e.preventDefault();
+    const price = parseFloat(productForm.price);
+    if (!productForm.name?.trim()) { alert("Product name is required"); return; }
+    if (productForm.price === "" || isNaN(price)) { alert("Please enter a valid numeric price"); return; }
+    if (!productForm.category) { alert("Please select a category"); return; }
     setSaving(true);
     try {
-      const payload = { ...productForm, price: parseFloat(productForm.price) };
+      const payload = {
+        name: productForm.name,
+        price,
+        category: productForm.category,
+        description: productForm.description || "",
+        mainImage: productForm.mainImage || "",
+      };
       if (editingProduct) {
         await updateProduct(editingProduct.id || editingProduct._id, payload);
       } else {
@@ -166,7 +176,7 @@ export default function AdminDashboard() {
       }
       setShowProductForm(false);
       setEditingProduct(null);
-      setProductForm({ name: "", price: "", category: "", description: "" });
+      setProductForm({ name: "", price: "", category: "", description: "", mainImage: "" });
       await loadAll();
     } catch (err) { alert("Error: " + err.message); }
     setSaving(false);
@@ -383,7 +393,16 @@ export default function AdminDashboard() {
                               <button
                                 onClick={() => {
                                   setEditingProduct(product);
-                                  setProductForm({ name: product.name, price: product.price, category: product.category?._id || product.category || "", description: product.description || "" });
+                                  // Resolve stored category (slug or old ObjectId) to slug for the dropdown
+                                  const storedCat = product.category?._id || product.category || "";
+                                  const match = categories.find(c => c.slug === storedCat || c._id === storedCat || c.id === storedCat);
+                                  setProductForm({
+                                    name: product.name || "",
+                                    price: product.price ?? "",
+                                    category: match?.slug || storedCat,
+                                    description: product.description || "",
+                                    mainImage: product.mainImage || "",
+                                  });
                                   setShowProductForm(true);
                                 }}
                                 className="px-3 py-1 text-xs rounded-full border border-brand-border text-brand-wine-dark/70 hover:border-brand-gold transition-colors"

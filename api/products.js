@@ -75,25 +75,28 @@ export default async function handler(req, res) {
     const user = verifyToken(req);
     if (!user) return res.status(401).json({ error: 'Unauthorized' });
 
+    // Extract only allowed product fields from body (blocks _id, timestamps, garbage)
+    const pickProductFields = (body) => {
+      const clean = {};
+      if (typeof body.name === 'string' && body.name.trim()) clean.name = body.name.trim();
+      if (typeof body.category === 'string' && body.category.trim()) clean.category = body.category.trim();
+      if (typeof body.description === 'string') clean.description = body.description.trim();
+      if (body.mainImage !== undefined) clean.mainImage = typeof body.mainImage === 'string' ? body.mainImage : '';
+      if (body.thumbnails !== undefined) clean.thumbnails = Array.isArray(body.thumbnails) ? body.thumbnails.filter((t) => typeof t === 'string').slice(0, 5) : [];
+      // Coerce price from string or number; explicit null/NaN becomes undefined -> validation catches it
+      if (body.price !== undefined) {
+        const n = typeof body.price === 'number' ? body.price : parseFloat(body.price);
+        if (!Number.isNaN(n)) clean.price = n;
+      }
+      return clean;
+    };
+
     if (req.method === 'POST' && !req.query?.categories) {
-      const { name, price, category } = req.body;
-      if (!name || typeof name !== 'string' || !name.trim()) {
-        return res.status(400).json({ error: 'Product name is required' });
-      }
-      if (price === undefined || typeof price !== 'number' || price < 0) {
-        return res.status(400).json({ error: 'Valid price is required' });
-      }
-      if (!category || typeof category !== 'string') {
-        return res.status(400).json({ error: 'Category is required' });
-      }
-      const product = await Product.create({
-        name: name.trim(),
-        price,
-        category: category.trim(),
-        mainImage: req.body.mainImage || '',
-        thumbnails: Array.isArray(req.body.thumbnails) ? req.body.thumbnails.slice(0, 5) : [],
-        description: typeof req.body.description === 'string' ? req.body.description.trim() : '',
-      });
+      const clean = pickProductFields(req.body);
+      if (!clean.name) return res.status(400).json({ error: 'Product name is required' });
+      if (clean.price === undefined) return res.status(400).json({ error: 'Valid numeric price is required' });
+      if (!clean.category) return res.status(400).json({ error: 'Category is required' });
+      const product = await Product.create(clean);
       productCountCache.count = null;
       return res.status(201).json(product);
     }
@@ -104,8 +107,11 @@ export default async function handler(req, res) {
     }
 
     if (req.method === 'PUT' && !req.query?.categories) {
-      const { id, ...data } = req.body;
-      const product = await Product.findByIdAndUpdate(id, data, { new: true });
+      const clean = pickProductFields(req.body);
+      if (Object.keys(clean).length === 0) {
+        return res.status(400).json({ error: 'No valid fields to update' });
+      }
+      const product = await Product.findByIdAndUpdate(req.body.id, clean, { new: true, runValidators: true });
       if (!product) return res.status(404).json({ error: 'Not found' });
       return res.json(product);
     }
