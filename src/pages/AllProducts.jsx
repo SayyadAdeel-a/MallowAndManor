@@ -161,7 +161,7 @@ export default function AllProducts({ categories = [], handleAddToCart, toggleFa
         </div>
 
         {/* Category tabs */}
-        <div className="flex gap-1 overflow-x-auto">
+        <div className="flex gap-1 overflow-x-auto scrollbar-hide w-full">
           <button
             onClick={() => handleFilterChange({ category: "all" })}
             className={`px-4 py-2 text-xs font-medium tracking-wider uppercase whitespace-nowrap transition-colors rounded-full ${selectedCategory === "all" ? "bg-brand-burgundy text-brand-cream" : "text-brand-wine-dark/70 hover:text-brand-burgundy hover:bg-brand-blush/40"

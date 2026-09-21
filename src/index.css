@@ -147,6 +147,26 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Kill side-scroll on mobile — clip never creates a scroll container (keeps sticky nav working) */
+html,
+body {
+  overflow-x: clip;
+}
+
+/* Horizontal pill strips scroll internally, never visibly */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Thumbnails/strip images never stretch a layout */
+img {
+  max-width: 100%;
+}
+
 /* ===== Motion tokens ===== */
 :root {
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);

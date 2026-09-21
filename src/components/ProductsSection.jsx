@@ -45,7 +45,7 @@ export default function ProductsSection({ onAddToCart, favorites = [], onToggleF
         </div>
 
         {/* Category filters */}
-        <div className="flex gap-1 overflow-x-auto pb-1">
+        <div className="flex gap-1 overflow-x-auto scrollbar-hide w-full md:w-auto pb-1">
           {[
             { id: "all", label: "All" },
             { id: "bangles", label: "Bangles" },
