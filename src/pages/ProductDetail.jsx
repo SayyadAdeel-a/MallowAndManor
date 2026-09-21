@@ -105,6 +105,28 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
     return () => { cancelled = true; };
   }, [id, products]);
 
+  // SEO: product meta + Product JSON-LD
+  useEffect(() => {
+    if (!product) return;
+    setMeta({
+      title: `${product.name} — Rs. ${Number(product.price).toLocaleString()}`,
+      description: product.description
+        ? `${product.description.slice(0, 140)}`
+        : `${product.name} by Honeybee Lane. Premium handcrafted quality with nationwide delivery across Pakistan. Order via WhatsApp.`,
+      path: `/product/${product.id}`,
+      image: product.mainImage,
+      type: "product",
+      jsonLd: [
+        productSchema({ product }),
+        breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Shop", path: "/shop" },
+          { name: product.name, path: `/product/${product.id}` },
+        ]),
+      ],
+    });
+  }, [product]);
+
   if (loading) {
     return (
       <div className="max-w-7xl mx-auto px-4 lg:px-8 flex justify-center items-center min-h-[50vh]">
@@ -127,28 +149,6 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
   }
 
   const pp = { ...DEFAULT_PP, ...(settings?.productPage || {}) };
-
-  // SEO: product meta + Product JSON-LD
-  useEffect(() => {
-    if (!product) return;
-    setMeta({
-      title: `${product.name} — Rs. ${Number(product.price).toLocaleString()}`,
-      description: product.description
-        ? `${product.description.slice(0, 140)}`
-        : `${product.name} by Honeybee Lane. Premium handcrafted quality with nationwide delivery across Pakistan. Order via WhatsApp.`,
-      path: `/product/${product.id}`,
-      image: product.mainImage,
-      type: "product",
-      jsonLd: [
-        productSchema({ product }),
-        breadcrumbSchema([
-          { name: "Home", path: "/" },
-          { name: "Shop", path: "/shop" },
-          { name: product.name, path: `/product/${product.id}` },
-        ]),
-      ],
-    });
-  }, [product]);
   // Per-product highlights first, then global settings, then built-in defaults
   const prodHighlights = product.highlights?.length
     ? product.highlights

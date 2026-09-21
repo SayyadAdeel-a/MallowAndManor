@@ -8,7 +8,7 @@ import AnimatedIcon, { ICONS } from "../components/AnimatedIcon";
 
 const ITEMS_PER_PAGE = 12;
 
-export default function AllProducts({ handleAddToCart, toggleFavorite, favorites }) {
+export default function AllProducts({ categories = [], handleAddToCart, toggleFavorite, favorites }) {
   const location = useLocation();
   const { slug } = useParams();
   const navigate = useNavigate();

@@ -35,7 +35,12 @@ export default function middleware(request) {
   const kind = segments[0]; // "product" or "blog"
   const idOrSlug = segments[1];
 
-  // /product or /blog alone → not a real page
+  // Bare /blog is a real page (the listing) — let the SPA handle it
+  if (kind === "blog" && segments.length === 1) {
+    return;
+  }
+
+  // /product or /blog/x/y — malformed
   if (!idOrSlug || segments.length > 2) {
     return new Response(notFoundPage, {
       status: 404,
