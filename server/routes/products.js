@@ -88,6 +88,14 @@ router.post('/', authenticate, async (req, res, next) => {
       if (typeof body.description === 'string') clean.description = body.description.trim();
       if (body.mainImage !== undefined) clean.mainImage = typeof body.mainImage === 'string' ? body.mainImage : '';
       if (body.thumbnails !== undefined) clean.thumbnails = Array.isArray(body.thumbnails) ? body.thumbnails.filter((t) => typeof t === 'string').slice(0, 5) : [];
+      if (body.highlights !== undefined) {
+        clean.highlights = Array.isArray(body.highlights)
+          ? body.highlights
+              .filter((h) => h && typeof h.text === 'string' && h.text.trim())
+              .slice(0, 8)
+              .map((h) => ({ emoji: typeof h.emoji === 'string' ? h.emoji.slice(0, 8) || '✨' : '✨', text: h.text.trim().slice(0, 140) }))
+          : [];
+      }
       if (body.price !== undefined) {
         const n = typeof body.price === 'number' ? body.price : parseFloat(body.price);
         if (!Number.isNaN(n)) clean.price = n;

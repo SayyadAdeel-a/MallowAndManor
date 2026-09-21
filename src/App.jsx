@@ -84,6 +84,7 @@ function App() {
           mainImage: p.mainImage,
           thumbnails: Array.isArray(p.thumbnails) ? p.thumbnails : [],
           description: p.description,
+          highlights: Array.isArray(p.highlights) ? p.highlights : [],
           createdAt: p.createdAt,
         }));
 

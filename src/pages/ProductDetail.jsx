@@ -70,7 +70,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
       fetchProductById(id)
         .then(data => {
           if (data && !data.error) {
-            const mapped = { id: data._id, name: data.name, price: data.price, category: data.category, mainImage: data.mainImage, thumbnails: data.thumbnails || [], description: data.description, createdAt: data.createdAt };
+            const mapped = { id: data._id, name: data.name, price: data.price, category: data.category, mainImage: data.mainImage, thumbnails: data.thumbnails || [], description: data.description, highlights: data.highlights || [], createdAt: data.createdAt };
             setProduct(mapped);
             setSelectedImage(mapped.mainImage || "");
             trackProductView(mapped.id, mapped.name);
@@ -124,6 +124,12 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
   }
 
   const pp = { ...DEFAULT_PP, ...(settings?.productPage || {}) };
+  // Per-product highlights first, then global settings, then built-in defaults
+  const prodHighlights = product.highlights?.length
+    ? product.highlights
+    : pp.highlights?.length
+      ? pp.highlights
+      : DEFAULT_PP.highlights;
   const ppReviews = (settings?.productReviews || []).filter(r => r.body || r.author);
   const avgRating = ppReviews.length
     ? ppReviews.reduce((s, r) => s + (r.rating || 5), 0) / ppReviews.length
@@ -203,9 +209,9 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
           <p className="text-xs text-brand-wine-dark/50 mb-5">Shipping calculated at checkout.</p>
 
           {/* Highlights */}
-          {(pp.highlights?.length ? pp.highlights : DEFAULT_PP.highlights).filter(h => h.text).length > 0 && (
+          {prodHighlights.filter(h => h.text).length > 0 && (
             <ul className="space-y-2.5 mb-7">
-              {(pp.highlights?.length ? pp.highlights : DEFAULT_PP.highlights).filter(h => h.text).map((h, i) => (
+              {prodHighlights.filter(h => h.text).map((h, i) => (
                 <li key={i} className="flex items-center gap-3">
                   <span className="w-8 h-8 shrink-0 rounded-full bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center text-sm" aria-hidden="true">
                     {h.emoji || "✨"}

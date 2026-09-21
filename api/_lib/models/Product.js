@@ -7,6 +7,10 @@ const productSchema = new mongoose.Schema({
   mainImage: String,
   thumbnails: [String],
   description: String,
+  highlights: [{
+    emoji: { type: String, default: '✨' },
+    text: { type: String, default: '' },
+  }],
 }, { timestamps: true });
 
 productSchema.index({ category: 1 });

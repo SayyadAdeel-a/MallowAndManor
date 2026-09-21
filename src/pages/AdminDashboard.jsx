@@ -111,7 +111,7 @@ export default function AdminDashboard() {
   const [products, setProducts] = useState([]);
   const [showProductForm, setShowProductForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
-  const [productForm, setProductForm] = useState({ name: "", price: "", category: "", description: "" });
+  const [productForm, setProductForm] = useState({ name: "", price: "", category: "", description: "", highlights: [] });
   const [productSearch, setProductSearch] = useState("");
   const [productCategoryFilter, setProductCategoryFilter] = useState("");
 
@@ -193,6 +193,7 @@ export default function AdminDashboard() {
         category: productForm.category,
         description: productForm.description || "",
         mainImage: productForm.mainImage || "",
+        highlights: (productForm.highlights || []).filter(h => h.text?.trim()),
       };
       if (editingProduct) {
         await updateProduct(editingProduct.id || editingProduct._id, payload);
@@ -201,7 +202,7 @@ export default function AdminDashboard() {
       }
       setShowProductForm(false);
       setEditingProduct(null);
-      setProductForm({ name: "", price: "", category: "", description: "", mainImage: "" });
+      setProductForm({ name: "", price: "", category: "", description: "", mainImage: "", highlights: [] });
       await loadAll();
     } catch (err) { alert("Error: " + err.message); }
     setSaving(false);
@@ -307,7 +308,7 @@ export default function AdminDashboard() {
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold text-brand-burgundy">Products ({products.length})</h2>
                   <button
-                    onClick={() => { setShowProductForm(true); setEditingProduct(null); setProductForm({ name: "", price: "", category: "", description: "" }); }}
+                    onClick={() => { setShowProductForm(true); setEditingProduct(null); setProductForm({ name: "", price: "", category: "", description: "", highlights: [] }); }}
                     className="px-4 py-2 bg-brand-burgundy text-brand-cream text-xs font-semibold tracking-wider uppercase rounded-full hover:bg-brand-wine-dark transition-colors"
                   >
                     Add Product
@@ -342,6 +343,59 @@ export default function AdminDashboard() {
                       <div className="md:col-span-2">
                         <InputField label="Description" value={productForm.description} onChange={e => setProductForm(f => ({ ...f, description: e.target.value }))} multiline rows={4} />
                       </div>
+
+                      {/* Per-product highlights */}
+                      <div className="md:col-span-2">
+                        <div className="flex items-center justify-between mb-2">
+                          <label className="text-xs font-semibold tracking-wider uppercase text-brand-wine-dark/70">Highlights (shown below price — emoji + line, up to 8)</label>
+                          <button
+                            type="button"
+                            onClick={() => setProductForm(f => ({ ...f, highlights: [...(f.highlights || []), { emoji: "✨", text: "" }] }))}
+                            className="px-3.5 py-1.5 bg-brand-burgundy text-brand-cream text-[11px] font-semibold tracking-wider uppercase rounded-full hover:bg-brand-wine-dark transition-colors"
+                          >
+                            + Add Highlight
+                          </button>
+                        </div>
+                        <div className="space-y-2.5">
+                          {(productForm.highlights || []).map((h, idx) => (
+                            <div key={idx} className="flex items-end gap-2.5 bg-brand-cream/50 border border-brand-border rounded-lg p-2.5">
+                              <div className="w-[68px] shrink-0">
+                                <InputField
+                                  label="Emoji"
+                                  value={h.emoji}
+                                  onChange={e => setProductForm(f => {
+                                    const arr = [...f.highlights];
+                                    arr[idx] = { ...arr[idx], emoji: e.target.value };
+                                    return { ...f, highlights: arr };
+                                  })}
+                                />
+                              </div>
+                              <div className="flex-1">
+                                <InputField
+                                  label={`Line ${idx + 1}`}
+                                  value={h.text}
+                                  onChange={e => setProductForm(f => {
+                                    const arr = [...f.highlights];
+                                    arr[idx] = { ...arr[idx], text: e.target.value };
+                                    return { ...f, highlights: arr };
+                                  })}
+                                />
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => setProductForm(f => ({ ...f, highlights: f.highlights.filter((_, i) => i !== idx) }))}
+                                className="text-xs text-red-500 hover:text-red-700 pb-2.5 shrink-0"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          ))}
+                          {(!productForm.highlights || productForm.highlights.length === 0) && (
+                            <p className="text-xs text-brand-wine-dark/40 py-1">No product-specific highlights — this product will show the global highlights from the Product Page tab.</p>
+                          )}
+                        </div>
+                      </div>
+
                       <div className="md:col-span-2 flex gap-3">
                         <button
                           type="submit"
@@ -425,6 +479,7 @@ export default function AdminDashboard() {
                                     category: match?.slug || storedCat,
                                     description: product.description || "",
                                     mainImage: product.mainImage || "",
+                                    highlights: Array.isArray(product.highlights) ? product.highlights : [],
                                   });
                                   setShowProductForm(true);
                                 }}
