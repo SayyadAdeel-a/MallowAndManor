@@ -8,6 +8,39 @@ import Category from './_lib/models/Category.js';
 let productCountCache = { count: null, timestamp: 0 };
 const CACHE_TTL = 60 * 1000; // 1 minute
 
+const slugifyName = (name) =>
+  String(name || '')
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .slice(0, 90) || 'product';
+
+// Generate a unique slug for a product (excluding its own id)
+const uniqueSlug = async (base, excludeId) => {
+  let candidate = base;
+  let i = 2;
+  // Slug field has no unique index (backfill safety), so check by query
+  let exists = await Product.findOne({ slug: candidate, ...(excludeId ? { _id: { $ne: excludeId } } : {}) });
+  while (exists) {
+    candidate = `${base}-${i++}`;
+    exists = await Product.findOne({ slug: candidate, ...(excludeId ? { _id: { $ne: excludeId } } : {}) });
+  }
+  return candidate;
+};
+
+// One-time lazy backfill: give every legacy product a slug
+const backfillProductSlugs = async () => {
+  const missing = await Product.find({ $or: [{ slug: { $exists: false } }, { slug: null }, { slug: '' }] });
+  for (const p of missing) {
+    const base = slugifyName(p.name);
+    const slug = await uniqueSlug(base, p._id);
+    await Product.updateOne({ _id: p._id }, { slug });
+  }
+};
+
 export default async function handler(req, res) {
   if (handleCors(req, res)) return;
   try {
@@ -17,6 +50,7 @@ export default async function handler(req, res) {
     if (req.method === 'GET' && req.query?.admin === 'true') {
       const user = verifyToken(req);
       if (!user) return res.status(401).json({ error: 'Unauthorized' });
+      await backfillProductSlugs();
       const products = await Product.find().sort({ createdAt: -1 });
       return res.json({ products, total: products.length });
     }
@@ -63,11 +97,15 @@ export default async function handler(req, res) {
       return res.json(categories);
     }
 
-    // Public: GET /api/products?id=xxx - single product
+    // Public: GET /api/products?id=xxx (accepts a Mongo id OR a slug) - single product
     if (req.method === 'GET' && req.query?.id) {
-      const product = await Product.findById(req.query.id);
+      const key = String(req.query.id);
+      const isHex = /^[a-f\d]{24}$/i.test(key);
+      const product = isHex
+        ? await Product.findById(key)
+        : await Product.findOne({ slug: key.toLowerCase() });
       if (!product) return res.status(404).json({ error: 'Not found' });
-      res.setHeader('Cache-Control', 'public, s-maxage=120, stale-while-revalidate=600');
+      res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=120, stale-while-revalidate=600');
       return res.json(product);
     }
 
@@ -104,6 +142,8 @@ export default async function handler(req, res) {
       if (!clean.name) return res.status(400).json({ error: 'Product name is required' });
       if (clean.price === undefined) return res.status(400).json({ error: 'Valid numeric price is required' });
       if (!clean.category) return res.status(400).json({ error: 'Category is required' });
+      const baseSlug = req.body.slug ? slugifyName(req.body.slug) : slugifyName(clean.name);
+      clean.slug = await uniqueSlug(baseSlug);
       const product = await Product.create(clean);
       productCountCache.count = null;
       return res.status(201).json(product);
@@ -118,6 +158,14 @@ export default async function handler(req, res) {
       const clean = pickProductFields(req.body);
       if (Object.keys(clean).length === 0) {
         return res.status(400).json({ error: 'No valid fields to update' });
+      }
+      const existing = await Product.findById(req.body.id);
+      if (!existing) return res.status(404).json({ error: 'Not found' });
+      // Regenerate slug only when the name (or an explicit slug) changes
+      const nameChanged = clean.name && clean.name !== existing.name;
+      if (req.body.slug || nameChanged) {
+        const baseSlug = req.body.slug ? slugifyName(req.body.slug) : slugifyName(clean.name || existing.name);
+        clean.slug = await uniqueSlug(baseSlug, existing._id);
       }
       const product = await Product.findByIdAndUpdate(req.body.id, clean, { new: true, runValidators: true });
       if (!product) return res.status(404).json({ error: 'Not found' });

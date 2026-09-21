@@ -35,7 +35,7 @@ router.get('/sitemap.xml', async (req, res) => {
       }
     }
     for (const p of products) {
-      urls.push({ loc: `${base}/product/${p._id}`, lastmod: p.createdAt ? new Date(p.createdAt).toISOString() : now, priority: '0.7' });
+      urls.push({ loc: `${base}/product/${p.slug || p._id}`, lastmod: p.createdAt ? new Date(p.createdAt).toISOString() : now, priority: '0.7' });
     }
     for (const post of posts) {
       urls.push({ loc: `${base}/blog/${post.slug}`, lastmod: post.updatedAt ? new Date(post.updatedAt).toISOString() : now, priority: '0.5' });

@@ -79,6 +79,7 @@ function App() {
         const mappedProducts = rawProducts.map(p => ({
           id: p._id,
           name: p.name,
+          slug: p.slug,
           price: p.price,
           category: p.category,
           mainImage: p.mainImage,
@@ -271,3 +272,4 @@ function AppWithRouter() {
 }
 
 export default AppWithRouter;
+

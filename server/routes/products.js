@@ -5,6 +5,36 @@ import { authenticate, verifyAuth } from '../middleware/auth.js';
 
 const router = Router();
 
+const slugifyName = (name) =>
+  String(name || '')
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .slice(0, 90) || 'product';
+
+const uniqueSlug = async (base, excludeId) => {
+  let candidate = base;
+  let i = 2;
+  let exists = await Product.findOne({ slug: candidate, ...(excludeId ? { _id: { $ne: excludeId } } : {}) });
+  while (exists) {
+    candidate = `${base}-${i++}`;
+    exists = await Product.findOne({ slug: candidate, ...(excludeId ? { _id: { $ne: excludeId } } : {}) });
+  }
+  return candidate;
+};
+
+const backfillProductSlugs = async () => {
+  const missing = await Product.find({ $or: [{ slug: { $exists: false } }, { slug: null }, { slug: '' }] });
+  for (const p of missing) {
+    const base = slugifyName(p.name);
+    const slug = await uniqueSlug(base, p._id);
+    await Product.updateOne({ _id: p._id }, { slug });
+  }
+};
+
 // GET /api/products — public (supports ?id=, ?categories=true, ?page=, ?limit=, ?category=, ?search=, ?sort=)
 router.get('/', async (req, res, next) => {
   try {
@@ -16,9 +46,12 @@ router.get('/', async (req, res, next) => {
       return res.json(cats);
     }
 
-    // Single product by id
+    // Single product by id OR slug
     if (id) {
-      const product = await Product.findById(id);
+      const isHex = /^[a-f\d]{24}$/i.test(String(id));
+      const product = isHex
+        ? await Product.findById(id)
+        : await Product.findOne({ slug: String(id).toLowerCase() });
       if (!product) return res.status(404).json({ error: 'Not found' });
       return res.json(product);
     }
@@ -27,6 +60,7 @@ router.get('/', async (req, res, next) => {
     if (admin === 'true') {
       const user = verifyAuth(req);
       if (!user) return res.status(401).json({ error: 'Unauthorized' });
+      await backfillProductSlugs();
       const products = await Product.find().sort({ createdAt: -1 });
       return res.json({ products, total: products.length });
     }
@@ -113,7 +147,7 @@ router.post('/', authenticate, async (req, res, next) => {
     if (!clean.category) {
       return res.status(400).json({ error: 'Category is required' });
     }
-    const product = await Product.create(clean);
+    const product = await Product.create({ ...clean, slug: await uniqueSlug(req.body.slug ? slugifyName(req.body.slug) : slugifyName(clean.name)) });
     res.status(201).json(product);
   } catch (err) { next(err); }
 });
@@ -132,6 +166,13 @@ router.put('/', authenticate, async (req, res, next) => {
     const clean = pickProductFields(req.body);
     if (Object.keys(clean).length === 0) {
       return res.status(400).json({ error: 'No valid fields to update' });
+    }
+    const existing = await Product.findById(id);
+    if (!existing) return res.status(404).json({ error: 'Not found' });
+    const nameChanged = clean.name && clean.name !== existing.name;
+    if (req.body.slug || nameChanged) {
+      const baseSlug = req.body.slug ? slugifyName(req.body.slug) : slugifyName(clean.name || existing.name);
+      clean.slug = await uniqueSlug(baseSlug, existing._id);
     }
     const product = await Product.findByIdAndUpdate(id, clean, { new: true, runValidators: true });
     if (!product) return res.status(404).json({ error: 'Not found' });
