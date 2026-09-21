@@ -100,6 +100,10 @@ const siteSettingsSchema = new mongoose.Schema({
     sizesLabel: { type: String, default: 'Size' },
     sizes: [String],
     showSizes: { type: Boolean, default: true },
+    highlights: [{
+      emoji: { type: String, default: '✨' },
+      text: { type: String, default: '' },
+    }],
     whatsappOrderLabel: { type: String, default: 'Order via WhatsApp' },
     showWhatsappOrder: { type: Boolean, default: true },
     reviewsHeading: { type: String, default: 'Customer Reviews' },

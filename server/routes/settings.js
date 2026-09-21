@@ -97,6 +97,13 @@ const DEFAULT_SETTINGS = {
     sizesLabel: 'Size',
     sizes: ['S', 'M', 'L', 'XL'],
     showSizes: true,
+    highlights: [
+      { emoji: '✨', text: 'Handcrafted with premium materials' },
+      { emoji: '🚚', text: 'Fast delivery across Pakistan' },
+      { emoji: '💎', text: 'Premium quality guarantee' },
+      { emoji: '🎁', text: 'Beautiful gift-ready packaging' },
+      { emoji: '📦', text: 'Free shipping over Rs. 5,000' },
+    ],
     whatsappOrderLabel: 'Order via WhatsApp',
     showWhatsappOrder: true,
     reviewsHeading: 'Customer Reviews',

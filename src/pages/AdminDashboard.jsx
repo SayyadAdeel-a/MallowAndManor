@@ -810,8 +810,58 @@ export default function AdminDashboard() {
               <div>
                 <h2 className="text-lg font-semibold text-brand-burgundy mb-4">Product Page</h2>
 
-                {/* Sizes */}
-                <h3 className="text-sm font-semibold text-brand-burgundy mt-2 mb-3">Order Options</h3>
+                {/* Highlights */}
+                <h3 className="text-sm font-semibold text-brand-burgundy mt-2 mb-3">Highlights (shown below price)</h3>
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-sm text-brand-wine-dark/60">{(settings.productPage?.highlights || []).length} highlight line(s)</p>
+                  <button
+                    onClick={() => updateSetting("productPage.highlights", [...(settings.productPage?.highlights || []), { emoji: "✨", text: "" }])}
+                    className="px-4 py-1.5 bg-brand-burgundy text-brand-cream text-xs font-semibold tracking-wider uppercase rounded-full hover:bg-brand-wine-dark transition-colors"
+                  >
+                    Add Highlight
+                  </button>
+                </div>
+                <div className="space-y-3 mb-6">
+                  {(settings.productPage?.highlights || []).map((h, idx) => (
+                    <div key={idx} className="bg-brand-cream/50 border border-brand-border rounded-lg p-3 flex items-end gap-3">
+                      <div className="w-16">
+                        <InputField
+                          label="Emoji"
+                          type="text"
+                          value={h.emoji}
+                          onChange={e => {
+                            const arr = [...(settings.productPage?.highlights || [])];
+                            arr[idx] = { ...arr[idx], emoji: e.target.value };
+                            updateSetting("productPage.highlights", arr);
+                          }}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <InputField
+                          label={`Feature ${idx + 1}`}
+                          value={h.text}
+                          onChange={e => {
+                            const arr = [...(settings.productPage?.highlights || [])];
+                            arr[idx] = { ...arr[idx], text: e.target.value };
+                            updateSetting("productPage.highlights", arr);
+                          }}
+                        />
+                      </div>
+                      <button
+                        onClick={() => updateSetting("productPage.highlights", (settings.productPage?.highlights || []).filter((_, i) => i !== idx))}
+                        className="text-xs text-red-500 hover:text-red-700 pb-2.5"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                  {(!settings.productPage?.highlights || settings.productPage.highlights.length === 0) && (
+                    <p className="text-sm text-brand-wine-dark/40 text-center py-4">No highlights. Click "Add Highlight" — the storefront then shows 5 default lines until you create one.</p>
+                  )}
+                </div>
+
+                {/* Order Options */}
+                <h3 className="text-sm font-semibold text-brand-burgundy mb-3">Order Options</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <InputField label="Size Field Label" value={settings.productPage?.sizesLabel} onChange={e => updateSetting("productPage.sizesLabel", e.target.value)} />
                   <InputField
