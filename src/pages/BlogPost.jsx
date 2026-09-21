@@ -4,11 +4,24 @@ import { fetchPostBySlug } from "../lib/api";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import AnimatedIcon, { ICONS } from "../components/AnimatedIcon";
+import { setMeta, articleSchema } from "../lib/seo";
 
 export default function BlogPost() {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!post) return;
+    setMeta({
+      title: post.title,
+      description: post.excerpt || post.seoDescription || (post.content || "").slice(0, 150),
+      path: `/blog/${post.slug}`,
+      image: post.featuredImage,
+      type: "article",
+      jsonLd: articleSchema({ post }),
+    });
+  }, [post]);
 
   useEffect(() => {
     setLoading(true);

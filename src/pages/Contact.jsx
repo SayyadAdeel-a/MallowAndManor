@@ -1,12 +1,21 @@
 import { useState, useEffect } from "react";
 import AnimatedIcon, { ICONS } from "../components/AnimatedIcon";
 import { fetchSettings } from "../lib/api";
+import { setMeta } from "../lib/seo";
 
 export default function Contact() {
   const [contact, setContact] = useState(null);
 
   useEffect(() => {
     fetchSettings().then(s => setContact(s?.contact)).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    setMeta({
+      title: "Contact Us — Delivery & Order Help",
+      description: "Questions about delivery, ordering or returns? Reach Honeybee Lane by phone, email or WhatsApp — we deliver across Pakistan.",
+      path: "/contact",
+    });
   }, []);
 
   const c = contact || {};

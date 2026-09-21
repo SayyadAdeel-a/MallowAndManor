@@ -39,11 +39,11 @@ export default function Footer() {
           <div>
             <h4 className="text-xs font-semibold tracking-widest uppercase mb-6 text-brand-gold">Shop</h4>
             <ul className="space-y-3 text-sm text-brand-cream/70">
-              <li><Link to="/products" className="hover:text-brand-gold transition-colors">All Products</Link></li>
-              <li><Link to="/products?category=bangles" className="hover:text-brand-gold transition-colors">Bangles</Link></li>
-              <li><Link to="/products?category=nails" className="hover:text-brand-gold transition-colors">Nails</Link></li>
-              <li><Link to="/products?category=abayas" className="hover:text-brand-gold transition-colors">Abayas</Link></li>
-              <li><Link to="/products?category=necklaces" className="hover:text-brand-gold transition-colors">Necklaces</Link></li>
+              <li><Link to="/shop" className="hover:text-brand-gold transition-colors">All Products</Link></li>
+              <li><Link to="/shop/bangles" className="hover:text-brand-gold transition-colors">Bangles</Link></li>
+              <li><Link to="/shop/nails" className="hover:text-brand-gold transition-colors">Nails</Link></li>
+              <li><Link to="/shop/abayas" className="hover:text-brand-gold transition-colors">Abayas</Link></li>
+              <li><Link to="/shop/necklaces" className="hover:text-brand-gold transition-colors">Necklaces</Link></li>
             </ul>
           </div>
 
@@ -75,3 +75,5 @@ export default function Footer() {
     </footer>
   );
 }
+
+

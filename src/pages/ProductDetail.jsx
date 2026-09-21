@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { trackProductView } from "../lib/analytics";
 import { fetchProductById, fetchSettings, fetchProducts } from "../lib/api";
+import { setMeta, breadcrumbSchema, productSchema } from "../lib/seo";
 import AnimatedIcon, { ICONS } from "../components/AnimatedIcon";
 import NewsletterCTA from "../components/NewsletterCTA";
 import Reveal from "../components/Reveal";
@@ -118,7 +119,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
         <AnimatedIcon path={ICONS.package} animation="float" className="w-16 h-16 mx-auto mb-4 text-brand-wine-dark/20" strokeWidth={1.5} />
         <h1 className="text-2xl font-bold mb-2 text-brand-burgundy">Product not found</h1>
         <p className="text-brand-wine-dark/60 text-sm mb-6">This product may have been removed or is no longer available.</p>
-        <Link to="/products" className="inline-block px-6 py-2.5 text-sm font-medium text-brand-burgundy border border-brand-border hover:border-brand-gold hover:text-brand-gold transition-colors rounded-full">
+        <Link to="/shop" className="inline-block px-6 py-2.5 text-sm font-medium text-brand-burgundy border border-brand-border hover:border-brand-gold hover:text-brand-gold transition-colors rounded-full">
           Back to Shop
         </Link>
       </div>
@@ -126,6 +127,28 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
   }
 
   const pp = { ...DEFAULT_PP, ...(settings?.productPage || {}) };
+
+  // SEO: product meta + Product JSON-LD
+  useEffect(() => {
+    if (!product) return;
+    setMeta({
+      title: `${product.name} — Rs. ${Number(product.price).toLocaleString()}`,
+      description: product.description
+        ? `${product.description.slice(0, 140)}`
+        : `${product.name} by Honeybee Lane. Premium handcrafted quality with nationwide delivery across Pakistan. Order via WhatsApp.`,
+      path: `/product/${product.id}`,
+      image: product.mainImage,
+      type: "product",
+      jsonLd: [
+        productSchema({ product }),
+        breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Shop", path: "/shop" },
+          { name: product.name, path: `/product/${product.id}` },
+        ]),
+      ],
+    });
+  }, [product]);
   // Per-product highlights first, then global settings, then built-in defaults
   const prodHighlights = product.highlights?.length
     ? product.highlights
@@ -154,7 +177,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
       <nav className="flex items-center gap-2 text-xs text-brand-wine-dark/50 mb-8" aria-label="Breadcrumb">
         <Link to="/" className="hover:text-brand-burgundy transition-colors">Home</Link>
         <span>/</span>
-        <Link to="/products" className="hover:text-brand-burgundy transition-colors">Shop</Link>
+        <Link to="/shop" className="hover:text-brand-burgundy transition-colors">Shop</Link>
         <span>/</span>
         <span className="text-brand-burgundy font-medium">{product.name}</span>
       </nav>
@@ -442,3 +465,4 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
     </div>
   );
 }
+

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
-import { useLocation } from "react-router-dom";
-import { fetchProducts } from "../lib/api";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { fetchProducts, fetchSettings } from "../lib/api";
+import { setMeta, breadcrumbSchema, itemListSchema } from "../lib/seo";
 import ProductCard from "../components/ProductCard";
 import { SkeletonGrid, ErrorState } from "../components/Skeletons";
 import AnimatedIcon, { ICONS } from "../components/AnimatedIcon";
@@ -9,6 +10,8 @@ const ITEMS_PER_PAGE = 12;
 
 export default function AllProducts({ handleAddToCart, toggleFavorite, favorites }) {
   const location = useLocation();
+  const { slug } = useParams();
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
@@ -18,16 +21,41 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("latest");
+  const [settings, setSettings] = useState(null);
+
+  // Legacy URL redirect: /products?category=x → /shop/x  (also catches /shop?category=x from the 301)
+  useEffect(() => {
+    const isLegacyPath = location.pathname === "/products";
+    const params = new URLSearchParams(location.search);
+    const cat = params.get("category");
+    if (!isLegacyPath && !(location.pathname === "/shop" && cat)) return;
+    const search = params.get("search");
+    const p = params.get("page");
+    const qs = new URLSearchParams();
+    if (search) qs.set("search", search);
+    if (p && p !== "1") qs.set("page", p);
+    const suffix = qs.toString() ? `?${qs.toString()}` : "";
+    navigate(`/shop${cat ? `/${cat}` : ""}${suffix}`, { replace: true });
+  }, [location, navigate]);
+
+  // Read category from URL slug
+  useEffect(() => {
+    if (slug !== undefined && slug !== "") {
+      setSelectedCategory(slug === "all" ? "all" : slug);
+    }
+  }, [slug]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const cat = params.get("category");
     const search = params.get("search");
     const p = params.get("page");
-    if (cat) setSelectedCategory(cat);
     if (search) setSearchTerm(search);
     if (p) setPage(parseInt(p) || 1);
   }, [location]);
+
+  useEffect(() => {
+    fetchSettings().then(setSettings).catch(() => {});
+  }, []);
 
   const loadProducts = useCallback(async () => {
     setLoading(true);
@@ -57,11 +85,43 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
   const handleFilterChange = (updates) => {
     setPage(1);
     Object.entries(updates).forEach(([key, value]) => {
-      if (key === 'category') setSelectedCategory(value);
+      if (key === 'category') navigate(`/shop/${value === 'all' ? 'all' : value}`);
       if (key === 'search') setSearchTerm(value);
       if (key === 'sort') setSortBy(value);
     });
   };
+
+  const catName = selectedCategory === "all"
+    ? "All Products"
+    : (categories.find(c => c.slug === selectedCategory)?.name || (selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)));
+  const introEntry = (settings?.categoryIntros || []).find(ci => ci.slug === selectedCategory);
+  const introText = selectedCategory !== "all" ? introEntry?.intro || "" : "";
+  const basePath = selectedCategory === "all" ? "/shop" : `/shop/${selectedCategory}`;
+
+  // SEO meta + structured data
+  useEffect(() => {
+    if (loading) return;
+    // Thin-content gate: noindex category pages with fewer than 3 products
+    const thinCategory = selectedCategory !== "all" && products.length < 3;
+    setMeta({
+      title: selectedCategory === "all"
+        ? "Shop All — Handcrafted Bangles, Nails, Abayas & Necklaces in Pakistan"
+        : `Buy ${catName} Online in Pakistan`,
+      description: introText
+        ? introText.slice(0, 155)
+        : `Shop handcrafted ${selectedCategory === "all" ? "bangles, nails, abayas and necklaces" : catName.toLowerCase()} from Honeybee Lane. Premium quality with nationwide delivery across Pakistan.`,
+      path: basePath,
+      noindex: thinCategory,
+      jsonLd: [
+        breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Shop", path: "/shop" },
+          ...(selectedCategory !== "all" ? [{ name: catName, path: basePath }] : []),
+        ]),
+        ...(selectedCategory !== "all" && !thinCategory ? [itemListSchema(products)] : []),
+      ],
+    });
+  }, [loading, selectedCategory, products, categories, settings]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
@@ -72,10 +132,13 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
     <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-2 text-brand-burgundy">All Products</h1>
+        <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-2 text-brand-burgundy">{catName}</h1>
         <p className="text-brand-wine-dark/60 text-sm">
           {total} {total === 1 ? "item" : "items"}
         </p>
+        {introText && (
+          <p className="text-sm text-brand-wine-dark/70 max-w-2xl leading-relaxed mt-3">{introText}</p>
+        )}
       </div>
 
       {/* Filters bar */}
@@ -106,14 +169,17 @@ export default function AllProducts({ handleAddToCart, toggleFavorite, favorites
           >
             All
           </button>
-          {["bangles", "nails", "abayas", "necklaces"].map((cat) => (
+          {(categories.length
+            ? categories
+            : ["bangles", "nails", "abayas", "necklaces"].map(s => ({ slug: s, name: s.charAt(0).toUpperCase() + s.slice(1) }))
+          ).map((cat) => (
             <button
-              key={cat}
-              onClick={() => handleFilterChange({ category: cat })}
-              className={`px-4 py-2 text-xs font-medium tracking-wider uppercase whitespace-nowrap transition-colors rounded-full ${selectedCategory === cat ? "bg-brand-burgundy text-brand-cream" : "text-brand-wine-dark/70 hover:text-brand-burgundy hover:bg-brand-blush/40"
+              key={cat.slug}
+              onClick={() => handleFilterChange({ category: cat.slug })}
+              className={`px-4 py-2 text-xs font-medium tracking-wider uppercase whitespace-nowrap transition-colors rounded-full ${selectedCategory === cat.slug ? "bg-brand-burgundy text-brand-cream" : "text-brand-wine-dark/70 hover:text-brand-burgundy hover:bg-brand-blush/40"
                 }`}
             >
-              {cat}
+              {cat.name || cat.slug}
             </button>
           ))}
         </div>

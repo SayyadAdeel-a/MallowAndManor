@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { fetchPosts } from "../lib/api";
+import { setMeta } from "../lib/seo";
 import AnimatedIcon, { ICONS } from "../components/AnimatedIcon";
 
 export default function Blog() {
@@ -23,6 +24,15 @@ export default function Blog() {
   useEffect(() => {
     loadPosts();
   }, []);
+
+  useEffect(() => {
+    setMeta({
+      title: "The Journal — Jewelry & Abaya Styling Ideas",
+      description: "Stories and styling inspiration from Honeybee Lane — bangles, nails, abayas and more, made for modern Pakistani women.",
+      path: "/blog",
+      noindex: posts.length === 0 && !loading && !error,
+    });
+  }, [posts, loading, error]);
 
   return (
     <div className="max-w-6xl mx-auto px-6 lg:px-8 py-16">

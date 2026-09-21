@@ -78,7 +78,7 @@ export default function HeroCarousel({ hero }) {
 
         <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
           <button
-            onClick={() => navigate(h.cta1Link || "/products")}
+            onClick={() => navigate(h.cta1Link || "/shop")}
             className="px-10 py-4 text-xs font-bold tracking-[0.2em] uppercase rounded-full bg-[#340910] text-[#FAF7F2] hover:bg-[#4A0E17] transition-colors duration-300 shadow-lg"
           >
             {h.cta1Text || "Shop Now"}
@@ -107,3 +107,4 @@ export default function HeroCarousel({ hero }) {
     </section>
   );
 }
+

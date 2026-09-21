@@ -8,6 +8,7 @@ import GoogleReviews from "../components/GoogleReviews";
 import NewsletterCTA from "../components/NewsletterCTA";
 import Reveal from "../components/Reveal";
 import { fetchSettings } from "../lib/api";
+import { setMeta } from "../lib/seo";
 
 const DEFAULT_TRUST = [
   { iconKey: "package", label: "Free Shipping over Rs. 5,000" },
@@ -31,6 +32,14 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
 
   useEffect(() => {
     fetchSettings().then(setSettings).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    setMeta({
+      title: "Honeybee Lane — Handcrafted Bangles, Nails, Abayas & Accessories in Pakistan",
+      description: "Premium handcrafted bangles, press-on nails, abayas and necklaces. Nationwide delivery across Pakistan. Order via WhatsApp.",
+      path: "/",
+    });
   }, []);
 
   const s = settings || {};
@@ -69,7 +78,7 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
       <IconStyle />
 
       {/* Collections */}
-      <Reveal><Collections onCategoryClick={(cat) => navigate(`/products?category=${cat}`)} /></Reveal>
+      <Reveal><Collections onCategoryClick={(cat) => navigate(`/shop/${cat}`)} /></Reveal>
 
       {/* Featured Products */}
       <ProductsSection onAddToCart={handleAddToCart} favorites={favorites} onToggleFavorite={toggleFavorite} />
@@ -92,7 +101,7 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
                 {sale.description || "Our entire Abaya collection. Handcrafted luxury, now at prices that make elegance accessible."}
               </p>
               <a
-                href={sale.ctaLink || "/products"}
+                href={sale.ctaLink || "/shop"}
                 className="inline-flex items-center gap-3 px-8 py-4 text-xs font-bold tracking-wider uppercase rounded-full transition-all duration-300 hover:gap-5 w-fit"
                 style={{ backgroundColor: "#C59B58", color: "#340910" }}
               >
@@ -192,3 +201,4 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
     </div>
   );
 }
+

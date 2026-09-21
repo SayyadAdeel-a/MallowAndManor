@@ -195,6 +195,19 @@ function App() {
               }
             />
             <Route
+              path="/shop/:slug?"
+              element={
+                <AllProducts
+                  products={products}
+                  categories={categories}
+                  handleAddToCart={handleAddToCart}
+                  productStats={productStats}
+                  toggleFavorite={toggleFavorite}
+                  favorites={favorites}
+                />
+              }
+            />
+            <Route
               path="/products"
               element={
                 <AllProducts

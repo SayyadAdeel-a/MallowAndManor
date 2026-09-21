@@ -36,7 +36,7 @@ export default function Navigation({ cartCount, favCount }) {
 
           {/* Left nav links - desktop */}
           <div className="hidden md:flex items-center gap-8">
-            <Link to="/products" className="text-xs font-semibold tracking-widest uppercase hover:text-brand-gold transition-colors" style={{ color: '#4A0E17' }}>
+            <Link to="/shop" className="text-xs font-semibold tracking-widest uppercase hover:text-brand-gold transition-colors" style={{ color: '#4A0E17' }}>
               Shop
             </Link>
             <Link to="/blog" className="text-xs font-semibold tracking-widest uppercase hover:text-brand-gold transition-colors" style={{ color: '#4A0E17' }}>
@@ -137,7 +137,7 @@ export default function Navigation({ cartCount, favCount }) {
               </svg>
             </button>
           </div>
-          <Link to="/products" onClick={() => setIsMobileMenuOpen(false)} className="block text-sm font-semibold tracking-wider uppercase" style={{ color: '#4A0E17' }}>
+          <Link to="/shop" onClick={() => setIsMobileMenuOpen(false)} className="block text-sm font-semibold tracking-wider uppercase" style={{ color: '#4A0E17' }}>
             Shop
           </Link>
           <Link to="/blog" onClick={() => setIsMobileMenuOpen(false)} className="block text-sm font-semibold tracking-wider uppercase" style={{ color: '#4A0E17' }}>
@@ -154,3 +154,4 @@ export default function Navigation({ cartCount, favCount }) {
     </nav>
   );
 }
+

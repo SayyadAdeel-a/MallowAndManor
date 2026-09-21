@@ -998,6 +998,37 @@ export default function AdminDashboard() {
                   <InputField label="Accordion Text" value={settings.productPage?.shippingInfo?.text} onChange={e => updateSetting("productPage.shippingInfo.text", e.target.value)} multiline rows={3} />
                 </div>
 
+                {/* Category intros (SEO) */}
+                <h3 className="text-sm font-semibold text-brand-burgundy mt-8 mb-1">Category Intros (SEO)</h3>
+                <p className="text-xs text-brand-wine-dark/50 mb-3">Unique paragraph shown on each /shop/[category] page. Needed for search rankings.</p>
+                <div className="space-y-4">
+                  {(categories.length
+                    ? categories
+                    : [{ slug: "bangles", name: "Bangles" }, { slug: "nails", name: "Nails" }, { slug: "abayas", name: "Abayas" }, { slug: "necklaces", name: "Necklaces" }]
+                  ).map((cat) => {
+                    const existing = (settings.categoryIntros || []).find(ci => ci.slug === cat.slug);
+                    const intro = existing?.intro ?? "";
+                    const setIntro = (val) => {
+                      const arr = [...(settings.categoryIntros || [])];
+                      const idx = arr.findIndex(ci => ci.slug === cat.slug);
+                      if (idx >= 0) arr[idx] = { ...arr[idx], intro: val };
+                      else arr.push({ slug: cat.slug, intro: val });
+                      updateSetting("categoryIntros", arr);
+                    };
+                    return (
+                      <div key={cat.slug} className="bg-brand-cream/50 border border-brand-border rounded-lg p-4">
+                        <InputField
+                          label={`${cat.name || cat.slug} — Intro`}
+                          value={intro}
+                          onChange={e => setIntro(e.target.value)}
+                          multiline
+                          rows={3}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+
                 {/* Also like */}
                 <h3 className="text-sm font-semibold text-brand-burgundy mt-8 mb-3">You May Also Like</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

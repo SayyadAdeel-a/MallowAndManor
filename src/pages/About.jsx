@@ -1,4 +1,15 @@
+import { useEffect } from "react";
+import { setMeta } from "../lib/seo";
+
 export default function About() {
+  useEffect(() => {
+    setMeta({
+      title: "Our Story — Honeybee Lane",
+      description: "Honeybee Lane was born from a simple desire to make quality handcrafted beauty accessible, personal, and effortless for women across Pakistan.",
+      path: "/about",
+    });
+  }, []);
+
   return (
     <div>
       {/* Hero */}
@@ -90,7 +101,7 @@ export default function About() {
             Experience luxury redefined. Every order handled with personal care.
           </p>
           <button
-            onClick={() => (window.location.href = "/products")}
+            onClick={() => (window.location.href = "/shop")}
             className="px-8 py-3 bg-brand-gold text-brand-wine-dark text-sm font-bold tracking-wider uppercase hover:bg-brand-cream hover:text-brand-burgundy transition-all duration-300 shadow-sm"
           >
             Explore Collections
@@ -100,3 +111,4 @@ export default function About() {
     </div>
   );
 }
+

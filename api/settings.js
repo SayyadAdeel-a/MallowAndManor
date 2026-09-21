@@ -119,6 +119,24 @@ const DEFAULT_SETTINGS = {
     },
   },
   productReviews: [],
+  categoryIntros: [
+    {
+      slug: 'bangles',
+      intro: 'Discover handcrafted gold-plated bangles designed for Pakistani women who love timeless jewellery. Each bangle set in our collection is finished by hand with intricate floral motifs — perfect for weddings, Eid, and everyday elegance, delivered to your doorstep anywhere in Pakistan.',
+    },
+    {
+      slug: 'nails',
+      intro: 'Luxury press-on nails with Swarovski crystals and hand-placed pearl detailing. Our designer nail sets give you a salon-quality manicure in minutes — no appointments, no drying time, reusable across wears, shipped anywhere in Pakistan.',
+    },
+    {
+      slug: 'abayas',
+      intro: 'Elegant abayas crafted from soft, breathable fabrics with delicate embroidery and graceful drape. Designed for daily comfort and special occasions alike, our abaya collection balances modesty with modern style — with free shipping on larger orders.',
+    },
+    {
+      slug: 'necklaces',
+      intro: 'Royal artificial necklaces with premium stones and gold-tone finish, made for bridal looks, mehndi nights and festive celebrations. Handcrafted jewellery that holds its shine — at accessible prices, delivered across Pakistan.',
+    },
+  ],
 };
 
 export default async function handler(req, res) {

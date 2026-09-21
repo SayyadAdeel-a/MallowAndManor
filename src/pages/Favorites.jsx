@@ -13,7 +13,7 @@ export default function Favorites({ favorites, addToCart, removeFromFavorites })
         <h1 className="text-2xl font-bold mb-3 text-brand-burgundy">Your wishlist is empty</h1>
         <p className="text-brand-wine-dark/60 text-sm mb-6">Save items you love for later.</p>
         <button
-          onClick={() => navigate("/products")}
+          onClick={() => navigate("/shop")}
           className="bg-brand-burgundy text-brand-cream px-8 py-3 text-sm font-semibold tracking-wider uppercase hover:bg-brand-wine-dark transition-colors shadow-sm rounded-full"
         >
           Discover Products
@@ -52,3 +52,4 @@ export default function Favorites({ favorites, addToCart, removeFromFavorites })
     </div>
   );
 }
+

@@ -137,6 +137,14 @@ const siteSettingsSchema = new mongoose.Schema({
       body: { type: String, default: '' },
     },
   ],
+
+  // Category page SEO intros (per category slug)
+  categoryIntros: [
+    {
+      slug: { type: String, default: '' },
+      intro: { type: String, default: '' },
+    },
+  ],
 }, { timestamps: true });
 
 export default mongoose.model('SiteSettings', siteSettingsSchema);

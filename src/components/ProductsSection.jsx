@@ -104,7 +104,7 @@ export default function ProductsSection({ onAddToCart, favorites = [], onToggleF
       {filteredProducts.length > 0 && (
         <div className="text-center mt-12">
           <a
-            href="/products"
+            href="/shop"
             className="inline-block text-sm font-semibold tracking-wider uppercase border-b-2 border-brand-burgundy text-brand-burgundy pb-1 hover:text-brand-gold hover:border-brand-gold transition-colors"
           >
             View All Products
@@ -114,3 +114,4 @@ export default function ProductsSection({ onAddToCart, favorites = [], onToggleF
     </section>
   );
 }
+
