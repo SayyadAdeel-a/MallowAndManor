@@ -196,8 +196,13 @@ export const uploadImage = async (file) => {
   }
 
   const data = await uploadRes.json();
+  if (!data.secure_url) throw new Error('Cloudinary upload returned no URL');
   return { url: data.secure_url };
 };
+
+// Normalize an uploadImage() result to a plain URL string
+export const resolveUploadUrl = (result) =>
+  typeof result === 'string' ? result : result?.url || '';
 
 // Blog Posts
 export const fetchPosts = async () => {

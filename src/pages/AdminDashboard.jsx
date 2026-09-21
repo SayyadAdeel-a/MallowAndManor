@@ -4,7 +4,7 @@ import {
   getCurrentUser, fetchProducts, createProduct, updateProduct, deleteProduct,
   fetchCategories, createCategory, deleteCategory,
   fetchAdminPosts, createPost, updatePost, deletePost,
-  fetchSettings, updateSettings, uploadImage,
+  fetchSettings, updateSettings, uploadImage, resolveUploadUrl,
 } from "../lib/api";
 import AdminHeader from "../components/AdminHeader";
 
@@ -48,8 +48,7 @@ function ImageUpload({ label, value, onChange }) {
     if (!file) return;
     setUploading(true);
     try {
-      const result = await uploadImage(file);
-      const url = typeof result === "string" ? result : result?.url;
+      const url = resolveUploadUrl(await uploadImage(file));
       if (!url) throw new Error("Upload returned no URL");
       setPreview(url);
       onChange(url);

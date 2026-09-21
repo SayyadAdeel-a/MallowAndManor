@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCurrentUser, fetchAdminPosts, createPost, updatePost, deletePost, uploadImage } from "../lib/api";
+import { getCurrentUser, fetchAdminPosts, createPost, updatePost, deletePost, uploadImage, resolveUploadUrl } from "../lib/api";
 import AdminHeader from "../components/AdminHeader";
 
 function slugify(text) {
@@ -30,7 +30,7 @@ export default function AdminPosts() {
     if (!file) return;
     setUploadingFeatured(true);
     try {
-      const { url } = await uploadImage(file);
+      const url = resolveUploadUrl(await uploadImage(file));
       setForm({ ...form, featuredImage: url });
     } catch (err) {
       alert('Upload error: ' + err.message);
@@ -43,7 +43,7 @@ export default function AdminPosts() {
     if (!file) return;
     setUploadingImg(true);
     try {
-      const { url } = await uploadImage(file);
+      const url = resolveUploadUrl(await uploadImage(file));
       const imgMd = `![image](${url})`;
       const textarea = contentRef.current;
       if (textarea) {
