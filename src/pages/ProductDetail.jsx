@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { trackProductView } from "../lib/analytics";
 import { fetchProductById, fetchSettings, fetchProducts } from "../lib/api";
 import AnimatedIcon, { ICONS } from "../components/AnimatedIcon";
+import NewsletterCTA from "../components/NewsletterCTA";
 
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || "923233334492";
 
@@ -428,6 +429,11 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
           </div>
         </section>
       )}
+
+      {/* ============ Stay Connected ============ */}
+      <section className="mt-16 mb-4">
+        <NewsletterCTA />
+      </section>
     </div>
   );
 }
