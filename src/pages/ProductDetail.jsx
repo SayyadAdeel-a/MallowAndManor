@@ -149,6 +149,8 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
   }
 
   const pp = { ...DEFAULT_PP, ...(settings?.productPage || {}) };
+  // Older settings docs may have empty sizes — fall back to defaults so the section never vanishes
+  if (!pp.sizes?.length) pp.sizes = DEFAULT_PP.sizes;
   // Per-product highlights first, then global settings, then built-in defaults
   const prodHighlights = product.highlights?.length
     ? product.highlights

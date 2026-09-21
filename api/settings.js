@@ -149,8 +149,20 @@ export default async function handler(req, res) {
       let settings = await SiteSettings.findOne();
       if (!settings) {
         settings = await SiteSettings.create(DEFAULT_SETTINGS);
-      } else if ((settings.defaultsVersion || 0) < DEFAULTS_VERSION) {
-        // Migrate stale/auto-created mock docs to the current real defaults
+      } else {
+        // Backfill sections added after the document was first created
+        let dirty = false;
+        if (!settings.productPage) {
+          settings.productPage = DEFAULT_SETTINGS.productPage;
+          dirty = true;
+        }
+        if (!settings.productPage.sizes?.length) {
+          settings.productPage.sizes = DEFAULT_SETTINGS.productPage.sizes;
+          dirty = true;
+        }
+        if (dirty) await settings.save();
+      }
+      if ((settings.defaultsVersion || 0) < DEFAULTS_VERSION) {
         settings = await SiteSettings.findByIdAndUpdate(
           settings._id,
           { ...DEFAULT_SETTINGS },
