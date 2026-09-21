@@ -50,8 +50,8 @@ export default async function handler(req, res) {
 
       const totalPages = Math.ceil(total / limit);
 
-      // Cache control headers
-      res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+      // Cache briefly at the edge, browsers must revalidate
+      res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=15, stale-while-revalidate=30');
 
       return res.json({ products, total, page, totalPages, limit });
     }
@@ -59,7 +59,7 @@ export default async function handler(req, res) {
     // Public: GET /api/products?categories=true - all categories
     if (req.method === 'GET' && req.query?.categories === 'true') {
       const categories = await Category.find().sort({ createdAt: 1 });
-      res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600');
+      res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=30, stale-while-revalidate=60');
       return res.json(categories);
     }
 

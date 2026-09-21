@@ -54,32 +54,18 @@ function App() {
 
   // Load products and categories from API
   useEffect(() => {
-    const fetchData = async () => {
+    let refreshTimer = null;
+
+    const fetchData = async (silent = false) => {
       try {
-        // Clear any stale/error cache from localStorage (incl. legacy mallow keys)
-        try {
-          const oldCatCache = JSON.parse(localStorage.getItem('honeybee_categories_cache'));
-          const oldProdCache = JSON.parse(localStorage.getItem('honeybee_products_cache'));
-          if (oldCatCache && !Array.isArray(oldCatCache.data)) localStorage.removeItem('honeybee_categories_cache');
-          if (oldProdCache && !Array.isArray(oldProdCache.data)) localStorage.removeItem('honeybee_products_cache');
-          // one-time cleanup of old brand keys
-          localStorage.removeItem('mallow_categories_cache');
-          localStorage.removeItem('mallow_products_cache');
-        } catch { /* ignore parse errors */ }
-
-        const cachedProducts = localStorage.getItem('honeybee_products_cache');
-        const cachedCategories = localStorage.getItem('honeybee_categories_cache');
-
-        if (cachedProducts && cachedCategories) {
-          const prodCache = JSON.parse(cachedProducts);
-          const catCache = JSON.parse(cachedCategories);
-          const now = Date.now();
-
-          if (now - prodCache.timestamp < 300000 && now - catCache.timestamp < 300000) {
-            setProducts(prodCache.data);
-            setCategories(catCache.data);
-            return;
-          }
+        // Clean legacy cache keys (data now always fetched fresh; edge CDN handles caching)
+        if (!silent) {
+          try {
+            localStorage.removeItem('honeybee_categories_cache');
+            localStorage.removeItem('honeybee_products_cache');
+            localStorage.removeItem('mallow_categories_cache');
+            localStorage.removeItem('mallow_products_cache');
+          } catch { /* ignore */ }
         }
 
         const [categoriesData, productsData, stats] = await Promise.all([
@@ -89,12 +75,6 @@ function App() {
         ]);
 
         const validCategories = Array.isArray(categoriesData) ? categoriesData : [];
-        setCategories(validCategories);
-        localStorage.setItem('honeybee_categories_cache', JSON.stringify({
-          data: validCategories,
-          timestamp: Date.now()
-        }));
-
         const rawProducts = Array.isArray(productsData) ? productsData : (productsData?.products || []);
         const mappedProducts = rawProducts.map(p => ({
           id: p._id,
@@ -106,19 +86,28 @@ function App() {
           description: p.description,
           createdAt: p.createdAt,
         }));
+
+        setCategories(validCategories);
         setProducts(mappedProducts);
         setProductStats(typeof stats === 'object' && !Array.isArray(stats) ? stats : {});
-
-        localStorage.setItem('honeybee_products_cache', JSON.stringify({
-          data: mappedProducts,
-          timestamp: Date.now()
-        }));
       } catch (err) {
-        console.error("Error loading data from API:", err);
+        if (!silent) console.error("Error loading data from API:", err);
       }
     };
 
+    // Refetch when the tab regains focus (10s throttle) — keeps storefront fresh after admin edits in another tab
+    const onVisible = () => {
+      if (document.visibilityState !== "visible") return;
+      clearTimeout(refreshTimer);
+      refreshTimer = setTimeout(() => fetchData(true), 1000);
+    };
+
     fetchData();
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisible);
+      clearTimeout(refreshTimer);
+    };
   }, []);
 
   useEffect(() => {

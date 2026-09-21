@@ -407,7 +407,7 @@ export default function AdminDashboard() {
                           <td className="py-3 px-4 text-right">
                             <div className="flex gap-2 justify-end">
                               <button
-                                onClick={() => { window.open(`/products/${product.slug || product.id}`, "_blank"); }}
+                                onClick={() => { window.open(`/product/${product.slug || product.id}`, "_blank"); }}
                                 className="px-3 py-1 text-xs rounded-full border border-brand-border text-brand-wine-dark/70 hover:border-brand-gold transition-colors"
                               >
                                 View

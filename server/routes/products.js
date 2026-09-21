@@ -58,7 +58,7 @@ router.get('/', async (req, res, next) => {
 
     const totalPages = Math.ceil(total / limitNum);
 
-    res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+    res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=15, stale-while-revalidate=30');
     res.json({ products, total, page: pageNum, totalPages, limit: limitNum });
   } catch (err) { next(err); }
 });

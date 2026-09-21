@@ -14,14 +14,14 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
   const isFav = product ? favorites.some(f => f.id === product.id) : false;
 
   useEffect(() => {
-    const foundProduct = products.find((p) => p.id === id);
+    const foundProduct = products.find((p) => p.id === id || p._id === id);
     if (foundProduct) {
       setProduct(foundProduct);
       setSelectedImage(foundProduct.mainImage || "");
       trackProductView(foundProduct.id, foundProduct.name);
       setLoading(false);
-    } else if (products.length > 0) {
-      // Products loaded but this one not found — fetch directly
+    } else if (loading) {
+      // Products list empty, still booting, or id not in it — fetch directly (self-sufficient)
       fetchProductById(id)
         .then(data => {
           if (data && !data.error) {
