@@ -87,7 +87,7 @@ export default function Navigation({ cartCount, favCount }) {
                 strokeWidth={1.5}
               />
               {favCount > 0 && (
-                <span className="absolute -top-1 -right-1 text-[8px] rounded-full w-3.5 h-3.5 flex items-center justify-center font-bold" style={{ backgroundColor: '#C59B58', color: '#340910' }}>
+                <span key={favCount} className="animate-badge-pop absolute -top-1 -right-1 text-[8px] rounded-full w-3.5 h-3.5 flex items-center justify-center font-bold" style={{ backgroundColor: '#C59B58', color: '#340910' }}>
                   {favCount}
                 </span>
               )}
@@ -101,7 +101,7 @@ export default function Navigation({ cartCount, favCount }) {
                 strokeWidth={1.5}
               />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 text-[8px] rounded-full w-3.5 h-3.5 flex items-center justify-center font-bold" style={{ backgroundColor: '#C59B58', color: '#340910' }}>
+                <span key={cartCount} className="animate-badge-pop absolute -top-1 -right-1 text-[8px] rounded-full w-3.5 h-3.5 flex items-center justify-center font-bold" style={{ backgroundColor: '#C59B58', color: '#340910' }}>
                   {cartCount}
                 </span>
               )}
@@ -112,7 +112,7 @@ export default function Navigation({ cartCount, favCount }) {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden overflow-hidden transition-all duration-300 border-t ${isMobileMenuOpen ? "max-h-[60vh] py-6" : "max-h-0"
+        className={`md:hidden overflow-hidden duration-300 border-t [transition-property:max-height,padding] ease-[cubic-bezier(0.32,0.72,0,1)] ${isMobileMenuOpen ? "max-h-[60vh] py-6" : "max-h-0"
           }`}
         style={{ backgroundColor: '#FAF7F2', borderColor: '#EBDED5' }}
       >

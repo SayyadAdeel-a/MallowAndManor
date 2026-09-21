@@ -4,6 +4,7 @@ import { trackProductView } from "../lib/analytics";
 import { fetchProductById, fetchSettings, fetchProducts } from "../lib/api";
 import AnimatedIcon, { ICONS } from "../components/AnimatedIcon";
 import NewsletterCTA from "../components/NewsletterCTA";
+import Reveal from "../components/Reveal";
 
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || "923233334492";
 
@@ -160,6 +161,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
         {/* ============ LEFT: Gallery ============ */}
+        <Reveal>
         <div>
           <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-brand-cream border border-brand-border/50">
             <img src={images[0] || selectedImage} alt={product.name} className="w-full h-full object-cover" />
@@ -186,8 +188,10 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
             </div>
           )}
         </div>
+        </Reveal>
 
         {/* ============ RIGHT: Info panel ============ */}
+        <Reveal delay={80}>
         <div>
           {/* Title + rating */}
           <h1 className="font-display text-3xl md:text-4xl font-bold text-brand-burgundy leading-tight mb-3">
@@ -321,11 +325,12 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
             )}
           </div>
         </div>
+        </Reveal>
       </div>
 
       {/* ============ Customer Reviews ============ */}
       {pp.showReviews && (
-        <section className="mt-16 border-t border-brand-border/60 pt-12">
+        <Reveal as="section" className="mt-16 border-t border-brand-border/60 pt-12">
           <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-brand-burgundy font-display mb-8">{pp.reviewsHeading}</h2>
 
           {ppReviews.length === 0 ? (
@@ -383,12 +388,12 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
               </div>
             </div>
           )}
-        </section>
+        </Reveal>
       )}
 
       {/* ============ Shipping accordion ============ */}
       {pp.shippingInfo?.text && (
-        <div className="mt-14">
+        <Reveal className="mt-14">
           <div className="border border-brand-border/60 rounded-2xl overflow-hidden">
             <button
               onClick={() => setShippingOpen(!shippingOpen)}
@@ -401,17 +406,17 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
               </svg>
             </button>
             {shippingOpen && (
-              <div className="px-8 pb-6 pt-1 border-t border-brand-border/40">
+              <div className="animate-fade-slide px-8 pb-6 pt-1 border-t border-brand-border/40">
                 <p className="text-sm text-brand-wine-dark/70 leading-relaxed text-center max-w-2xl mx-auto">{pp.shippingInfo.text}</p>
               </div>
             )}
           </div>
-        </div>
+        </Reveal>
       )}
 
       {/* ============ You May Also Like grid ============ */}
       {related.length > 0 && (
-        <section className="mt-16 border-t border-brand-border/60 pt-12">
+        <Reveal as="section" className="mt-16 border-t border-brand-border/60 pt-12">
           <div className="text-center mb-10">
             <div className="w-10 h-px bg-brand-gold mx-auto mb-5" />
             <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-brand-burgundy font-display">{pp.alsoLikeHeading}</h2>
@@ -419,7 +424,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
             {related.slice(0, pp.alsoLikeCount || 4).map((p) => (
               <div key={p.id} className="group cursor-pointer" onClick={() => { navigate(`/product/${p.id}`); window.scrollTo(0, 0); }}>
-                <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-brand-cream border border-brand-border/50 mb-3">
+                <div className="hover-lift relative aspect-[4/5] overflow-hidden rounded-2xl bg-brand-cream border border-brand-border/50 mb-3">
                   <img src={p.mainImage || "/hero-banner.webp"} alt={p.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
                 <p className="text-sm font-semibold text-brand-burgundy group-hover:text-brand-gold transition-colors truncate">{p.name}</p>
@@ -427,7 +432,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
               </div>
             ))}
           </div>
-        </section>
+        </Reveal>
       )}
 
       {/* ============ Stay Connected ============ */}

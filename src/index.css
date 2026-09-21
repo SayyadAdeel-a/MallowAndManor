@@ -50,11 +50,93 @@ a:hover {
 }
 
 button {
-  transition: all 0.3s;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+button:active {
+  transform: scale(0.97);
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+/* ===== Motion tokens ===== */
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Scroll reveal (marketing pages) */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.55s var(--ease-out), transform 0.65s var(--ease-out);
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Cart/favorites badge feedback pop */
+@keyframes badge-pop {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+.animate-badge-pop {
+  animation: badge-pop 0.25s var(--ease-out);
+}
+
+/* Accordion content entrance */
+@keyframes fade-slide-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
+}
+
+.animate-fade-slide {
+  animation: fade-slide-in 0.25s var(--ease-out);
+}
+
+/* Gentle hover lift for framed media (touch-safe: hover gated) */
+@media (hover: hover) and (pointer: fine) {
+  .hover-lift {
+    transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
+  }
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px -12px rgba(52, 9, 16, 0.18);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.2s ease;
+  }
+  .animate-badge-pop,
+  .animate-fade-slide {
+    animation: none;
+  }
+  .hover-lift,
+  .hover-lift:hover {
+    transform: none;
+    box-shadow: none;
+    transition: box-shadow 0.2s ease;
+  }
+  button {
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+  }
+  button:active {
+    transform: none;
+  }
 }
 
 ::-webkit-scrollbar {

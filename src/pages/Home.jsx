@@ -6,6 +6,7 @@ import ProductsSection from "../components/ProductsSection";
 import AnimatedIcon, { ICONS, IconStyle } from "../components/AnimatedIcon";
 import GoogleReviews from "../components/GoogleReviews";
 import NewsletterCTA from "../components/NewsletterCTA";
+import Reveal from "../components/Reveal";
 import { fetchSettings } from "../lib/api";
 
 const DEFAULT_TRUST = [
@@ -68,7 +69,7 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
       <IconStyle />
 
       {/* Collections */}
-      <Collections onCategoryClick={(cat) => navigate(`/products?category=${cat}`)} />
+      <Reveal><Collections onCategoryClick={(cat) => navigate(`/products?category=${cat}`)} /></Reveal>
 
       {/* Featured Products */}
       <ProductsSection onAddToCart={handleAddToCart} favorites={favorites} onToggleFavorite={toggleFavorite} />
@@ -76,6 +77,7 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
       {/* Sale banner */}
       {sale.enabled !== false && (
         <section className="py-12 px-4 lg:px-8 max-w-7xl mx-auto">
+          <Reveal>
           <div className="relative overflow-hidden rounded-3xl bg-brand-wine-dark min-h-[420px] grid grid-cols-1 md:grid-cols-2">
             <div className="relative z-10 p-10 md:p-16 lg:p-20 flex flex-col justify-center">
               <span className="inline-block text-[10px] font-bold tracking-[0.4em] uppercase mb-4 px-3 py-1.5 rounded-full border border-brand-gold/40 text-brand-gold w-fit">
@@ -113,13 +115,14 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
               </svg>
             </div>
           </div>
+          </Reveal>
         </section>
       )}
 
       {/* Brand Promise */}
       <section className="py-16 md:py-24 bg-brand-cream/30">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="text-center mb-14">
+          <Reveal className="text-center mb-14">
             <div className="w-10 h-px bg-brand-gold mx-auto mb-6" />
             <span className="text-xs font-bold tracking-[0.3em] uppercase text-brand-gold mb-3 block">
               The Honeybee Promise
@@ -127,10 +130,10 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-brand-burgundy">
               Why Women Trust Us
             </h2>
-          </div>
+          </Reveal>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
             {promises.map((item, i) => (
-              <div key={i} className="text-center group">
+              <Reveal key={i} delay={i * 70} className="text-center group">
                 <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center group-hover:bg-brand-gold/20 group-hover:border-brand-gold/40 transition-all duration-300">
                   <AnimatedIcon
                     path={ICONS[item.iconKey]}
@@ -141,7 +144,7 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
                 </div>
                 <h3 className="text-sm font-bold tracking-wider uppercase text-brand-burgundy mb-2">{item.title}</h3>
                 <p className="text-xs text-brand-wine-dark/60 leading-relaxed max-w-[200px] mx-auto">{item.description}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -152,7 +155,7 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
         <div className="absolute inset-0 bg-fixed bg-center bg-cover" style={{ backgroundImage: `url("${story.image || "/Brand Story Parallax Banner.webp"}")` }} />
         <div className="absolute inset-0 bg-brand-wine-dark/70" />
         <div className="relative h-full flex items-center justify-center text-center px-6">
-          <div className="max-w-xl">
+          <Reveal className="max-w-xl">
             <div className="w-12 h-px bg-brand-gold mx-auto mb-6" />
             <span className="text-[10px] font-bold tracking-[0.4em] uppercase text-brand-gold mb-4 block">
               {story.tagline || "Our Story"}
@@ -173,7 +176,7 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
               </svg>
             </a>
             <div className="w-12 h-px bg-brand-gold mx-auto mt-6" />
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -182,7 +185,9 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
 
       {/* Newsletter CTA */}
       <section className="py-16 md:py-24 px-4 lg:px-8 max-w-7xl mx-auto">
-        <NewsletterCTA />
+        <Reveal>
+          <NewsletterCTA />
+        </Reveal>
       </section>
     </div>
   );
