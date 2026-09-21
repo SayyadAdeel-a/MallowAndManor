@@ -60,7 +60,19 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
   const isFav = product ? favorites.some(f => f.id === product.id) : false;
 
   useEffect(() => {
-    fetchSettings().then(setSettings).catch(() => {});
+    let refreshTimer = null;
+    const load = () => fetchSettings().then(setSettings).catch(() => {});
+    load();
+    const onVisible = () => {
+      if (document.visibilityState !== "visible") return;
+      clearTimeout(refreshTimer);
+      refreshTimer = setTimeout(load, 1000);
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisible);
+      clearTimeout(refreshTimer);
+    };
   }, []);
 
   useEffect(() => {

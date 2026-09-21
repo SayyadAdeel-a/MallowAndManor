@@ -121,44 +121,36 @@ const DEFAULT_SETTINGS = {
   productReviews: [],
   homeReviews: [
     {
-      name: 'Ayesha Siddiqui', nameUrdu: 'عائشہ صدیقی', city: 'Karachi', language: 'ur', rating: 5,
-      text: 'ماشاءاللہ، چوڑیاں بہت خوبصورت ہیں! پیکنگ شاندار تھی اور کراچی میں دوسرے ہی دن ڈیلیوری ہو گئی۔ ایسا معیار بازار میں نہیں ملتا۔',
-      textEnglish: 'Mashallah, the bangles are so beautiful! The packaging was excellent and delivery reached Karachi the very next day. Quality like this is not found in the market.',
+      name: 'Ayesha Siddiqui', city: 'Karachi', language: 'ur', rating: 5,
+      text: 'Mashallah bangles bohat khoobsurat hain! Packaging zabardast thi aur Karachi mein agli hi din delivery mil gayi. Aisa quality bazaar mein nahi milta.',
     },
     {
-      name: 'Gulalai Yousafzai', nameUrdu: 'ګلالۍ يوسفزي', city: 'Peshawar', language: 'ps', rating: 5,
-      text: 'ډېرې ښکلیې چوړیانې وې! ژر رارسېدې او کیفیت یې ډېر ښه دی — له پېښوره به بيا هم اخلم.',
-      textEnglish: 'Very beautiful bangles! They arrived quickly and the quality is excellent — I will buy again from Peshawar.',
+      name: 'Gulalai Yousafzai', city: 'Peshawar', language: 'ps', rating: 5,
+      text: 'Dera khaista churyane wen! Zar raghle aw quality ye dera sha — Peshawar na ba baya kharam.',
     },
     {
-      name: 'Fatima Noor', nameUrdu: 'فاطمہ نور', city: 'Lahore', language: 'ur', rating: 5,
-      text: 'عبایا کا کپڑا بہت نرم اور اعلیٰ ہے، سلائی بہت عمدہ ہے۔ شادی سے پہلے آرڈر کیا تھا، سب نے تعریف کی۔',
-      textEnglish: 'The abaya fabric is very soft and premium, and the stitching is excellent. I ordered before my wedding and everyone praised it.',
+      name: 'Fatima Noor', city: 'Lahore', language: 'ur', rating: 5,
+      text: 'Abaya ka kapra bohat naram aur premium hai, silai bohat aala hai. Shadi se pehle order kiya tha, sab ne tareef ki.',
     },
     {
-      name: 'Bakhtawar Khan', nameUrdu: 'بختاور خان', city: 'Mardan', language: 'ps', rating: 5,
-      text: 'پرټه ډېره ښکلې ده، تور یې نرم دی او اندازه یې برابره ده. ډېره مننه!',
-      textEnglish: 'The abaya is very beautiful, the fabric is soft and the size is perfect. Thank you very much!',
+      name: 'Bakhtawar Khan', city: 'Mardan', language: 'ps', rating: 5,
+      text: 'Abaya dera khaista da, toar ye naram aw andaza ye barabar da. Dera manana!',
     },
     {
-      name: 'Maryam Bibi', nameUrdu: 'مریم بی بی', city: 'Islamabad', language: 'ur', rating: 5,
-      text: 'پہلے کبھی پریس آن نیلز نہیں لگائی تھیں، لیکن یہ اتنی آسان ہیں اور ڈیزائن بالکل تصویروں جیسا ہے۔',
-      textEnglish: 'I had never worn press-on nails before, but these are so easy to apply — and the design is exactly like the pictures.',
+      name: 'Maryam Bibi', city: 'Islamabad', language: 'ur', rating: 5,
+      text: 'Pehle kabhi press-on nails nahi lagayi thin, lekin ye itni asaan hain aur design bilkul tasveeron jaisa hai.',
     },
     {
-      name: 'Zarlasht Khan', nameUrdu: 'زرلښت خان', city: 'Swat', language: 'ps', rating: 5,
-      text: 'په دې بیه داسې ښکلي نیوز نور چېرې نه پیدا کیږي. ډېره مننه!',
-      textEnglish: 'Such beautiful nails at this price are found nowhere else. Thank you very much!',
+      name: 'Zarlasht Khan', city: 'Swat', language: 'ps', rating: 5,
+      text: 'Da qeemat mein itne khoobsurat nails kahin nahi milte. Dera manana!',
     },
     {
-      name: 'Zainab Khan', nameUrdu: 'زینب خان', city: 'Quetta', language: 'ur', rating: 5,
-      text: 'ویٹس ایپ سے آرڈر کرنا بہت آسان تھا، اپنی مرضی کا ڈیزائن بتایا اور بالکل ویسا ہی ملا۔ شکریہ ہنی بی لین!',
-      textEnglish: 'Ordering over WhatsApp was very easy — I told them my choice of design and got exactly that. Thank you Honeybee Lane!',
+      name: 'Zainab Khan', city: 'Quetta', language: 'ur', rating: 5,
+      text: 'WhatsApp se order karna bohat asaan tha, apni pasand ka design bataya aur bilkul waisa hi mila. Shukriya Honeybee Lane!',
     },
     {
-      name: 'Gul Makai', nameUrdu: 'ګل مکۍ', city: 'Khyber', language: 'ps', rating: 5,
-      text: 'د غاړې زیور ډېر ښکلې دی او رنګ یې خوږ دی. زه مور مې ډېره خوښه شوه.',
-      textEnglish: 'The necklace is very beautiful and the colour is lovely. My mother was delighted with it.',
+      name: 'Gul Makai', city: 'Khyber', language: 'ps', rating: 5,
+      text: 'Necklace dera khaista da, rang ye khog da. Ammi dera khush shwa.',
     },
   ],
   categoryIntros: [
@@ -200,6 +192,11 @@ export default async function handler(req, res) {
         }
         if (!settings.productPage.sizes?.length) {
           settings.productPage.sizes = DEFAULT_SETTINGS.productPage.sizes;
+          dirty = true;
+        }
+        // One-time: replace native-script (Urdu/Pashto) reviews with the Hinglish defaults
+        if (Array.isArray(settings.homeReviews) && settings.homeReviews.some((r) => /[\u0600-\u06FF]/.test(r?.text || ""))) {
+          settings.homeReviews = DEFAULT_SETTINGS.homeReviews;
           dirty = true;
         }
         if (dirty) await settings.save();

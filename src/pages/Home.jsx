@@ -27,17 +27,17 @@ const DEFAULT_PROMISES = [
 
 const TRUST_ANIMATIONS = ["float", "pulse", "beat", "bounce"];
 
-const LANGUAGE_LABELS = { ur: "اردو", ps: "پښتو", en: "English" };
+const LANGUAGE_LABELS = { ur: "Urdu", ps: "Pashto", en: "English" };
 
 const DEFAULT_HOME_REVIEWS = [
-  { name: "Ayesha Siddiqui", nameUrdu: "عائشہ صدیقی", city: "Karachi", language: "ur", rating: 5, text: "ماشاءاللہ، چوڑیاں بہت خوبصورت ہیں! پیکنگ شاندار تھی اور کراچی میں دوسرے ہی دن ڈیلیوری ہو گئی۔ ایسا معیار بازار میں نہیں ملتا۔", textEnglish: "Mashallah, the bangles are so beautiful! The packaging was excellent and delivery reached Karachi the very next day. Quality like this is not found in the market." },
-  { name: "Gulalai Yousafzai", nameUrdu: "ګلالۍ يوسفزي", city: "Peshawar", language: "ps", rating: 5, text: "ډېرې ښکلیې چوړیانې وې! ژر رارسېدې او کیفیت یې ډېر ښه دی — له پېښوره به بيا هم اخلم.", textEnglish: "Very beautiful bangles! They arrived quickly and the quality is excellent — I will buy again from Peshawar." },
-  { name: "Fatima Noor", nameUrdu: "فاطمہ نور", city: "Lahore", language: "ur", rating: 5, text: "عبایا کا کپڑا بہت نرم اور اعلیٰ ہے، سلائی بہت عمدہ ہے۔ شادی سے پہلے آرڈر کیا تھا، سب نے تعریف کی۔", textEnglish: "The abaya fabric is very soft and premium, and the stitching is excellent. I ordered before my wedding and everyone praised it." },
-  { name: "Bakhtawar Khan", nameUrdu: "بختاور خان", city: "Mardan", language: "ps", rating: 5, text: "پرټه ډېره ښکلې ده، تور یې نرم دی او اندازه یې برابره ده. ډېره مننه!", textEnglish: "The abaya is very beautiful, the fabric is soft and the size is perfect. Thank you very much!" },
-  { name: "Maryam Bibi", nameUrdu: "مریم بی بی", city: "Islamabad", language: "ur", rating: 5, text: "پہلے کبھی پریس آن نیلز نہیں لگائی تھیں، لیکن یہ اتنی آسان ہیں اور ڈیزائن بالکل تصویروں جیسا ہے۔", textEnglish: "I had never worn press-on nails before, but these are so easy to apply — and the design is exactly like the pictures." },
-  { name: "Zarlasht Khan", nameUrdu: "زرلښت خان", city: "Swat", language: "ps", rating: 5, text: "په دې بیه داسې ښکلي نیوز نور چېرې نه پیدا کیږي. ډېره مننه!", textEnglish: "Such beautiful nails at this price are found nowhere else. Thank you very much!" },
-  { name: "Zainab Khan", nameUrdu: "زینب خان", city: "Quetta", language: "ur", rating: 5, text: "ویٹس ایپ سے آرڈر کرنا بہت آسان تھا، اپنی مرضی کا ڈیزائن بتایا اور بالکل ویسا ہی ملا۔ شکریہ ہنی بی لین!", textEnglish: "Ordering over WhatsApp was very easy — I told them my choice of design and got exactly that. Thank you Honeybee Lane!" },
-  { name: "Gul Makai", nameUrdu: "ګل مکۍ", city: "Khyber", language: "ps", rating: 5, text: "د غاړې زیور ډېر ښکلې دی او رنګ یې خوږ دی. زه مور مې ډېره خوښه شوه.", textEnglish: "The necklace is very beautiful and the colour is lovely. My mother was delighted with it." },
+  { name: "Ayesha Siddiqui", city: "Karachi", language: "ur", rating: 5, text: "Mashallah bangles bohat khoobsurat hain! Packaging zabardast thi aur Karachi mein agli hi din delivery mil gayi. Aisa quality bazaar mein nahi milta." },
+  { name: "Gulalai Yousafzai", city: "Peshawar", language: "ps", rating: 5, text: "Dera khaista churyane wen! Zar raghle aw quality ye dera sha — Peshawar na ba baya kharam." },
+  { name: "Fatima Noor", city: "Lahore", language: "ur", rating: 5, text: "Abaya ka kapra bohat naram aur premium hai, silai bohat aala hai. Shadi se pehle order kiya tha, sab ne tareef ki." },
+  { name: "Bakhtawar Khan", city: "Mardan", language: "ps", rating: 5, text: "Abaya dera khaista da, toar ye naram aw andaza ye barabar da. Dera manana!" },
+  { name: "Maryam Bibi", city: "Islamabad", language: "ur", rating: 5, text: "Pehle kabhi press-on nails nahi lagayi thin, lekin ye itni asaan hain aur design bilkul tasveeron jaisa hai." },
+  { name: "Zarlasht Khan", city: "Swat", language: "ps", rating: 5, text: "Da qeemat mein itne khoobsurat nails kahin nahi milte. Dera manana!" },
+  { name: "Zainab Khan", city: "Quetta", language: "ur", rating: 5, text: "WhatsApp se order karna bohat asaan tha, apni pasand ka design bataya aur bilkul waisa hi mila. Shukriya Honeybee Lane!" },
+  { name: "Gul Makai", city: "Khyber", language: "ps", rating: 5, text: "Necklace dera khaista da, rang ye khog da. Ammi dera khush shwa." },
 ];
 
 export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
@@ -45,7 +45,23 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
   const [settings, setSettings] = useState(null);
 
   useEffect(() => {
-    fetchSettings().then(setSettings).catch(() => {});
+    let refreshTimer = null;
+    const loadSettings = () => fetchSettings().then(setSettings).catch(() => {});
+
+    loadSettings();
+
+    // Auto-update: refetch settings when the tab regains focus (1s throttle)
+    // so admin edits (reviews, hero, sale, etc.) appear without a manual reload
+    const onVisible = () => {
+      if (document.visibilityState !== "visible") return;
+      clearTimeout(refreshTimer);
+      refreshTimer = setTimeout(loadSettings, 1000);
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisible);
+      clearTimeout(refreshTimer);
+    };
   }, []);
 
   useEffect(() => {
@@ -178,10 +194,9 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <Reveal className="text-center mb-12">
             <div className="w-10 h-px bg-brand-gold mx-auto mb-6" />
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-brand-burgundy mb-2">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-brand-burgundy">
               What Our Customers Say
             </h2>
-            <p className="urdu-text text-brand-wine-dark/60">ہمارے گاہکوں کی رائے</p>
           </Reveal>
 
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-5 [column-fill:_balance]">
@@ -201,21 +216,13 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
                     </span>
                   </div>
 
-                  <p className={"urdu-text text-brand-wine-dark/80 mb-3"} dir="rtl">{r.text}</p>
-                  {r.textEnglish && (
-                    <p className="text-xs text-brand-wine-dark/50 italic leading-relaxed mb-4 border-l-2 border-brand-gold/30 pl-3">
-                      {r.textEnglish}
-                    </p>
-                  )}
+                  <p className="text-sm text-brand-wine-dark/80 leading-relaxed mb-4">{r.text}</p>
 
                   <div className="flex items-center gap-3 pt-3 border-t border-brand-border/40">
                     <div className="w-9 h-9 rounded-full bg-brand-blush border border-brand-border/60 flex items-center justify-center text-xs font-bold text-brand-burgundy shrink-0">
                       {(r.name || "?").charAt(0).toUpperCase()}
                     </div>
-                    <div className="min-w-0">
-                      <p className="text-sm font-semibold text-brand-burgundy leading-tight">{r.name}</p>
-                      {r.nameUrdu && <p className="urdu-name text-xs text-brand-wine-dark/40 leading-tight">{r.nameUrdu}</p>}
-                    </div>
+                    <p className="text-sm font-semibold text-brand-burgundy min-w-0">{r.name}</p>
                     {r.city && <p className="ml-auto text-[10px] tracking-wider uppercase text-brand-wine-dark/40 shrink-0">{r.city}</p>}
                   </div>
                 </div>
