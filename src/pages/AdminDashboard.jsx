@@ -111,7 +111,8 @@ export default function AdminDashboard() {
   const [products, setProducts] = useState([]);
   const [showProductForm, setShowProductForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
-  const [productForm, setProductForm] = useState({ name: "", price: "", category: "", description: "", highlights: [] });
+  const [productForm, setProductForm] = useState({ name: "", price: "", category: "", description: "", highlights: [], thumbnails: [] });
+  const [thumbUploading, setThumbUploading] = useState(false);
   const [productSearch, setProductSearch] = useState("");
   const [productCategoryFilter, setProductCategoryFilter] = useState("");
 
@@ -193,6 +194,7 @@ export default function AdminDashboard() {
         category: productForm.category,
         description: productForm.description || "",
         mainImage: productForm.mainImage || "",
+        thumbnails: (productForm.thumbnails || []).filter(t => typeof t === "string" && t),
         highlights: (productForm.highlights || []).filter(h => h.text?.trim()),
       };
       if (editingProduct) {
@@ -202,10 +204,31 @@ export default function AdminDashboard() {
       }
       setShowProductForm(false);
       setEditingProduct(null);
-      setProductForm({ name: "", price: "", category: "", description: "", mainImage: "", highlights: [] });
+      setProductForm({ name: "", price: "", category: "", description: "", mainImage: "", highlights: [], thumbnails: [] });
       await loadAll();
     } catch (err) { alert("Error: " + err.message); }
     setSaving(false);
+  };
+
+  // Multi-image upload for product gallery (max 5 additional)
+  const handleThumbnailsChange = async (e) => {
+    const files = Array.from(e.target.files || []);
+    e.target.value = "";
+    if (!files.length) return;
+    const room = 5 - (productForm.thumbnails || []).length;
+    if (room <= 0) { alert("Maximum 5 additional images per product"); return; }
+    const toUpload = files.slice(0, room);
+    if (files.length > room) alert(`Only ${room} more image${room === 1 ? "" : "s"} allowed (5 max).`);
+    setThumbUploading(true);
+    const uploaded = [];
+    for (const file of toUpload) {
+      try {
+        const url = resolveUploadUrl(await uploadImage(file));
+        if (url) uploaded.push(url);
+      } catch (err) { alert("Image upload failed: " + err.message); }
+    }
+    setProductForm(f => ({ ...f, thumbnails: [...(f.thumbnails || []), ...uploaded].slice(0, 5) }));
+    setThumbUploading(false);
   };
 
   const handleDeleteProduct = async (id) => {
@@ -308,7 +331,7 @@ export default function AdminDashboard() {
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold text-brand-burgundy">Products ({products.length})</h2>
                   <button
-                    onClick={() => { setShowProductForm(true); setEditingProduct(null); setProductForm({ name: "", price: "", category: "", description: "", highlights: [] }); }}
+                    onClick={() => { setShowProductForm(true); setEditingProduct(null); setProductForm({ name: "", price: "", category: "", description: "", highlights: [], thumbnails: [] }); }}
                     className="px-4 py-2 bg-brand-burgundy text-brand-cream text-xs font-semibold tracking-wider uppercase rounded-full hover:bg-brand-wine-dark transition-colors"
                   >
                     Add Product
@@ -340,6 +363,41 @@ export default function AdminDashboard() {
                         value={productForm.mainImage}
                         onChange={url => setProductForm(f => ({ ...f, mainImage: url }))}
                       />
+                      {/* Additional gallery images */}
+                      <div className="md:col-span-2">
+                        <div className="flex items-center justify-between mb-2">
+                          <label className="text-xs font-semibold tracking-wider uppercase text-brand-wine-dark/70">Gallery Images (up to 5 — shown under the main image on the product page)</label>
+                          <span className="text-[11px] text-brand-wine-dark/40">{(productForm.thumbnails || []).length}/5</span>
+                        </div>
+                        {(productForm.thumbnails || []).length > 0 && (
+                          <div className="flex gap-2.5 flex-wrap mb-2.5">
+                            {(productForm.thumbnails || []).map((url, idx) => (
+                              <div key={url + idx} className="relative">
+                                <img src={url} alt="" className="w-16 h-16 object-cover rounded-lg border border-brand-border" />
+                                <button
+                                  type="button"
+                                  onClick={() => setProductForm(f => ({ ...f, thumbnails: f.thumbnails.filter((_, i) => i !== idx) }))}
+                                  className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-brand-burgundy text-brand-cream rounded-full flex items-center justify-center text-[10px] hover:bg-red-600 transition-colors"
+                                  aria-label={`Remove image ${idx + 1}`}
+                                >
+                                  ×
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          onChange={handleThumbnailsChange}
+                          disabled={thumbUploading || (productForm.thumbnails || []).length >= 5}
+                          className="block w-full text-sm text-brand-wine-dark/70 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brand-burgundy file:text-brand-cream hover:file:bg-brand-wine-dark file:cursor-pointer disabled:opacity-50"
+                        />
+                        {thumbUploading && <span className="text-xs text-brand-gold mt-1.5 block">Uploading images...</span>}
+                        {(productForm.thumbnails || []).length >= 5 && <span className="text-[11px] text-brand-wine-dark/40 mt-1 block">Maximum reached — remove one to add another.</span>}
+                      </div>
+
                       <div className="md:col-span-2">
                         <InputField label="Description" value={productForm.description} onChange={e => setProductForm(f => ({ ...f, description: e.target.value }))} multiline rows={4} />
                       </div>
@@ -480,8 +538,9 @@ export default function AdminDashboard() {
                                     description: product.description || "",
                                     mainImage: product.mainImage || "",
                                     highlights: Array.isArray(product.highlights) ? product.highlights : [],
+                                    thumbnails: Array.isArray(product.thumbnails) ? product.thumbnails : [],
                                   });
-                                  setShowProductForm(true);
+                                                              setShowProductForm(true);
                                 }}
                                 className="px-3 py-1 text-xs rounded-full border border-brand-border text-brand-wine-dark/70 hover:border-brand-gold transition-colors"
                               >
@@ -1079,4 +1138,5 @@ export default function AdminDashboard() {
     </div>
   );
 }
+
 
