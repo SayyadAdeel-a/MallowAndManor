@@ -11,6 +11,7 @@ import postsRouter from './routes/posts.js';
 import settingsRouter from './routes/settings.js';
 import googleReviewsRouter from './routes/googleReviews.js';
 import seoFilesRouter from './routes/seoFiles.js';
+import publishScheduledRouter from './routes/publishScheduled.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 dotenv.config();
@@ -38,6 +39,7 @@ app.use('/api/upload', uploadRouter);
 app.use('/api/posts', postsRouter);
 app.use('/api/settings', settingsRouter);
 app.use('/api/google-reviews', googleReviewsRouter);
+app.use('/api/publish-scheduled', publishScheduledRouter);
 
 // SEO files
 app.use('/', seoFilesRouter);

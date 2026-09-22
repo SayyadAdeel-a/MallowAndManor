@@ -49,6 +49,7 @@ export default async function handler(req, res) {
         excerpt: typeof req.body.excerpt === 'string' ? req.body.excerpt.trim() : '',
         author: typeof req.body.author === 'string' ? req.body.author.trim() : '',
         published: !!req.body.published,
+        scheduledAt: req.body.scheduledAt ? new Date(req.body.scheduledAt) : null,
         tags: Array.isArray(req.body.tags) ? req.body.tags : [],
         featuredImage: typeof req.body.featuredImage === 'string' ? req.body.featuredImage : '',
         seoTitle: typeof req.body.seoTitle === 'string' ? req.body.seoTitle.trim() : '',
