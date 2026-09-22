@@ -183,6 +183,51 @@ img {
   font-size: 0.95rem;
 }
 
+/* ===== Blog post content ===== */
+.blog-content h2 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #4A0E17;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+.blog-content h3 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #4A0E17;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.blog-content p {
+  margin-bottom: 1rem;
+  line-height: 1.75;
+}
+.blog-content ul, .blog-content ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+.blog-content li {
+  margin-bottom: 0.5rem;
+  line-height: 1.65;
+}
+.blog-content ul { list-style: disc; }
+.blog-content ol { list-style: decimal; }
+.blog-content a {
+  color: #7A2040;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s;
+}
+.blog-content a:hover { color: #C59B58; }
+.blog-content strong { font-weight: 600; color: #340910; }
+.blog-content img {
+  max-width: 100%;
+  border-radius: 0.75rem;
+  margin: 1.5rem 0;
+}
+
 /* ===== Admin panel tokens ===== */
 .admin-card {
   background: #ffffff;

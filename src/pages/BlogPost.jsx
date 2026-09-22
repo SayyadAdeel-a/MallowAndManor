@@ -33,6 +33,10 @@ export default function BlogPost() {
 
   const renderedContent = useMemo(() => {
     if (!post?.content) return '';
+    const hasHtml = /<h[1-6]|<p>|<ul|<ol|<li|<a\s|<strong|<em|<img\s|<blockquote/i.test(post.content);
+    if (hasHtml) {
+      return DOMPurify.sanitize(post.content);
+    }
     const html = marked(post.content, { breaks: true });
     return DOMPurify.sanitize(html);
   }, [post]);
@@ -86,7 +90,12 @@ export default function BlogPost() {
 
       {post.featuredImage && (
         <div className="aspect-[16/9] overflow-hidden mb-8 bg-brand-cream border border-brand-border shadow-sm">
-          <img src={post.featuredImage} alt={post.title} className="w-full h-full object-cover" />
+          <img
+            src={post.featuredImage}
+            alt={post.title}
+            className="w-full h-full object-cover"
+            onError={(e) => { e.target.style.display = 'none'; }}
+          />
         </div>
       )}
 

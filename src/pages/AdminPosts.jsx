@@ -26,10 +26,6 @@ function DeleteButton({ _idKey, onConfirm }) {
   );
 }
 
-function slugify(text) {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-}
-
 export default function AdminPosts() {
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);

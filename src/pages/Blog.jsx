@@ -85,7 +85,8 @@ export default function Blog() {
               {post.featuredImage && (
                 <div className="aspect-[16/9] overflow-hidden mb-4 bg-brand-cream border border-brand-border">
                   <img src={post.featuredImage} alt={post.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    onError={(e) => { e.target.parentElement.style.display = 'none'; }} />
                 </div>
               )}
               <div className="flex gap-2 mb-3">
