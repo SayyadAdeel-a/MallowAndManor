@@ -1873,7 +1873,7 @@ const posts = [
   wrap(
     'Year in Review: Pakistani Jewelry Trends That Defined 2026',
     'year-review-pakistani-jewelry-trends-2026',
-    'From chunky gold revivals to sustainable choices,回顾 the jewelry trends that shaped Pakistani fashion this year.',
+    'From chunky gold revivals to sustainable choices, a look back at the jewelry trends that shaped Pakistani fashion this year.',
     `<p>2026 was a landmark year for Pakistani jewelry. Let's look back at the trends that defined the year and what they mean for the future.</p>
 
 <h2>The Gold Revival</h2>

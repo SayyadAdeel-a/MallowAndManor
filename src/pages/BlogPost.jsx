@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { fetchPostBySlug } from "../lib/api";
-import { marked } from "marked";
 import DOMPurify from "dompurify";
 import AnimatedIcon, { ICONS } from "../components/AnimatedIcon";
 import { setMeta, articleSchema } from "../lib/seo";
@@ -33,12 +32,7 @@ export default function BlogPost() {
 
   const renderedContent = useMemo(() => {
     if (!post?.content) return '';
-    const hasHtml = /<h[1-6]|<p>|<ul|<ol|<li|<a\s|<strong|<em|<img\s|<blockquote/i.test(post.content);
-    if (hasHtml) {
-      return DOMPurify.sanitize(post.content);
-    }
-    const html = marked(post.content, { breaks: true });
-    return DOMPurify.sanitize(html);
+    return DOMPurify.sanitize(post.content);
   }, [post]);
 
   if (loading) {
