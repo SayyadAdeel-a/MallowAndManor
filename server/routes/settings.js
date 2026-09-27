@@ -1,6 +1,6 @@
 import express from 'express';
 import SiteSettings from '../models/SiteSettings.js';
-import { verifyToken } from '../middleware/auth.js';
+import { verifyAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -237,7 +237,7 @@ router.get('/', async (req, res) => {
 });
 
 // PUT /api/settings — admin only
-router.put('/', verifyToken, async (req, res) => {
+router.put('/', verifyAuth, async (req, res) => {
   try {
     let settings = await SiteSettings.findOne();
     if (!settings) {
