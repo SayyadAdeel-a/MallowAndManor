@@ -1,4 +1,4 @@
-// SEO files: /sitemap.xml and /robots.txt — mirrors api/sitemap.js and api/robots.js
+// SEO files: /sitemap.xml and /robots.txt — mirrors api/seo.js
 import { Router } from 'express';
 import Product from '../models/Product.js';
 import Category from '../models/Category.js';

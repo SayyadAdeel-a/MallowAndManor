@@ -6,6 +6,25 @@ import Post from './_lib/models/Post.js';
 const XML_HEADER = '<?xml version="1.0" encoding="UTF-8"?>';
 
 export default async function handler(req, res) {
+  const path = req.query.path || req.url?.split('?')[0] || '';
+
+  // robots.txt
+  if (path.endsWith('robots.txt')) {
+    const proto = req.headers['x-forwarded-proto'] || 'https';
+    const host = req.headers['x-forwarded-host'] || req.headers.host || 'honeybeelane.vercel.app';
+    const robots = `User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /cart
+Disallow: /favorites
+
+Sitemap: ${proto}://${host}/sitemap.xml`;
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=86400');
+    return res.status(200).send(robots);
+  }
+
+  // sitemap.xml (default)
   const proto = req.headers['x-forwarded-proto'] || 'https';
   const host = req.headers['x-forwarded-host'] || req.headers.host || 'honeybeelane.vercel.app';
   const base = `${proto}://${host}`;
@@ -27,7 +46,6 @@ export default async function handler(req, res) {
       Post.find({}, { slug: 1, updatedAt: 1 }).lean(),
     ]);
 
-    // Category pages publish only when they have 3+ products (thin-content gate)
     const countByCategory = {};
     for (const p of products) {
       countByCategory[p.category] = (countByCategory[p.category] || 0) + 1;
@@ -37,7 +55,6 @@ export default async function handler(req, res) {
         urls.push({ loc: `${base}/shop/${c.slug}`, lastmod: now, priority: '0.8' });
       }
     }
-
     for (const p of products) {
       urls.push({ loc: `${base}/product/${p.slug || p._id}`, lastmod: p.createdAt ? new Date(p.createdAt).toISOString() : now, priority: '0.7' });
     }

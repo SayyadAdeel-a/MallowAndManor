@@ -53,8 +53,8 @@
     { "source": "/products", "destination": "/shop", "permanent": true }
   ],
   "rewrites": [
-    { "source": "/sitemap.xml", "destination": "/api/sitemap" },
-    { "source": "/robots.txt", "destination": "/api/robots" },
+    { "source": "/sitemap.xml", "destination": "/api/seo" },
+    { "source": "/robots.txt", "destination": "/api/seo" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }
