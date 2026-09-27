@@ -73,7 +73,7 @@ const DEFAULT_SETTINGS = {
     heading: 'Get In Touch',
     subheading: "We're here to help you get every detail right.",
     phone: '+92 323 3334492',
-    email: 'hello@honeybeelane.com',
+    email: 'hello@honeybeelane.vercel.app',
     address: 'DHA Phase 6, Karachi, Pakistan',
     whatsapp: 'https://wa.me/923233334492',
     faqs: [

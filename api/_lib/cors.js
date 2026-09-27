@@ -1,7 +1,6 @@
 const ALLOWED_ORIGINS = [
   'http://localhost:5173',
   'https://honeybeelane.vercel.app',
-  'https://honeybeelane.com',
 ];
 
 export function setCorsHeaders(req, res) {
@@ -22,4 +21,3 @@ export function handleCors(req, res) {
     return true;
   }
   return false;
-}
