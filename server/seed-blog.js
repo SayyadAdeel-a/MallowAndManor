@@ -4,12 +4,8 @@ import Post from './models/Post.js';
 
 dotenv.config();
 
-const SITE = 'https://honeybeelane.com';
+const SITE = 'https://honeybeelane.vercel.app';
 const SHOP = `${SITE}/shop`;
-
-function slugify(text) {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-}
 
 function daysFromNow(n) {
   const d = new Date();

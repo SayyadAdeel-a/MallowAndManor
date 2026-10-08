@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { fetchPosts } from "../lib/api";
 import { setMeta } from "../lib/seo";
-import AnimatedIcon, { ICONS } from "../components/AnimatedIcon";
+import AnimatedIcon from "../components/AnimatedIcon";
+import { ICONS } from "../components/icons";
 
 export default function Blog() {
   const [posts, setPosts] = useState([]);
@@ -27,8 +28,8 @@ export default function Blog() {
 
   useEffect(() => {
     setMeta({
-      title: "The Journal — Jewelry & Abaya Styling Ideas",
-      description: "Stories and styling inspiration from Honeybee Lane — bangles, nails, abayas and more, made for modern Pakistani women.",
+      title: "The Journal â€” Jewelry & Abaya Styling Ideas",
+      description: "Stories and styling inspiration from Honeybee Lane â€” bangles, nails, abayas and more, made for modern Pakistani women.",
       path: "/blog",
       noindex: posts.length === 0 && !loading && !error,
     });
@@ -98,7 +99,7 @@ export default function Blog() {
               {post.excerpt && <p className="text-sm text-brand-wine-dark/70 line-clamp-2 mb-3">{post.excerpt}</p>}
               <div className="text-xs text-brand-wine-dark/50">
                 {post.author && <span>{post.author}</span>}
-                {post.author && " · "}
+                {post.author && " Â· "}
                 <span>{new Date(post.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
               </div>
             </Link>

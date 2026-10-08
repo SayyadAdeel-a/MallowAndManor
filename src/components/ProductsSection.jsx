@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { fetchProducts } from "../lib/api";
 import ProductCard from "./ProductCard";
 import { SkeletonGrid, ErrorState } from "./Skeletons";
-import AnimatedIcon, { ICONS } from "./AnimatedIcon";
+import AnimatedIcon from "./AnimatedIcon";
+import { ICONS } from "./icons";
 
 export default function ProductsSection({ onAddToCart, favorites = [], onToggleFavorite }) {
   const [products, setProducts] = useState([]);

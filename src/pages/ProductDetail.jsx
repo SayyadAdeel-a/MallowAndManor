@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { trackProductView } from "../lib/analytics";
 import { fetchProductById, fetchSettings, fetchProducts } from "../lib/api";
 import { cloudUrl } from "../lib/img";
 import { setMeta, breadcrumbSchema, productSchema } from "../lib/seo";
-import AnimatedIcon, { ICONS } from "../components/AnimatedIcon";
+import AnimatedIcon from "../components/AnimatedIcon";
+import { ICONS } from "../components/icons";
 import NewsletterCTA from "../components/NewsletterCTA";
 import Reveal from "../components/Reveal";
 
@@ -15,11 +16,11 @@ const DEFAULT_PP = {
   sizes: ["S", "M", "L", "XL"],
   showSizes: true,
   highlights: [
-    { emoji: "✨", text: "Handcrafted with premium materials" },
-    { emoji: "🚚", text: "Fast delivery across Pakistan" },
-    { emoji: "💎", text: "Premium quality guarantee" },
-    { emoji: "🎁", text: "Beautiful gift-ready packaging" },
-    { emoji: "📦", text: "Free shipping over Rs. 5,000" },
+    { emoji: "âœ¨", text: "Handcrafted with premium materials" },
+    { emoji: "ðŸšš", text: "Fast delivery across Pakistan" },
+    { emoji: "ðŸ’Ž", text: "Premium quality guarantee" },
+    { emoji: "ðŸŽ", text: "Beautiful gift-ready packaging" },
+    { emoji: "ðŸ“¦", text: "Free shipping over Rs. 5,000" },
   ],
   whatsappOrderLabel: "Order via WhatsApp",
   showWhatsappOrder: true,
@@ -50,7 +51,7 @@ const DEFAULT_PRODUCT_REVIEWS = [
   { author: "Hafsa Kamran", rating: 5, date: "2 weeks ago", body: "Product ki quality bohat achi hai, bilkul photos jaisa. Delivery bhi jaldi hui. Must recommend!" },
   { author: "Areeba Khan", rating: 5, date: "1 month ago", body: "Quality zabardast hai aur packing bhi bohat achi thi. Paisa wasool!" },
   { author: "Ahmed Raza", rating: 4, date: "1 month ago", body: "Pehle doubt tha online order karne mein, lekin WhatsApp pe sab confirm karwaya aur bilkul sahi product mila." },
-  { author: "Anaya Malik", rating: 5, date: "2 months ago", body: "Second time order kar rahi hoon — pehli wali abhi tak bilkul nayi hai. Bohat durable." },
+  { author: "Anaya Malik", rating: 5, date: "2 months ago", body: "Second time order kar rahi hoon â€” pehli wali abhi tak bilkul nayi hai. Bohat durable." },
   { author: "Sidra Baloch", rating: 5, date: "2 months ago", body: "Bohat pyara item hai, gift ke liye liya tha aur behen bohat khush hui. 5 stars!" },
   { author: "Usman Ghani", rating: 4, date: "3 months ago", body: "Bhabhi ko gift kiya, unhe bohat pasand aaya. Shukriya Honeybee Lane!" },
 ];
@@ -106,7 +107,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
     }
   }, [id, products]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Related products — derive from props when available, else fetch directly
+  // Related products â€” derive from props when available, else fetch directly
   useEffect(() => {
     if (products?.length) {
       setRelated(products.filter(p => p.id !== id && p._id !== id).slice(0, 8));
@@ -131,7 +132,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
   useEffect(() => {
     if (!product) return;
     setMeta({
-      title: `${product.name} — Rs. ${Number(product.price).toLocaleString()}`,
+      title: `${product.name} â€” Rs. ${Number(product.price).toLocaleString()}`,
       description: product.description
         ? `${product.description.slice(0, 140)}`
         : `${product.name} by Honeybee Lane. Premium handcrafted quality with nationwide delivery across Pakistan. Order via WhatsApp.`,
@@ -171,7 +172,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
   }
 
   const pp = { ...DEFAULT_PP, ...(settings?.productPage || {}) };
-  // Older settings docs may have empty sizes — fall back to defaults so the section never vanishes
+  // Older settings docs may have empty sizes â€” fall back to defaults so the section never vanishes
   if (!pp.sizes?.length) pp.sizes = DEFAULT_PP.sizes;
   // Per-product highlights first, then global settings, then built-in defaults
   const prodHighlights = product.highlights?.length
@@ -267,7 +268,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
               {prodHighlights.filter(h => h.text).map((h, i) => (
                 <li key={i} className="flex items-center gap-3">
                   <span className="w-8 h-8 shrink-0 rounded-full bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center text-sm" aria-hidden="true">
-                    {h.emoji || "✨"}
+                    {h.emoji || "âœ¨"}
                   </span>
                   <span className="text-sm text-brand-wine-dark/75 font-medium">{h.text}</span>
                 </li>
@@ -301,7 +302,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
           <div className="mb-6">
             <p className="text-xs font-semibold tracking-wider uppercase text-brand-wine-dark/60 mb-2.5">Quantity</p>
             <div className="inline-flex items-center border border-brand-border rounded-full">
-              <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-10 flex items-center justify-center hover:bg-brand-blush rounded-l-full transition-colors text-brand-wine-dark" aria-label="Decrease quantity">−</button>
+              <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-10 flex items-center justify-center hover:bg-brand-blush rounded-l-full transition-colors text-brand-wine-dark" aria-label="Decrease quantity">âˆ’</button>
               <span className="w-12 text-center text-sm font-semibold text-brand-wine-dark">{quantity}</span>
               <button onClick={() => setQuantity(quantity + 1)} className="w-10 h-10 flex items-center justify-center hover:bg-brand-blush rounded-r-full transition-colors text-brand-wine-dark" aria-label="Increase quantity">+</button>
             </div>
@@ -385,7 +386,7 @@ export default function ProductDetail({ products, handleAddToCart, toggleFavorit
 
           {ppReviews.length === 0 ? (
             <div className="text-center py-10 bg-brand-cream/40 rounded-2xl border border-brand-border/40">
-              <p className="text-sm text-brand-wine-dark/60 mb-4">No reviews yet — be the first to share your experience.</p>
+              <p className="text-sm text-brand-wine-dark/60 mb-4">No reviews yet â€” be the first to share your experience.</p>
               <a
                 href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi! I'd like to leave a review for ${product.name}`)}`}
                 target="_blank"

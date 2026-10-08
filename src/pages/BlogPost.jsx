@@ -1,8 +1,9 @@
-import { useState, useEffect, useMemo } from "react";
+﻿import { useState, useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { fetchPostBySlug } from "../lib/api";
-import DOMPurify from "dompurify";
-import AnimatedIcon, { ICONS } from "../components/AnimatedIcon";
+import { renderRichText, stripHtml } from "../lib/richText";
+import AnimatedIcon from "../components/AnimatedIcon";
+import { ICONS } from "../components/icons";
 import { setMeta, articleSchema } from "../lib/seo";
 
 export default function BlogPost() {
@@ -14,7 +15,7 @@ export default function BlogPost() {
     if (!post) return;
     setMeta({
       title: post.title,
-      description: post.excerpt || post.seoDescription || (post.content || "").slice(0, 150),
+      description: post.excerpt || post.seoDescription || stripHtml(post.content).slice(0, 155),
       path: `/blog/${post.slug}`,
       image: post.featuredImage,
       type: "article",
@@ -30,10 +31,9 @@ export default function BlogPost() {
       .finally(() => setLoading(false));
   }, [slug]);
 
-  const renderedContent = useMemo(() => {
-    if (!post?.content) return '';
-    return DOMPurify.sanitize(post.content);
-  }, [post]);
+  // The ONLY dangerouslySetInnerHTML in the app. Sanitization happens inside the
+  // same useMemo that produces the string, so there is no unsanitized path.
+  const renderedContent = useMemo(() => renderRichText(post?.content), [post]);
 
   if (loading) {
     return (
@@ -105,7 +105,7 @@ export default function BlogPost() {
 
       <div className="flex items-center gap-3 text-sm text-brand-wine-dark/50 mb-8">
         {post.author && <span>{post.author}</span>}
-        {post.author && " · "}
+        {post.author && " Â· "}
         <span>{new Date(post.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
       </div>
 

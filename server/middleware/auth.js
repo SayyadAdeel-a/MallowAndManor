@@ -1,23 +1,34 @@
 import jwt from 'jsonwebtoken';
 
-export const authenticate = (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) return res.status(401).json({ error: 'No token provided' });
+// Express middleware wrappers. The implementations live in
+// shared/express-auth.js so there is exactly one copy.
+//
+// TWO SHAPES, DO NOT MIX THEM UP:
+//
+//   middleware  (req, res, next) -> must call next()
+//     export const authenticate = (req, res, next) => {...}
+//     Use at ROUTE level:  router.put('/', requireAdmin, handler)
+//
+//   handler     (req, res) -> returns the user, or null after responding
+//     export const authorizeAdmin = (req, res) => {...}
+//     Use INSIDE a handler:  const user = authorizeAdmin(req, res); if (!user) return;
+//
+// Passing a handler as middleware throws "next is not a function". Passing
+// middleware as a handler means next() is undefined and the request hangs.
+// This has shipped twice, so eslint.config.js rejects the ambiguous arity.
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
-    next();
-  } catch {
-    res.status(401).json({ error: 'Invalid or expired token' });
-  }
-};
+export { authenticate, requireAdmin, getUser } from '../../shared/express-auth.js';
+export { authorizeAdmin, authorizeUser } from '../../shared/auth.js';
 
+// Backwards-compatible alias for the old return-value helper. Call it INSIDE a
+// handler, never as route middleware.
 export const verifyAuth = (req) => {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) return null;
+  const raw = req?.headers?.authorization;
+  if (typeof raw !== 'string' || !raw.startsWith('Bearer ')) return null;
+  const secret = process.env.JWT_SECRET;
+  if (!secret) return null;
   try {
-    return jwt.verify(token, process.env.JWT_SECRET);
+    return jwt.verify(raw.slice(7).trim(), secret, { algorithms: ['HS256'] });
   } catch {
     return null;
   }

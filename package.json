@@ -7,6 +7,10 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "test": "node tests/shared.test.mjs",
+    "server": "node --watch server/index.js",
+    "server:seed": "node server/seed.js",
+    "check": "npm run lint && npm run test && npm run build",
     "preview": "vite preview"
   },
   "dependencies": {

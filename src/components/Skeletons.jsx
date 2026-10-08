@@ -1,4 +1,5 @@
-import AnimatedIcon, { ICONS } from "./AnimatedIcon";
+﻿import AnimatedIcon from "./AnimatedIcon";
+import { ICONS } from "./icons";
 
 export function SkeletonCard() {
   return (

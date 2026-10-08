@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-import AnimatedIcon, { ICONS } from "./AnimatedIcon";
+﻿import { useState, useEffect } from "react";
+import AnimatedIcon from "./AnimatedIcon";
+import { ICONS } from "./icons";
 
 export default function BackToTop() {
   const [isVisible, setIsVisible] = useState(false);

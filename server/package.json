@@ -6,16 +6,13 @@
     "start": "node index.js",
     "seed": "node seed.js"
   },
+  "comment": "Express-only dependencies. Mongoose, bcryptjs, jsonwebtoken and cloudinary are deliberately NOT listed here: they are shared with the Vercel functions and must resolve to a SINGLE copy from the repo root. A second copy in server/node_modules registers the models on a different mongoose instance than the one holding the connection, which makes every query time out in the mongoose buffer.",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "cloudinary": "^2.5.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.8.0",
-    "multer": "^1.4.5-lts.1",
-    "sharp": "^0.35.3"
+    "jsonwebtoken": "^9.0.2"
   }
 }

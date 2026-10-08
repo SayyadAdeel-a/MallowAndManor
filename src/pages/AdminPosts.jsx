@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser, fetchAdminPosts, createPost, updatePost, deletePost, uploadImage, resolveUploadUrl } from "../lib/api";
+import { slugify } from "../lib/utils";
 import AdminHeader from "../components/AdminHeader";
 
 function DeleteButton({ _idKey, onConfirm }) {
@@ -84,22 +85,23 @@ export default function AdminPosts() {
     setUploadingImg(false);
   };
 
-  useEffect(() => {
-    getCurrentUser().then(u => {
-      if (u.error || !u._id) { navigate('/admin/login'); return; }
-      setUser(u);
-      loadPosts();
-    }).catch(() => navigate('/admin/login'));
-  }, []);
-
-  const loadPosts = async () => {
+  // Declared BEFORE the effect that calls it (was access-before-declaration).
+  const loadPosts = useCallback(async () => {
     setLoading(true);
     try {
       const data = await fetchAdminPosts();
       setPosts(Array.isArray(data) ? data : []);
     } catch (err) { console.error(err); setPosts([]); }
     setLoading(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    getCurrentUser().then(u => {
+      if (u.error || !u._id) { navigate('/admin/login'); return; }
+      setUser(u);
+      loadPosts();
+    }).catch(() => navigate('/admin/login'));
+  }, [navigate, loadPosts]);
 
   const resetForm = () => {
     setForm({ title: '', slug: '', content: '', excerpt: '', author: '', published: false, tags: '', featuredImage: '', seoTitle: '', seoDescription: '' });

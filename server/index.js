@@ -1,3 +1,4 @@
+import path from 'node:path';
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -13,22 +14,23 @@ import googleReviewsRouter from './routes/googleReviews.js';
 import seoFilesRouter from './routes/seoFiles.js';
 import publishScheduledRouter from './routes/publishScheduled.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { ALLOWED_ORIGINS } from '../shared/origins.js';
 
-dotenv.config();
+// Resolve .env relative to this file, not process.cwd(). Previously a bare
+// `dotenv.config()` meant running `node MallowAndManor/server/index.js` from
+// the repo root loaded the frontend-only .env and died on a missing MONGODB_URI.
+dotenv.config({ path: path.resolve(import.meta.dirname, '.env') });
 
 const app = express();
 
+app.set('query parser', 'simple');
+app.disable('x-powered-by');
+
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'http://localhost:5174',
-    'http://localhost:5175',
-    'https://honeybeelane.vercel.app',
-    'https://honeybeelane.com',
-  ],
+  origin: ALLOWED_ORIGINS,
   credentials: true,
 }));
-app.use(express.json({ limit: '5mb' }));
+app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
 
 // Routes
@@ -45,7 +47,15 @@ app.use('/api/publish-scheduled', publishScheduledRouter);
 app.use('/', seoFilesRouter);
 
 // Health check
-app.get('/api/health', (req, res) => res.json({ ok: true }));
+app.get('/api/health', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.json({ ok: true, ts: new Date().toISOString() });
+});
+
+// 404 for unmatched /api routes (never fall through to the SPA)
+app.use('/api', (req, res) => {
+  res.status(404).json({ error: 'Not found' });
+});
 
 app.use(errorHandler);
 

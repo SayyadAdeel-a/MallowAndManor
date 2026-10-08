@@ -58,12 +58,45 @@ const refreshAccessToken = async () => {
 
 const safeJson = async (res) => {
   const text = await res.text();
+  let data;
   try {
-    return JSON.parse(text);
+    data = JSON.parse(text);
   } catch {
     if (res.ok) throw new Error(`Invalid JSON: ${text.slice(0, 200)}`);
     throw new Error(`Server ${res.status}: ${text.slice(0, 200)}`);
   }
+
+  // Normalise error envelopes into real Errors.
+  //
+  // Two shapes reach us:
+  //   our own  -> { error: "some message" }
+  //   Vercel's -> { error: { code: "500", message: "A server error has occurred" } }
+  //            (also surfaced as a bare "FUNCTION_INVOCATION_FAILED" text body)
+  //
+  // Previously a non-ok response returned the parsed envelope as if it were
+  // data, so callers did e.g. `productsData?.products || []` and the page
+  // rendered empty instead of reporting the failure. Throw instead.
+  if (!res.ok) {
+    const err = data?.error;
+    const message =
+      (typeof err === 'string' && err) ||
+      err?.message ||
+      (typeof data?.message === 'string' && data.message) ||
+      `Request failed with status ${res.status}`;
+    throw new Error(message);
+  }
+
+  // A 200 that still carries an error envelope means the platform failed the
+  // invocation before our handler ran. Treat it as a failure, not as data.
+  if (data && typeof data === 'object' && !Array.isArray(data) && data.error) {
+    const err = data.error;
+    const message = (typeof err === 'string' && err) || err?.message;
+    if (message && Object.keys(data).length === 1) {
+      throw new Error(message);
+    }
+  }
+
+  return data;
 };
 
 // Public API

@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import HeroCarousel from "../components/HeroCarousel";
 import Collections from "../components/Collections";
 import ProductsSection from "../components/ProductsSection";
-import AnimatedIcon, { ICONS, IconStyle } from "../components/AnimatedIcon";
+import AnimatedIcon, { IconStyle } from "../components/AnimatedIcon";
+import { ICONS } from "../components/icons";
 import GoogleReviews from "../components/GoogleReviews";
 import NewsletterCTA from "../components/NewsletterCTA";
 import Reveal from "../components/Reveal";
@@ -31,7 +32,7 @@ const LANGUAGE_LABELS = { ur: "Urdu", ps: "Pashto", en: "English" };
 
 const DEFAULT_HOME_REVIEWS = [
   { name: "Ayesha Siddiqui", city: "Karachi", language: "ur", rating: 5, text: "Mashallah bangles bohat khoobsurat hain! Packaging zabardast thi aur Karachi mein agli hi din delivery mil gayi. Aisa quality bazaar mein nahi milta." },
-  { name: "Gulalai Yousafzai", city: "Peshawar", language: "ps", rating: 5, text: "Dera khaista churyane wen! Zar raghle aw quality ye dera sha — Peshawar na ba baya kharam." },
+  { name: "Gulalai Yousafzai", city: "Peshawar", language: "ps", rating: 5, text: "Dera khaista churyane wen! Zar raghle aw quality ye dera sha â€” Peshawar na ba baya kharam." },
   { name: "Fatima Noor", city: "Lahore", language: "ur", rating: 5, text: "Abaya ka kapra bohat naram aur premium hai, silai bohat aala hai. Shadi se pehle order kiya tha, sab ne tareef ki." },
   { name: "Bakhtawar Khan", city: "Mardan", language: "ps", rating: 5, text: "Abaya dera khaista da, toar ye naram aw andaza ye barabar da. Dera manana!" },
   { name: "Maryam Bibi", city: "Islamabad", language: "ur", rating: 5, text: "Pehle kabhi press-on nails nahi lagayi thin, lekin ye itni asaan hain aur design bilkul tasveeron jaisa hai." },
@@ -66,7 +67,7 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
 
   useEffect(() => {
     setMeta({
-      title: "Honeybee Lane — Handcrafted Bangles, Nails, Abayas & Accessories in Pakistan",
+      title: "Honeybee Lane â€” Handcrafted Bangles, Nails, Abayas & Accessories in Pakistan",
       description: "Premium handcrafted bangles, press-on nails, abayas and necklaces. Nationwide delivery across Pakistan. Order via WhatsApp.",
       path: "/",
     });
@@ -189,7 +190,7 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
         </div>
       </section>
 
-      {/* Customer reviews — Urdu & Pashto testimonials */}
+      {/* Customer reviews â€” Urdu & Pashto testimonials */}
       <section className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <Reveal className="text-center mb-12">
@@ -246,7 +247,7 @@ export default function Home({ handleAddToCart, toggleFavorite, favorites }) {
               {story.heading || "The Art of\nRefinement"}
             </h2>
             <p className="text-white/80 text-sm md:text-base leading-relaxed mb-10 max-w-md mx-auto">
-              {story.description || "We believe luxury isn't about the price tag — it's about wearing something created with intention."}
+              {story.description || "We believe luxury isn't about the price tag â€” it's about wearing something created with intention."}
             </p>
             <a
               href={story.ctaLink || "/about"}

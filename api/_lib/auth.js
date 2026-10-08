@@ -1,21 +1,38 @@
 import jwt from 'jsonwebtoken';
 
-export const verifyToken = (req) => {
-  const auth = req.headers.authorization;
-  if (!auth?.startsWith('Bearer ')) return null;
+// Re-exports of the shared auth core for the Vercel functions.
+//
+// IMPORTANT: the serverless guard is `authorizeAdmin` (NOT middleware — it never
+// calls next()). The Express middleware is `requireAdmin`, re-exported from
+// shared/express-auth.js. Mixing those two up hangs the request, so they are
+// given different names on purpose.
+export {
+  verifyToken,
+  authorizeAdmin,
+  authorizeUser,
+  isAdmin,
+  signTokens,
+} from '../../shared/auth.js';
 
-  try {
-    return jwt.verify(auth.split(' ')[1], process.env.JWT_SECRET);
-  } catch {
-    return null;
-  }
-};
+// Backwards-compatible alias: `requireAdmin` in api/ means the serverless guard.
+export { authorizeAdmin as requireAdmin } from '../../shared/auth.js';
 
+// Legacy helper kept for any caller that imported `authenticate` from here.
 export const authenticate = (req, res) => {
-  const user = verifyToken(req);
-  if (!user) {
+  const raw = req?.headers?.authorization;
+  if (typeof raw !== 'string' || !raw.startsWith('Bearer ')) {
     res.status(401).json({ error: 'Unauthorized' });
     return null;
   }
-  return user;
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    res.status(401).json({ error: 'Unauthorized' });
+    return null;
+  }
+  try {
+    return jwt.verify(raw.slice(7).trim(), secret, { algorithms: ['HS256'] });
+  } catch {
+    res.status(401).json({ error: 'Unauthorized' });
+    return null;
+  }
 };

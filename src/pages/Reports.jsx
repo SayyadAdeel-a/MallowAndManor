@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchProductStats, getCurrentUser } from "../lib/api";
 import AdminHeader from "../components/AdminHeader";
@@ -31,15 +31,10 @@ export default function Reports() {
   const [userEmail, setUserEmail] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    getCurrentUser()
-      .then(user => { if (user?.email) setUserEmail(user.email); })
-      .catch(() => navigate("/admin/login"));
-  }, []);
-
-  useEffect(() => { fetchAll(days); }, [days]);
-
-  const fetchAll = async (d) => {
+  // Declared BEFORE the effects that use it. Previously `fetchAll` was defined
+  // below `useEffect(() => fetchAll(days), [days])`, which React's compiler lint
+  // flags as an access-before-declaration (and is a real TDZ hazard).
+  const fetchAll = useCallback(async (d) => {
     setLoading(true);
     try {
       const [curr, prev] = await Promise.all([
@@ -59,7 +54,15 @@ export default function Reports() {
       setProductStats(curr?.productStats || {});
     } catch (err) { console.error(err); }
     setLoading(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    getCurrentUser()
+      .then(user => { if (user?.email) setUserEmail(user.email); })
+      .catch(() => navigate("/admin/login"));
+  }, [navigate]);
+
+  useEffect(() => { fetchAll(days); }, [days, fetchAll]);
 
   const totals = useMemo(() => {
     const sum = (data) => {

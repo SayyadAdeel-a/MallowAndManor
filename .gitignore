@@ -23,4 +23,13 @@ dist-ssr
 *.sln
 *.sw?
 
+# Secrets. Kept explicit (rather than relying on the bare `.env` pattern) so an
+# accidental future edit to `/.env` cannot expose server/.env.
 .env
+.env.*
+!.env.example
+server/.env
+
+# Test / scratch output
+coverage
+*.tgz

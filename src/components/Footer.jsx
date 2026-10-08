@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import AnimatedIcon, { ICONS } from "./AnimatedIcon";
+import AnimatedIcon from "./AnimatedIcon";
+import { ICONS } from "./icons";
 import { fetchSettings } from "../lib/api";
 
 export default function Footer() {

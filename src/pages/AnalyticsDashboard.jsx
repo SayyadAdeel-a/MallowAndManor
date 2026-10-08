@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchProductStats, getCurrentUser } from "../lib/api";
 import AdminHeader from "../components/AdminHeader";
@@ -65,23 +65,33 @@ export default function AnalyticsDashboard() {
   const [dailyData, setDailyData] = useState({});
   const [timeRange, setTimeRange] = useState(7);
   const [userEmail, setUserEmail] = useState("");
+  // Captured outside render so the chart range doesn't call Date.now() during
+  // render (which made this memo impure and could return stale values).
+  const [today, setToday] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    getCurrentUser()
-      .then(user => { if (user?.email) setUserEmail(user.email); })
-      .catch(() => navigate("/admin/login"));
-  }, []);
-
-  useEffect(() => { fetchData(timeRange); }, []);
-
-  const fetchData = async (days) => {
+  // Declared BEFORE the effects that use it (was access-before-declaration).
+  const fetchData = useCallback(async (days) => {
     try {
       const statsRes = await fetchProductStats(days);
       setProductStats(statsRes?.productStats || {});
       setDailyData(statsRes?.daily || {});
     } catch (err) { console.error("Error:", err); }
-  };
+  }, []);
+
+  useEffect(() => {
+    getCurrentUser()
+      .then(user => { if (user?.email) setUserEmail(user.email); })
+      .catch(() => navigate("/admin/login"));
+  }, [navigate]);
+
+  // Depends on timeRange so switching the range actually refetches. This used to
+  // be an empty dep array, which only worked because the buttons called
+  // fetchData() by hand.
+  useEffect(() => {
+    setToday(new Date().toISOString().split('T')[0]);
+    fetchData(timeRange);
+  }, [timeRange, fetchData]);
 
   const stats = useMemo(() => {
     const days = Object.values(dailyData);
@@ -98,13 +108,17 @@ export default function AnalyticsDashboard() {
   const timeSeries = useMemo(() => {
     const days = Object.keys(dailyData).sort();
     if (days.length === 0) return { pageViews: [], productViews: [], addToCart: [] };
-    const startDate = timeRange > 0 ? new Date(Date.now() - timeRange * 86400000).toISOString().split("T")[0] : days[0];
+    const lastDay = today || days[days.length - 1];
+    const startDate = timeRange > 0
+      ? new Date(new Date(lastDay).getTime() - (timeRange - 1) * 86400000).toISOString().split('T')[0]
+      : days[0];
     const allDays = [];
-    const current = new Date(startDate);
-    while (current <= new Date()) { allDays.push(current.toISOString().split("T")[0]); current.setDate(current.getDate() + 1); }
+    const current = new Date(`${startDate}T00:00:00.000Z`);
+    const end = new Date(`${lastDay}T00:00:00.000Z`);
+    while (current <= end) { allDays.push(current.toISOString().split('T')[0]); current.setUTCDate(current.getUTCDate() + 1); }
     const fill = (key) => allDays.map(date => ({ date, count: dailyData[date]?.[key] || 0 }));
     return { pageViews: fill("pageViews"), productViews: fill("productViews"), addToCart: fill("addToCart") };
-  }, [dailyData, timeRange]);
+  }, [dailyData, timeRange, today]);
 
   const topProducts = useMemo(() => {
     return Object.entries(productStats).map(([id, s]) => ({ id, ...s })).sort((a, b) => b.views - a.views).slice(0, 10);
@@ -120,7 +134,7 @@ export default function AnalyticsDashboard() {
         <p className="text-sm text-brand-wine-dark/60 mb-4">Store performance at a glance.</p>
         <div className="admin-card inline-flex gap-1 p-1.5">
           {TIME_RANGES.map(r => (
-            <button key={r.days} onClick={() => { setTimeRange(r.days); fetchData(r.days); }}
+            <button key={r.days} onClick={() => setTimeRange(r.days)}
               className={`px-3.5 py-1.5 text-xs font-semibold tracking-wider rounded-full transition-colors ${timeRange === r.days ? "bg-brand-burgundy text-brand-cream" : "text-brand-wine-dark/60 hover:text-brand-burgundy hover:bg-brand-blush/50"}`}>
               {r.label}
             </button>

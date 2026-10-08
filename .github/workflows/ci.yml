@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancel superseded runs on the same branch.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Lint, test, build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # A single uncaught throw from ANY serverless function takes down that
+      # endpoint with FUNCTION_INVOCATION_FAILED and no useful error in the
+      # browser. That is exactly how a missing brace in api/_lib/cors.js broke
+      # the whole site. This step makes that class of failure impossible to ship.
+      - name: Syntax-check all server modules
+        run: |
+          set -e
+          fail=0
+          for f in $(find api server shared -name '*.js' -not -path '*/node_modules/*'); do
+            if ! node --check "$f"; then
+              echo "SYNTAX ERROR: $f"
+              fail=1
+            fi
+          done
+          [ "$fail" -eq 0 ] && echo "All server modules parse."
+
+      - name: Verify shared modules import cleanly
+        run: |
+          node --input-type=module -e "
+            const mods = [
+              'shared/models/Product.js','shared/models/Category.js','shared/models/Post.js',
+              'shared/models/User.js','shared/models/Analytics.js','shared/models/SiteSettings.js',
+              'shared/validators.js','shared/slug.js','shared/http.js','shared/auth.js',
+              'shared/express-auth.js','shared/origins.js','shared/rate-limit.js',
+              'shared/settings-defaults.js','shared/cloudinary-sign.js','shared/db.js',
+            ];
+            for (const m of mods) await import('./' + m);
+            console.log('Imported ' + mods.length + ' shared modules OK');
+          "
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 7

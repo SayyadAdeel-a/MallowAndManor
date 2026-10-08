@@ -3,7 +3,7 @@
 E-commerce SPA for beauty products (bangles, nails, abayas & accessories) — handcrafted for the Pakistani market.
 
 Brand: **Honeybee Lane** (package name `honeybeelane`, folder still `MallowAndManor`)
-Tech stack: React 19 + Vite 7 + Tailwind CSS v4 frontend; Express.js local server + MongoDB/Mongoose for dev; Vercel Serverless Functions for production; Cloudinary for images; JWT auth
+Stack: React 19 + Vite 7 + Tailwind CSS v4 · Express.js (local) + Vercel Serverless Functions (production) · MongoDB/Mongoose · Cloudinary · JWT auth
 
 ---
 
@@ -11,119 +11,181 @@ Tech stack: React 19 + Vite 7 + Tailwind CSS v4 frontend; Express.js local serve
 
 ```
 MallowAndManor/
-├── src/              # React frontend (Vite dev server, port 5173)
-│   ├── pages/        # Route-level components (14 pages)
-│   ├── components/   # Shared UI components
-│   └── lib/          # api.js (fetch wrapper), analytics.js
-├── api/              # Vercel Serverless Functions (production)
-│   └── _lib/         # Shared: db.js, auth.js, cloudinary.js, models/
-├── server/           # Express.js server (local dev, port 3001)
-│   ├── routes/       # Express route files
-│   ├── models/       # Mongoose models (mirror api/_lib/models/)
-│   └── seed.js       # Database seeding script
-└── index.html        # SPA entry point (includes GA4 tag)
+├── src/                 # React frontend (Vite dev server, port 5173)
+│   ├── pages/           # Route-level components
+│   ├── components/      # Shared UI (icons.js holds SVG path data)
+│   └── lib/             # api.js (fetch wrapper), analytics.js, seo.js, utils.js
+├── shared/              # SINGLE SOURCE OF TRUTH for backend logic
+│   ├── models/          # Mongoose schemas — imported by BOTH stacks
+│   ├── auth.js          # Token sign/verify + role enforcement
+│   ├── express-auth.js  # Express middleware wrappers
+│   ├── validators.js    # Field allowlists (mass-assignment defence)
+│   ├── http.js          # Query coercion, regex escaping, IP extraction
+│   ├── rate-limit.js    # Route rate limiting
+│   ├── settings-defaults.js
+│   └── origins.js, slug.js, cloudinary-sign.js, db.js
+├── api/                 # Vercel Serverless Functions (PRODUCTION)
+│   └── _lib/            # Thin re-export shims over shared/
+├── server/              # Express.js (local dev, port 3001)
+│   ├── routes/          # Express route files
+│   ├── models/          # Thin re-export shims over shared/
+│   └── seed.js          # Database seeding
+├── tests/               # Verification suite for shared/
+└── index.html           # SPA entry (includes GA4 tag)
 ```
 
-## Dual API Setup
+### Why `shared/` exists
 
-`server/` runs locally via Express on port 3001. `api/` contains Vercel serverless functions for production. Vite proxies `/api` → `localhost:3001` in dev.
+The project used to maintain **two full copies** of every model, validator, and
+default-settings block — one in `api/`, one in `server/`. They drifted, and the
+drift shipped as bugs: different CORS allowlists (the live domain was missing
+from production), different email defaults, different validation rules, and
+divergent response shapes.
+
+All shared logic now lives in `shared/`. `api/_lib/*.js` and `server/models/*.js`
+are one-line re-export shims, so there is exactly one implementation and the two
+stacks cannot diverge.
+
+---
 
 ## Commands
 
-### Frontend (from `MallowAndManor/`)
+### Frontend + API (from `MallowAndManor/`)
 
 ```bash
 npm run dev        # Vite dev server (port 5173), proxies /api to :3001
+npm run server     # Express API (port 3001) with --watch
 npm run build      # Production build → dist/
-npm run lint       # ESLint (flat config, .js/.jsx only)
+npm run lint       # ESLint (0 errors, 11 advisory warnings)
+npm run test       # shared/ verification suite (30 checks)
+npm run check      # lint + test + build  ← run this before pushing
 npm run preview    # Preview production build
+npm run server:seed  # Seed categories + admin users (requires ADMIN_PASSWORD)
 ```
 
-### Server (from `MallowAndManor/server/`)
+### Gotcha: one mongoose copy only
 
+`server/package.json` deliberately does **not** list `mongoose`, `cloudinary`,
+`multer`, or `sharp`. A second copy in `server/node_modules` registers the models
+on a different mongoose instance than the one holding the connection, so every
+query dies with:
+
+```
+Operation `sitesettings.findOne()` buffering timed out after 10000ms
+```
+
+`shared/db.js` is the only place that calls `mongoose.connect()`.
+
+---
+
+## Environment Variables
+
+See `.env.example` for the full annotated list. In short:
+
+**Frontend** (Vite, prefix `VITE_` — these reach the browser bundle, never put secrets here):
+- `VITE_API_URL`, `VITE_WHATSAPP_NUMBER`
+
+**Backend** (Vercel dashboard **and** `server/.env` for local dev):
+- `MONGODB_URI` — use `mongodb://` with TLS, not `mongodb+srv://` (Windows fails)
+- `JWT_SECRET`, `JWT_REFRESH_SECRET` — ≥32 random bytes, mark as *sensitive* in Vercel
+- `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`
+- `GOOGLE_PLACES_API_KEY`, `GOOGLE_PLACE_ID` — optional; reviews return 501 without them
+- `CRON_SECRET` — **required in production** for `/api/publish-scheduled`
+- `ADMIN_PASSWORD`, `ADMIN_PASSWORD_2` — required by the seed script (no default)
+
+Generate a secret:
 ```bash
-npm run dev        # Express with --watch (port 3001)
-npm run start      # Production Express
-npm run seed       # Seed MongoDB database
+node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
 ```
+
+---
+
+## Authorization model
+
+Two roles exist: `admin` and `staff`. **`User.role` defaults to `staff`** —
+least privilege. Every admin endpoint asserts the role explicitly:
+
+| Where | Guard | Shape |
+|---|---|---|
+| `server/routes/*` (mounted) | `requireAdmin` | middleware `(req, res, next)` |
+| `server/routes/*` (in handler) | `authorizeAdmin` | handler `(req, res) → user\|null` |
+| `api/*` | `requireAdmin` | handler `(req, res) → user\|null` |
+
+> **These two shapes are not interchangeable.** Passing a handler as middleware
+> hangs the request; passing middleware as a handler throws
+> `next is not a function`. Both happened in this codebase. `eslint.config.js`
+> now rejects the ambiguous arity, so the mistake cannot come back.
+
+Refresh tokens are revoked on logout via `User.tokenVersion`; a refresh token
+issued before logout stops working immediately.
+
+---
 
 ## Deployment
 
 - **Platform**: Vercel. Config in `vercel.json`.
-- `api/**/*.js` deployed as serverless functions (30s max duration).
+- `api/**/*.js` deployed as serverless functions (30s max).
 - SPA rewrites: all non-`/api/` routes → `/index.html`.
-- Keep serverless functions warm: ping `/api/health` every ~4 min.
+- **Keep functions warm**: ping `/api/health` every ~4 min (Hobby idles at ~5).
+- **CI**: `.github/workflows/ci.yml` runs syntax-check → import-check → lint →
+  test → build on every push to `main`.
+
+---
 
 ## Key Files
 
 | File | Purpose |
 |------|---------|
-| `MallowAndManor/AGENTS.md` | repo instruction file |
-| `middleware.js` | Edge middleware for product/blog slug validation + 404 |
-| `vercel.json` | redirects, rewrites (sitemap, robots, SPA), headers (HSTS, CSP, immutable font/asset cache) |
-| `index.html` | static SEO meta, self-hosted font preloads, hero image preload |
-| `src/index.css` | Tailwind v4 `@theme`, 12 `@font-face` rules, motion tokens (`--ease-out` etc.), `.reveal`/`.reveal-visible`, badge-pop, hover-lift, `.scrollbar-hide`, `.urdu-text` |
-| `src/lib/seo.js` | setMeta, breadcrumbSchema, itemListSchema, productSchema, articleSchema |
-| `src/lib/img.js` | `cloudUrl()` Cloudinary transform helper |
-| `src/lib/api.js` | fetch wrapper, JWT refresh, `uploadImage()`, `resolveUploadUrl()`, `fetchSettings()`, `fetchProductById()` |
-| `src/components/AnimatedIcon.jsx` | 7 animation types, 30+ icon paths, `IconStyle` component |
-| `src/components/Reveal.jsx` | IntersectionObserver scroll reveal (one-shot) |
-| `src/pages/Home.jsx` | 9 sections with Reveal wrappers, settings-driven content, visibilitychange auto-refresh |
-| `src/pages/AllProducts.jsx` | `/shop/:slug?` routing, legacy redirect, SEO meta, category intros, noindex gate |
-| `src/pages/ProductDetail.jsx` | gallery (clickable thumbnails), highlights, sizes, reviews, shipping accordion, related grid, newsletter CTA |
-| `src/pages/AdminDashboard.jsx` | 10-tab CMS controlling all site content |
-| `src/pages/AdminLogin.jsx` | JWT login |
-| `src/components/AdminHeader.jsx` | admin nav bar |
-| `api/_lib/models/SiteSettings.js` | full schema with hero, trustItems, sale, promises, story, newsletter, footer, contact, productPage |
-| `api/products.js` | slugifyName, uniqueSlug, backfillProductSlugs, pickProductFields whitelist |
-| `api/settings.js` | DEFAULT_SETTINGS with corrected content, DEFAULTS_VERSION=3, additive backfill |
-| `api/sitemap.js` | dynamic XML sitemap (categories gated at 3+ products) |
-| `api/robots.js` | robots.txt with dynamic sitemap URL |
-| `api/google-reviews.js` | Google Places API (New) proxy with 30-min cache |
+| `shared/models/*.js` | Mongoose schemas (single source of truth) |
+| `shared/validators.js` | `pickProductFields` / `pickPostFields` / `pickSettingsSections` allowlists |
+| `shared/auth.js` | `verifyToken`, `authorizeAdmin`, `signTokens`, refresh-token revocation |
+| `shared/express-auth.js` | `requireAdmin` / `authenticate` middleware |
+| `shared/http.js` | `str()` query coercion, `escapeRegex`, `toObjectId`, `clientIp` |
+| `shared/settings-defaults.js` | `DEFAULT_SETTINGS` + `DEFAULTS_VERSION` |
+| `src/lib/api.js` | fetch wrapper, JWT refresh, Cloudinary upload, error normalisation |
+| `src/components/RequireAdmin.jsx` | Client-side route guard for `/admin/*` |
+| `src/lib/seo.js` | setMeta + JSON-LD (product/article/breadcrumb/itemList) |
+| `tests/shared.test.mjs` | 30 assertions covering the security-critical logic |
+| `api/seo.js` | Dynamic sitemap.xml + robots.txt (published posts only) |
 
-## Environment Variables
+---
 
-**Frontend** (Vite, prefix `VITE_`):
-- `VITE_API_URL` — API base URL (defaults to `/api` via Vite proxy)
-- `VITE_WHATSAPP_NUMBER` — WhatsApp contact number
+## Security Posture
 
-**Backend** (set in Vercel dashboard, not in `.env` for production):
-- `MONGODB_URI` — MongoDB connection string
-- `JWT_SECRET`, `JWT_REFRESH_SECRET` — JWT signing keys
-- `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`
+| Area | Status |
+|---|---|
+| Admin authorization | Role asserted on every mutation; default role is `staff` |
+| NoSQL injection | Query values coerced via `str()`; ids validated via `toObjectId()` |
+| Regex / ReDoS | User input escaped before building a Mongo `$regex` |
+| Mass assignment | Allowlist pickers on products, posts, categories, settings, analytics |
+| Prototype pollution | `pickSettingsSections` rejects `__proto__`/`constructor`/`prototype` |
+| XSS | DOMPurify in the same `useMemo` that produces the only `dangerouslySetInnerHTML` |
+| Rate limiting | Login (8/15min), analytics POST (60/min), search (30/min), upload sign (30/min) |
+| Token storage | Access 15m, refresh 7d, revoked on logout via `tokenVersion` |
+| Errors | Generic messages to clients; details logged server-side only |
+| Secrets | `.env` ignored at every depth; no secrets in the bundle |
 
-## Recent Fixes
+**Known limits (deliberate, documented):**
+- Rate-limit counters are in-process. On Vercel that is per warm instance. For a
+  hard global limit, add Vercel WAF rules or Upstash Redis.
+- Tokens live in `localStorage`, so any XSS is account takeover. Mitigated by
+  DOMPurify + a strict-ish CSP; the real fix is an `HttpOnly` refresh cookie.
+- CSP still needs `'unsafe-inline'` for the GA4 snippet. Moving that snippet to a
+  static `/gtag-init.js` would let a nonce replace it.
 
-- **Mobile side-scroll fix**: added `overflow-x: clip` to `html/body`, `.scrollbar-hide` utility, patched `ProductsSection` and `AllProducts` tab strips
-- **WhatsApp button**: converted from `window.open()` to `<a href="..." target="_blank">` (popup blocker fix)
-- **Hero subtitle lag**: fixed content swap by aligning fallback text with DB default
-- **Admin redesign**: new AdminHeader, admin CSS tokens, page header polish
-- **60-day blog system**: 61 SEO-optimized posts with auto-publishing, scheduled content, internal backlinks, featured images
-
-## SEO System
-
-- `src/lib/seo.js` — setMeta(), JSON-LD schemas (product/article/breadcrumb/itemList)
-- Dynamic `sitemap.xml` + `robots.txt` via serverless functions
-- Per-page meta/title/canonical, category intros, thin-content noindex gate
-- Edge middleware 404s malformed product/blog URLs
-
-## Performance
-
-- Code splitting (React.lazy + Suspense)
-- Main bundle optimized
-- Self-hosted fonts (300KB, 12 woff2 files)
-- Cloudinary transforms via `cloudUrl()`
-- `loading="lazy"` + `decoding="async"` on images
-- Immutable 1-year cache on `/fonts` + `/assets`
-- HSTS header
+---
 
 ## Gotchas
 
-- ESLint ignores `dist/`. Unused uppercase/underscore vars allowed (`no-unused-vars` pattern: `^[A-Z_]`)
-- CORS origins: `localhost:5173`, `honeybeelane.vercel.app`, `honeybeelane.com`
-- `index.html` has hardcoded GA4 tag (`G-QBSRJDG28Z`)
-- `server/` and `api/` both have Mongoose models — keep in sync
-- MongoDB SRV protocol fails on Windows Node.js → use `mongodb://` with `tls: true`
+- ESLint now has a Node-globals block for `api/`, `server/`, `shared/`. Without it
+  every `process.env` read was a `no-undef` error, which is how a missing brace in
+  `api/_lib/cors.js` shipped undetected.
+- Run `npm run check` before pushing. It is the same pipeline CI runs.
+- MongoDB SRV protocol fails on Windows Node.js → use `mongodb://` with TLS.
+- `server/routes/categories.js` is intentionally not mounted; categories are
+  served by `products.js?categories=true`.
+- `index.html` has a hardcoded GA4 tag (`G-QBSRJDG28Z`) — that is a public
+  measurement ID, not a secret.
 
 ## License
 

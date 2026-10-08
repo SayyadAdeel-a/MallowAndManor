@@ -1,28 +1,30 @@
-import { v2 as cloudinary } from 'cloudinary';
-import { verifyToken } from '../_lib/auth.js';
+import { handleCors } from '../_lib/cors.js';
+import { requireAdmin } from '../_lib/auth.js';
+import { checkRateLimit } from '../_lib/rateLimit.js';
+import { createUploadSignature, isCloudinaryConfigured } from '../../shared/cloudinary-sign.js';
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+export default function handler(req, res) {
+  // This function previously omitted handleCors entirely, so a cross-origin
+  // OPTIONS preflight got a 401 instead of 204 + CORS headers.
+  if (handleCors(req, res)) return;
 
-export default async function handler(req, res) {
-  const user = verifyToken(req);
-  if (!user) return res.status(401).json({ error: 'Unauthorized' });
-
-  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-  const apiKey = process.env.CLOUDINARY_API_KEY;
-  const apiSecret = process.env.CLOUDINARY_API_SECRET;
-
-  if (!cloudName || !apiKey || !apiSecret) {
-    return res.status(500).json({ error: 'Cloudinary not configured' });
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const timestamp = Math.round(Date.now() / 1000);
-  const folder = 'honeybeelane';
-  const params = { timestamp, folder };
-  const signature = cloudinary.utils.api_sign_request(params, apiSecret);
+  // Was verifyToken: ANY signed-in session could mint upload credentials.
+  if (!requireAdmin(req, res)) return;
 
-  res.json({ cloudName, apiKey, signature, timestamp, folder });
+  const rl = checkRateLimit(req, 'upload-sign', 30, 60 * 1000);
+  if (rl.blocked) {
+    res.setHeader('Retry-After', String(rl.retryAfterSec || 60));
+    return res.status(429).json({ error: 'Too many upload requests' });
+  }
+
+  if (!isCloudinaryConfigured()) {
+    console.error('[api/upload/sign] Cloudinary env vars are not configured');
+    return res.status(501).json({ error: 'Image uploads are not configured' });
+  }
+
+  return res.json(createUploadSignature());
 }

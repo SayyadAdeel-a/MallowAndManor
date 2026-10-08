@@ -1,42 +1,23 @@
+import mongoose from 'mongoose';
 import connectDB from './_lib/db.js';
-import { verifyToken } from './_lib/auth.js';
+import { requireAdmin } from './_lib/auth.js';
 import { handleCors } from './_lib/cors.js';
+import { checkRateLimit } from './_lib/rateLimit.js';
 import Product from './_lib/models/Product.js';
 import Category from './_lib/models/Category.js';
+import { pickProductFields, pickCategoryFields } from '../shared/validators.js';
+import { slugifyName, uniqueSlug } from '../shared/slug.js';
+import { str, shortStr, literalRegex, toObjectId } from '../shared/http.js';
 
-// In-memory cache for product count (resets on cold start, which is fine for Vercel)
-let productCountCache = { count: null, timestamp: 0 };
-const CACHE_TTL = 60 * 1000; // 1 minute
-
-const slugifyName = (name) =>
-  String(name || '')
-    .toLowerCase()
-    .normalize('NFKD')
-    .replace(/[^a-z0-9\s-]/g, '')
-    .trim()
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .slice(0, 90) || 'product';
-
-// Generate a unique slug for a product (excluding its own id)
-const uniqueSlug = async (base, excludeId) => {
-  let candidate = base;
-  let i = 2;
-  // Slug field has no unique index (backfill safety), so check by query
-  let exists = await Product.findOne({ slug: candidate, ...(excludeId ? { _id: { $ne: excludeId } } : {}) });
-  while (exists) {
-    candidate = `${base}-${i++}`;
-    exists = await Product.findOne({ slug: candidate, ...(excludeId ? { _id: { $ne: excludeId } } : {}) });
-  }
-  return candidate;
-};
-
-// One-time lazy backfill: give every legacy product a slug
+// One-time lazy backfill: give every legacy product a slug.
+// Bounded per invocation so a cold start can never burn the whole function budget.
+const BACKFILL_BATCH = 25;
 const backfillProductSlugs = async () => {
-  const missing = await Product.find({ $or: [{ slug: { $exists: false } }, { slug: null }, { slug: '' }] });
+  const missing = await Product
+    .find({ $or: [{ slug: { $exists: false } }, { slug: null }, { slug: '' }] })
+    .limit(BACKFILL_BATCH);
   for (const p of missing) {
-    const base = slugifyName(p.name);
-    const slug = await uniqueSlug(base, p._id);
+    const slug = await uniqueSlug(Product, p.name, p._id);
     await Product.updateOne({ _id: p._id }, { slug });
   }
 };
@@ -46,38 +27,67 @@ export default async function handler(req, res) {
   try {
     await connectDB();
 
-    // Admin: GET /api/products?admin=true - all products
-    if (req.method === 'GET' && req.query?.admin === 'true') {
-      const user = verifyToken(req);
-      if (!user) return res.status(401).json({ error: 'Unauthorized' });
-      await backfillProductSlugs();
-      const products = await Product.find().sort({ createdAt: -1 });
-      return res.json({ products, total: products.length });
-    }
-
-    // Public: GET /api/products?page=1&limit=12&category=bangles&search=gold&sort=latest
-    if (req.method === 'GET' && !req.query?.id && !req.query?.categories) {
-      const page = Math.max(1, parseInt(req.query.page) || 1);
-      const limit = Math.min(50, Math.max(1, parseInt(req.query.limit) || 12));
-      const skip = (page - 1) * limit;
-      const { category, search, sort } = req.query;
-
-      // Build filter
-      const filter = {};
-      if (category && category !== 'all') filter.category = category;
-      if (search) {
-        filter.$or = [
-          { name: { $regex: search, $options: 'i' } },
-          { description: { $regex: search, $options: 'i' } },
-        ];
+    // ---------------------------------------------------------------- GET --
+    if (req.method === 'GET') {
+      // Admin: ?admin=true — full catalogue including drafts
+      if (req.query?.admin === 'true') {
+        if (!requireAdmin(req, res)) return;
+        await backfillProductSlugs();
+        const products = await Product.find().sort({ createdAt: -1 });
+        return res.json({ products, total: products.length });
       }
 
-      // Build sort
+      // Public: ?categories=true
+      if (req.query?.categories === 'true') {
+        const categories = await Category.find().sort({ createdAt: 1 });
+        res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=30, stale-while-revalidate=60');
+        return res.json(categories);
+      }
+
+      // Public: ?id=<slug> — single product
+      if (req.query?.id) {
+        const product = await Product.findOne({ slug: shortStr(req.query.id, 120).toLowerCase() });
+        if (!product) return res.status(404).json({ error: 'Not found' });
+        res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=120, stale-while-revalidate=600');
+        return res.json(product);
+      }
+
+      // Public: paginated / filtered list
+      const page = Math.max(1, parseInt(str(req.query.page), 10) || 1);
+      const limit = Math.min(50, Math.max(1, parseInt(str(req.query.limit), 10) || 12));
+      const skip = (page - 1) * limit;
+      const category = shortStr(req.query.category, 100);
+      const search = shortStr(req.query.search, 100);
+      const sort = str(req.query.sort);
+
+      const filter = {};
+      if (category && category !== 'all') filter.category = category;
+
+      if (search) {
+        // Escape user input before building the regex. Unescaped, this was a
+        // public ReDoS vector (`?search=(a+)+$`) and a data-exfiltration oracle.
+        const rx = literalRegex(search, 100);
+        if (rx) {
+          filter.$or = [
+            { name: { $regex: rx } },
+            { description: { $regex: rx } },
+          ];
+        }
+      }
+
       let sortOption = { createdAt: -1 };
       if (sort === 'price-low') sortOption = { price: 1 };
       else if (sort === 'price-high') sortOption = { price: -1 };
 
-      // Ensure every product has a slug before serving
+      // Throttle the public search path — it is unauthenticated and hits Mongo.
+      if (search) {
+        const rl = checkRateLimit(req, 'product-search', 30, 60 * 1000);
+        if (rl.blocked) {
+          res.setHeader('Retry-After', String(rl.retryAfterSec || 60));
+          return res.status(429).json({ error: 'Too many searches. Please slow down.' });
+        }
+      }
+
       await backfillProductSlugs();
 
       const [products, total] = await Promise.all([
@@ -85,113 +95,93 @@ export default async function handler(req, res) {
         Product.countDocuments(filter),
       ]);
 
-      const totalPages = Math.ceil(total / limit);
-
-      // Cache briefly at the edge, browsers must revalidate
       res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=15, stale-while-revalidate=30');
-
-      return res.json({ products, total, page, totalPages, limit });
+      return res.json({ products, total, page, totalPages: Math.ceil(total / limit), limit });
     }
 
-    // Public: GET /api/products?categories=true - all categories
-    if (req.method === 'GET' && req.query?.categories === 'true') {
-      const categories = await Category.find().sort({ createdAt: 1 });
-      res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=30, stale-while-revalidate=60');
-      return res.json(categories);
-    }
+    // --------------------------------------------------------------- POST --
+    if (req.method === 'POST') {
+      if (!requireAdmin(req, res)) return;
 
-    // Public: GET /api/products?id=xxx (accepts only a slug now) - single product
-    if (req.method === 'GET' && req.query?.id) {
-      const key = String(req.query.id).toLowerCase();
-      const product = await Product.findOne({ slug: key });
-      if (!product) return res.status(404).json({ error: 'Not found' });
-      res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=120, stale-while-revalidate=600');
-      return res.json(product);
-    }
-
-    // Admin operations
-    const user = verifyToken(req);
-    if (!user) return res.status(401).json({ error: 'Unauthorized' });
-
-    // Extract only allowed product fields from body (blocks _id, timestamps, garbage)
-    const pickProductFields = (body) => {
-      const clean = {};
-      if (typeof body.name === 'string' && body.name.trim()) clean.name = body.name.trim();
-      if (typeof body.category === 'string' && body.category.trim()) clean.category = body.category.trim();
-      if (typeof body.description === 'string') clean.description = body.description.trim();
-      if (body.mainImage !== undefined) clean.mainImage = typeof body.mainImage === 'string' ? body.mainImage : '';
-      if (body.thumbnails !== undefined) clean.thumbnails = Array.isArray(body.thumbnails) ? body.thumbnails.filter((t) => typeof t === 'string').slice(0, 5) : [];
-      if (body.highlights !== undefined) {
-        clean.highlights = Array.isArray(body.highlights)
-          ? body.highlights
-              .filter((h) => h && typeof h.text === 'string' && h.text.trim())
-              .slice(0, 8)
-              .map((h) => ({ emoji: typeof h.emoji === 'string' ? h.emoji.slice(0, 8) || '✨' : '✨', text: h.text.trim().slice(0, 140) }))
-          : [];
+      if (req.query?.categories === 'true') {
+        const clean = pickCategoryFields(req.body);
+        if (!clean.slug) return res.status(400).json({ error: 'Category slug is required' });
+        if (!clean.name) return res.status(400).json({ error: 'Category name is required' });
+        const category = await Category.create(clean);
+        return res.status(201).json(category);
       }
-      // Coerce price from string or number; explicit null/NaN becomes undefined -> validation catches it
-      if (body.price !== undefined) {
-        const n = typeof body.price === 'number' ? body.price : parseFloat(body.price);
-        if (!Number.isNaN(n)) clean.price = n;
-      }
-      return clean;
-    };
 
-    if (req.method === 'POST' && !req.query?.categories) {
       const clean = pickProductFields(req.body);
       if (!clean.name) return res.status(400).json({ error: 'Product name is required' });
       if (clean.price === undefined) return res.status(400).json({ error: 'Valid numeric price is required' });
       if (!clean.category) return res.status(400).json({ error: 'Category is required' });
-      const baseSlug = req.body.slug ? slugifyName(req.body.slug) : slugifyName(clean.name);
-      clean.slug = await uniqueSlug(baseSlug);
-      const product = await Product.create(clean);
-      productCountCache.count = null;
-      return res.status(201).json(product);
+
+      const base = req.body?.slug ? slugifyName(req.body.slug) : clean.name;
+      clean.slug = await uniqueSlug(Product, base);
+      return res.status(201).json(await Product.create(clean));
     }
 
-    if (req.method === 'POST' && req.query?.categories === 'true') {
-      const category = await Category.create(req.body);
-      return res.status(201).json(category);
-    }
+    // ---------------------------------------------------------------- PUT --
+    if (req.method === 'PUT') {
+      if (!requireAdmin(req, res)) return;
 
-    if (req.method === 'PUT' && !req.query?.categories) {
+      const id = toObjectId(req.body?.id);
+      if (!id) return res.status(400).json({ error: 'Invalid or missing id' });
+
+      if (req.query?.categories === 'true') {
+        const clean = pickCategoryFields(req.body);
+        const category = await Category.findByIdAndUpdate(id, clean, { new: true, runValidators: true });
+        if (!category) return res.status(404).json({ error: 'Not found' });
+        return res.json(category);
+      }
+
       const clean = pickProductFields(req.body);
-      if (Object.keys(clean).length === 0) {
+      const existing = await Product.findById(id);
+      if (!existing) return res.status(404).json({ error: 'Not found' });
+      if (Object.keys(clean).length === 0 && !req.body?.slug) {
         return res.status(400).json({ error: 'No valid fields to update' });
       }
-      const existing = await Product.findById(req.body.id);
-      if (!existing) return res.status(404).json({ error: 'Not found' });
-      // Regenerate slug only when the name (or an explicit slug) changes
+
       const nameChanged = clean.name && clean.name !== existing.name;
-      if (req.body.slug || nameChanged) {
-        const baseSlug = req.body.slug ? slugifyName(req.body.slug) : slugifyName(clean.name || existing.name);
-        clean.slug = await uniqueSlug(baseSlug, existing._id);
+      if (req.body?.slug || nameChanged) {
+        clean.slug = await uniqueSlug(
+          Product,
+          req.body?.slug ? slugifyName(req.body.slug) : (clean.name || existing.name),
+          id,
+        );
       }
-      const product = await Product.findByIdAndUpdate(req.body.id, clean, { new: true, runValidators: true });
+
+      const product = await Product.findByIdAndUpdate(id, clean, { new: true, runValidators: true });
       if (!product) return res.status(404).json({ error: 'Not found' });
       return res.json(product);
     }
 
-    if (req.method === 'PUT' && req.query?.categories === 'true') {
-      const { id, ...data } = req.body;
-      const category = await Category.findByIdAndUpdate(id, data, { new: true });
-      if (!category) return res.status(404).json({ error: 'Not found' });
-      return res.json(category);
-    }
+    // ------------------------------------------------------------- DELETE --
+    if (req.method === 'DELETE') {
+      if (!requireAdmin(req, res)) return;
 
-    if (req.method === 'DELETE' && !req.query?.categories) {
-      await Product.findByIdAndDelete(req.body.id);
-      productCountCache.count = null; // Invalidate cache
+      const id = toObjectId(req.body?.id);
+      if (!id) return res.status(400).json({ error: 'Invalid or missing id' });
+
+      if (req.query?.categories === 'true') {
+        const deleted = await Category.findByIdAndDelete(id);
+        if (!deleted) return res.status(404).json({ error: 'Not found' });
+        return res.json({ success: true });
+      }
+
+      const deleted = await Product.findByIdAndDelete(id);
+      if (!deleted) return res.status(404).json({ error: 'Not found' });
       return res.json({ success: true });
     }
 
-    if (req.method === 'DELETE' && req.query?.categories === 'true') {
-      await Category.findByIdAndDelete(req.body.id);
-      return res.json({ success: true });
-    }
-
-    res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ error: 'Method not allowed' });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    // Log server-side; return a generic message so internal details
+    // (collection names, index definitions) don't leak to the client.
+    console.error('[api/products]', err);
+    if (err instanceof mongoose.Error.ValidationError || err instanceof mongoose.Error.CastError) {
+      return res.status(400).json({ error: 'Invalid request data' });
+    }
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }

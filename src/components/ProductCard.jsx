@@ -1,7 +1,8 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Link } from "react-router-dom";
 import { cloudUrl } from "../lib/img";
-import AnimatedIcon, { ICONS } from "./AnimatedIcon";
+import AnimatedIcon from "./AnimatedIcon";
+import { ICONS } from "./icons";
 
 const tagColors = {
   sale: { bg: "#4A0E17", text: "#ffffff" },

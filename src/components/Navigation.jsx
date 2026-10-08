@@ -1,6 +1,7 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import AnimatedIcon, { ICONS } from "./AnimatedIcon";
+import AnimatedIcon from "./AnimatedIcon";
+import { ICONS } from "./icons";
 
 export default function Navigation({ cartCount, favCount }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

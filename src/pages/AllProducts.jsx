@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
+﻿import { useState, useEffect, useCallback } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { fetchProducts, fetchSettings } from "../lib/api";
 import { setMeta, breadcrumbSchema, itemListSchema } from "../lib/seo";
 import ProductCard from "../components/ProductCard";
 import { SkeletonGrid, ErrorState } from "../components/Skeletons";
-import AnimatedIcon, { ICONS } from "../components/AnimatedIcon";
+import AnimatedIcon from "../components/AnimatedIcon";
+import { ICONS } from "../components/icons";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -23,7 +24,7 @@ export default function AllProducts({ categories = [], handleAddToCart, toggleFa
   const [sortBy, setSortBy] = useState("latest");
   const [settings, setSettings] = useState(null);
 
-  // Legacy URL redirect: /products?category=x → /shop/x  (also catches /shop?category=x from the 301)
+  // Legacy URL redirect: /products?category=x â†’ /shop/x  (also catches /shop?category=x from the 301)
   useEffect(() => {
     const isLegacyPath = location.pathname === "/products";
     const params = new URLSearchParams(location.search);
@@ -105,7 +106,7 @@ export default function AllProducts({ categories = [], handleAddToCart, toggleFa
     const thinCategory = selectedCategory !== "all" && products.length < 3;
     setMeta({
       title: selectedCategory === "all"
-        ? "Shop All — Handcrafted Bangles, Nails, Abayas & Necklaces in Pakistan"
+        ? "Shop All â€” Handcrafted Bangles, Nails, Abayas & Necklaces in Pakistan"
         : `Buy ${catName} Online in Pakistan`,
       description: introText
         ? introText.slice(0, 155)
@@ -223,7 +224,7 @@ export default function AllProducts({ categories = [], handleAddToCart, toggleFa
                 disabled={page === 1}
                 className="px-3 py-2 text-sm font-medium border border-brand-border hover:border-brand-gold hover:text-brand-burgundy disabled:opacity-30 disabled:cursor-not-allowed transition-colors rounded-full"
               >
-                ←
+                â†
               </button>
               {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                 let pageNum;
@@ -254,7 +255,7 @@ export default function AllProducts({ categories = [], handleAddToCart, toggleFa
                 disabled={page === totalPages}
                 className="px-3 py-2 text-sm font-medium border border-brand-border hover:border-brand-gold hover:text-brand-burgundy disabled:opacity-30 disabled:cursor-not-allowed transition-colors rounded-full"
               >
-                →
+                â†’
               </button>
             </div>
           )}

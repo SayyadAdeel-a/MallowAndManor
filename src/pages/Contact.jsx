@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-import AnimatedIcon, { ICONS } from "../components/AnimatedIcon";
+﻿import { useState, useEffect } from "react";
+import AnimatedIcon from "../components/AnimatedIcon";
+import { ICONS } from "../components/icons";
 import { fetchSettings } from "../lib/api";
 import { setMeta } from "../lib/seo";
 
@@ -12,8 +13,8 @@ export default function Contact() {
 
   useEffect(() => {
     setMeta({
-      title: "Contact Us — Delivery & Order Help",
-      description: "Questions about delivery, ordering or returns? Reach Honeybee Lane by phone, email or WhatsApp — we deliver across Pakistan.",
+      title: "Contact Us â€” Delivery & Order Help",
+      description: "Questions about delivery, ordering or returns? Reach Honeybee Lane by phone, email or WhatsApp â€” we deliver across Pakistan.",
       path: "/contact",
     });
   }, []);

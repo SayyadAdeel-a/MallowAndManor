@@ -1,6 +1,7 @@
-import { useNavigate } from "react-router-dom";
+﻿import { useNavigate } from "react-router-dom";
 import { cloudUrl } from "../lib/img";
-import AnimatedIcon, { ICONS } from "./AnimatedIcon";
+import AnimatedIcon from "./AnimatedIcon";
+import { ICONS } from "./icons";
 
 const DEFAULT_FEATURES = [
   { icon: "star", label: "Elegant" },
@@ -43,9 +44,9 @@ export default function HeroCarousel({ hero }) {
           <span className="text-[#C59B58]">{h.heading2 || "Beauty"}</span>
         </h1>
 
-        {(h.subtitle !== undefined ? h.subtitle : "Bangles · Abayas · Accessories") && (
+        {(h.subtitle !== undefined ? h.subtitle : "Bangles Â· Abayas Â· Accessories") && (
           <p className="text-xs md:text-sm font-semibold tracking-[0.3em] uppercase text-[#4A0E17]/70 mb-10">
-            {h.subtitle !== undefined ? h.subtitle : "Bangles · Abayas · Accessories"}
+            {h.subtitle !== undefined ? h.subtitle : "Bangles Â· Abayas Â· Accessories"}
           </p>
         )}
 

@@ -6,6 +6,7 @@ import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import BackToTop from "./components/BackToTop";
+import RequireAdmin from "./components/RequireAdmin";
 import Home from "./pages/Home";
 
 /* Route-level code splitting — admin & secondary pages load on demand */
@@ -255,10 +256,38 @@ function App() {
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/admin/analytics" element={<AnalyticsDashboard />} />
-            <Route path="/admin/reports" element={<Reports />} />
-            <Route path="/admin/posts" element={<AdminPosts />} />
+            <Route
+              path="/admin/dashboard"
+              element={
+                <RequireAdmin>
+                  <AdminDashboard />
+                </RequireAdmin>
+              }
+            />
+            <Route
+              path="/admin/analytics"
+              element={
+                <RequireAdmin>
+                  <AnalyticsDashboard />
+                </RequireAdmin>
+              }
+            />
+            <Route
+              path="/admin/reports"
+              element={
+                <RequireAdmin>
+                  <Reports />
+                </RequireAdmin>
+              }
+            />
+            <Route
+              path="/admin/posts"
+              element={
+                <RequireAdmin>
+                  <AdminPosts />
+                </RequireAdmin>
+              }
+            />
             <Route path="*" element={<NotFound />} />
             </Routes>
             </Suspense>

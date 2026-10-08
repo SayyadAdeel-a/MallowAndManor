@@ -1,6 +1,7 @@
-import { useNavigate } from "react-router-dom";
+﻿import { useNavigate } from "react-router-dom";
 import { trackCheckout } from "../lib/analytics";
-import AnimatedIcon, { ICONS } from "../components/AnimatedIcon";
+import AnimatedIcon from "../components/AnimatedIcon";
+import { ICONS } from "../components/icons";
 
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || "923233334492";
 
